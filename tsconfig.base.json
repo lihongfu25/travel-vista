@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@server/common": ["libs/server/common/src/index.ts"],
       "@server/configuration": ["libs/server/configuration/src/index.ts"],
       "@server/database": ["libs/server/database/src/index.ts"]
     }

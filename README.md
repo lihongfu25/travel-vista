@@ -55,13 +55,17 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 **_Server command_**
 
 ```
-nx g @nrwl/nest:module --project server
+Generate library: nx generate @nrwl/workspace:library
 ```
 
 ```
-nx g @nrwl/nest:service --project server
+Generate module: nx g @nrwl/nest:module --project server
 ```
 
 ```
-nx g @nrwl/nest:controller --project server
+Generate service: nx g @nrwl/nest:service --project server
+```
+
+```
+Generate controller: nx g @nrwl/nest:controller --project server
 ```
