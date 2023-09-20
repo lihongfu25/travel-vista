@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { ApiResponseService } from './http/api-response.service';
 import { HashService } from './services';
 
 @Module({
-  controllers: [],
+  imports: [ConfigModule],
   providers: [HashService, ApiResponseService],
-  exports: [],
+  exports: [ApiResponseService, HashService],
 })
 export class ServerCommonModule {}

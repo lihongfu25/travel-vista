@@ -1,3 +1,5 @@
+export * from './lib/decorators';
+export * from './lib/guards';
 export * from './lib/http/api-response.service';
 export * from './lib/http/base.service';
 export * from './lib/http/const';
