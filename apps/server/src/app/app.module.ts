@@ -14,9 +14,9 @@ import { AuthModule } from './auth/auth.module';
     SharedDatabaseModule.register({
       entities: [User, Role],
     }),
+    AuthModule,
     UserModule,
     RoleModule,
-    AuthModule,
   ],
   controllers: [AppController],
   providers: [

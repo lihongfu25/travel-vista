@@ -15,6 +15,15 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const items = [
       {
+        email: 'superadmin@app.com.vn',
+        username: 'superadmin',
+        password: this.hash('secret'),
+        role: 'superadmin',
+        phoneNumber: '0123456788',
+        status: UserStatus.active,
+        loginFailed: 0,
+      },
+      {
         email: 'admin@app.com.vn',
         username: 'admin',
         password: this.hash('secret'),

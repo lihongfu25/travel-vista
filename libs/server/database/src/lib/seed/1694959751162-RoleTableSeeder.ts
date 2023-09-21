@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class RoleTableSeeder1649669445031 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const items = [
+      { name: 'Super Admin', slug: 'superadmin', level: 0 },
       { name: 'Admin', slug: 'admin', level: 1 },
       { name: 'User', slug: 'user', level: 2 },
     ];
