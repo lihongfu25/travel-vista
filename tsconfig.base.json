@@ -15,6 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@frontend/model": ["libs/frontend/model/src/index.ts"],
+      "@frontend/configuration": ["libs/frontend/configuration/src/index.ts"],
       "@server/common": ["libs/server/common/src/index.ts"],
       "@server/configuration": ["libs/server/configuration/src/index.ts"],
       "@server/database": ["libs/server/database/src/index.ts"]

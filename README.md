@@ -52,10 +52,16 @@ Nx comes with local caching already built-in (check your `nx.json`). On CI you m
 
 ## Generate Command
 
-**_Server command_**
+**_Frontend Command_**
 
 ```
-Generate library: nx generate @nrwl/workspace:library
+Generate library: nx generate @nrwl/react:library
+```
+
+**_Server Command_**
+
+```
+Generate library: nx g @nrwl/nest:library
 ```
 
 ```
