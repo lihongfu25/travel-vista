@@ -1,4 +1,11 @@
-import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Get,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import {
   ApiCollectionResponse,
@@ -6,11 +13,12 @@ import {
   ApiPaginateResponse,
   ApiResponseService,
   Auth,
+  AuthenticatedUser,
   DEFAULT_LIMIT_PER_PAGE,
   HashService,
 } from '@server/common';
 import { UserService } from './user.service';
-import { GetUserQueryParam } from './types';
+import { GetUserQueryParam, UserDto } from './types';
 import { User } from './user.entity';
 import { Brackets } from 'typeorm';
 import { UserTransformer } from './user.transformer';
@@ -23,6 +31,24 @@ export class UserController {
     private userService: UserService,
     private hashService: HashService
   ) {}
+
+  @Get('my-profile')
+  @Auth()
+  async myProfile(
+    @AuthenticatedUser() user: User
+  ): Promise<ApiItemResponse<User>> {
+    return this.response.item(user, UserTransformer);
+  }
+
+  @Put('my-profile')
+  @Auth()
+  async update(
+    @AuthenticatedUser() user: User,
+    @Body() dto: UserDto
+  ): Promise<ApiItemResponse<User>> {
+    const result = await this.userService.update(user.id, dto);
+    return this.response.item(result, UserTransformer);
+  }
 
   @Get()
   @ApiOperation({

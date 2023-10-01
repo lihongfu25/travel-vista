@@ -16,4 +16,5 @@ export interface ServerConfigurationInterface {
   dbUser: string;
   dbPass: string;
   pdfUploadPath: string;
+  firebaseServiceAccount: any;
 }
