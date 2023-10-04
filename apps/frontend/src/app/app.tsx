@@ -1,31 +1,12 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import styles from './app.module.scss';
-
-import NxWelcome from './nx-welcome';
-
+import { ThemeProvider } from '@mui/material/styles';
+import { theme } from '@frontend/configuration';
 import { Route, Routes, Link } from 'react-router-dom';
+import Login from './auth/login/login';
 
 export function App() {
   return (
-    <div>
-      <NxWelcome title="frontend" />
-
-      {/* START: routes */}
-      {/* These routes and navigation have been generated for you */}
-      {/* Feel free to move and update them to fit your needs */}
-      <br />
-      <hr />
-      <br />
-      <div role="navigation">
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/page-2">Page 2</Link>
-          </li>
-        </ul>
-      </div>
+    <ThemeProvider theme={theme}>
       <Routes>
         <Route
           path="/"
@@ -44,9 +25,11 @@ export function App() {
             </div>
           }
         />
+        <Route path="/auth">
+          <Route path="login" element={<Login />} />
+        </Route>
       </Routes>
-      {/* END: routes */}
-    </div>
+    </ThemeProvider>
   );
 }
 
