@@ -1,12 +1,12 @@
+import InputLabel from '@mui/material/InputLabel';
 import MuiTextField from '@mui/material/TextField';
 import { styled } from '@mui/system';
+import React from 'react';
 import { Controller } from 'react-hook-form';
-import { TextControlProps } from '../types';
 import { generateUniqueId } from '../methods';
-import InputLabel from '@mui/material/InputLabel';
-/* eslint-disable-next-line */
+import { TextControlProps } from '../types';
 const StyledInputLabel = styled(InputLabel)`
-  .css-wgai2y-MuiFormLabel-asterisk {
+  .MuiFormLabel-asterisk {
     color: red;
   }
 `;
@@ -34,7 +34,6 @@ export function TextControl(props: TextControlProps) {
             id={props.id || uniqueId}
             className={props.className}
             placeholder={props.placeholder}
-            type={props.type || 'text'}
             sx={props.style}
             error={Boolean(props.errors)}
             variant={props.variant || 'outlined'}
@@ -48,4 +47,4 @@ export function TextControl(props: TextControlProps) {
   );
 }
 
-export default TextControl;
+export default React.memo(TextControl);

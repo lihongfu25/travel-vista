@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   tokenKey: 'jwt',
+  defaultTokenStorage: 'local',
   apiUrl: 'http://localhost:3000/api',
   serverUrl: 'http://localhost:3000',
   defaultLanguage: 'vi',

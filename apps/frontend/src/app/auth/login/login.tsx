@@ -1,6 +1,10 @@
+import {
+  PasswordControl,
+  SelectControl,
+  TextField,
+} from '@frontend/components';
 import { useForm } from 'react-hook-form';
 import styles from './login.module.scss';
-import { SelectField, TextControl, TextField } from '@frontend/components';
 /* eslint-disable-next-line */
 export interface LoginProps {}
 
@@ -13,7 +17,7 @@ export function Login(props: LoginProps) {
     defaultValues: {
       user: '',
       password: '',
-      age: null,
+      gender: null,
     },
   });
 
@@ -29,7 +33,7 @@ export function Login(props: LoginProps) {
           <div className="col-12 col-lg-6 max-w-600">
             <div className="shadow p-4 rounded-10 bg-glass">
               <form onSubmit={handleSubmit(onSubmit)}>
-                <TextControl
+                <TextField
                   name="user"
                   control={control}
                   label="Email"
@@ -37,22 +41,26 @@ export function Login(props: LoginProps) {
                   validates={{ required: 'This field is required' }}
                   errors={errors.user}
                 />
-                <TextControl
+                <PasswordControl
                   name="password"
                   control={control}
-                  type="password"
                   label="Password"
                   className="w-100 mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.password}
+                  fieldset
                 />
-                <SelectField
-                  name="age"
+                <SelectControl
+                  name="gender"
                   control={control}
-                  label="Age"
+                  label="Giới tính"
                   className="w-100 mb-4"
                   validates={{ required: 'This field is required' }}
-                  errors={errors.age}
+                  errors={errors.gender}
+                  options={[
+                    { label: 'Nam', value: 1 },
+                    { label: 'Nữ', value: 0 },
+                  ]}
                 />
                 <button>Submit</button>
               </form>

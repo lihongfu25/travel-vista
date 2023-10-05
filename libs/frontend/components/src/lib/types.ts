@@ -7,18 +7,23 @@ export interface ControlProps {
   className?: string;
   fullWidth?: boolean;
   style?: any;
-  type?: string;
   variant?: 'outlined' | 'filled' | 'standard';
   defaultValue?: any;
   control: Control<any>;
   validates?: any;
   errors?: FieldError;
+  fieldset?: boolean;
 }
 
 export interface TextControlProps extends ControlProps {
   placeholder?: string;
 }
 
+export interface SelectOptions {
+  label: string;
+  value: any;
+}
+
 export interface SelectControlProps extends ControlProps {
-  options?: Array<{ label: string; value: any }>;
+  options?: Array<SelectOptions>;
 }
