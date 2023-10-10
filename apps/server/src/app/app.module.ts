@@ -11,6 +11,7 @@ import { RoleModule } from './role/role.module';
 import { UserRole } from './user-role/user-role.entity';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
+import { FileModule } from './file/file.module';
 
 @Module({
   imports: [
@@ -21,6 +22,7 @@ import { UserModule } from './user/user.module';
     UserModule,
     RoleModule,
     PasswordResetModule,
+    FileModule,
   ],
   controllers: [AppController],
   providers: [
