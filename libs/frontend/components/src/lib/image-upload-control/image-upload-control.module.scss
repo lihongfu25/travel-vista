@@ -1,0 +1,26 @@
+.image-upload {
+  display: flex;
+  &__input,
+  &__preview {
+    width: 100px;
+    height: 100px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #c4c4c4;
+  }
+  &__preview {
+    margin-right: 12px;
+  }
+  &__input {
+    position: relative;
+
+    input {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      opacity: 0;
+    }
+  }
+}

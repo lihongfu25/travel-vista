@@ -1,12 +1,20 @@
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
+import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
 import { styled } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { SelectControlProps } from '../types';
+
+const StyledInputLabel = styled(InputLabel)`
+  .MuiFormLabel-asterisk {
+    color: red;
+  }
+`;
+
 const StyledFormLabel = styled(FormLabel)`
   .MuiFormLabel-asterisk {
     color: red;
@@ -35,11 +43,16 @@ export function SelectControl(props: SelectControlProps) {
           error={Boolean(props.errors)}
           required={Boolean(props.validates.required)}
         >
-          <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+          {props.fieldset ? (
+            <StyledInputLabel className="mb-1">{props.label}</StyledInputLabel>
+          ) : (
+            <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+          )}
           <StyledSelectField
             {...field}
             id={props.id}
             value={value}
+            label={props.fieldset ? props.label : undefined}
             onChange={(e) => {
               handleChange(e);
               field.onChange(e.target.value);

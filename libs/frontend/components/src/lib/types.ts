@@ -1,5 +1,9 @@
 import { Control, FieldError } from 'react-hook-form';
 
+export interface SelectOptions {
+  label: string;
+  value: any;
+}
 export interface ControlProps {
   name: string;
   label: string;
@@ -19,11 +23,14 @@ export interface TextControlProps extends ControlProps {
   placeholder?: string;
 }
 
-export interface SelectOptions {
-  label: string;
-  value: any;
-}
-
 export interface SelectControlProps extends ControlProps {
   options?: Array<SelectOptions>;
+}
+
+export interface DatetimePickerControlProps extends ControlProps {
+  type?: 'datetime' | 'date' | 'time' | 'calendar';
+}
+
+export interface ImageUploadControlProps extends ControlProps {
+  apiEndpoint?: string;
 }

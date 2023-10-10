@@ -1,0 +1,9 @@
+{
+  "hello": "Hello",
+  "welcome": "Welcome to our website",
+  "auth": {
+    "login": {
+      "title": "Login"
+    }
+  }
+}

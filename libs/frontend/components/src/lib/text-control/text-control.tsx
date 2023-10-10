@@ -1,46 +1,61 @@
 import InputLabel from '@mui/material/InputLabel';
-import MuiTextField from '@mui/material/TextField';
 import { styled } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { generateUniqueId } from '../methods';
 import { TextControlProps } from '../types';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import FormHelperText from '@mui/material/FormHelperText';
+
 const StyledInputLabel = styled(InputLabel)`
   .MuiFormLabel-asterisk {
     color: red;
   }
 `;
-const StyledTextField = styled(MuiTextField)``;
+const StyledFormLabel = styled(FormLabel)`
+  .MuiFormLabel-asterisk {
+    color: red;
+  }
+`;
 
 export function TextControl(props: TextControlProps) {
   const uniqueId = generateUniqueId(props.name);
   return (
     <div className="">
-      <StyledInputLabel
-        className="mb-1"
-        htmlFor={uniqueId}
-        required={Boolean(props.validates.required)}
-      >
-        {props.label}
-      </StyledInputLabel>
       <Controller
         name={props.name}
         control={props.control}
         rules={props.validates}
         render={({ field }) => (
-          <StyledTextField
-            {...field}
-            fullWidth
-            id={props.id || uniqueId}
-            className={props.className}
-            placeholder={props.placeholder}
-            sx={props.style}
-            error={Boolean(props.errors)}
+          <FormControl
             variant={props.variant || 'outlined'}
-            defaultValue={props.defaultValue}
-            helperText={props.errors ? props.errors.message : ''}
+            fullWidth
+            className={props.className}
+            required={Boolean(props.validates.required)}
+            error={Boolean(props.errors)}
             size="small"
-          />
+          >
+            {props.fieldset ? (
+              <StyledInputLabel htmlFor={uniqueId}>
+                {props.label}
+              </StyledInputLabel>
+            ) : (
+              <StyledFormLabel className="mb-1" htmlFor={uniqueId}>
+                {props.label}
+              </StyledFormLabel>
+            )}
+            <OutlinedInput
+              {...field}
+              id={uniqueId}
+              placeholder={props.placeholder}
+              sx={props.style}
+              defaultValue={props.defaultValue}
+              label={props.fieldset ? props.label : undefined}
+            />
+            <FormHelperText>{props.errors?.message}</FormHelperText>
+          </FormControl>
         )}
       />
     </div>

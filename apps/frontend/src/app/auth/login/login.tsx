@@ -1,14 +1,18 @@
 import {
+  DatetimePickerControl,
+  ImageUploadControl,
   PasswordControl,
   SelectControl,
-  TextField,
+  TextControl,
 } from '@frontend/components';
 import { useForm } from 'react-hook-form';
 import styles from './login.module.scss';
+import { useTranslation } from 'react-i18next';
 /* eslint-disable-next-line */
 export interface LoginProps {}
 
 export function Login(props: LoginProps) {
+  const { t } = useTranslation();
   const {
     control,
     handleSubmit,
@@ -18,6 +22,8 @@ export function Login(props: LoginProps) {
       user: '',
       password: '',
       gender: null,
+      dob: null,
+      image: null,
     },
   });
 
@@ -33,11 +39,11 @@ export function Login(props: LoginProps) {
           <div className="col-12 col-lg-6 max-w-600">
             <div className="shadow p-4 rounded-10 bg-glass">
               <form onSubmit={handleSubmit(onSubmit)}>
-                <TextField
+                <TextControl
                   name="user"
                   control={control}
                   label="Email"
-                  className="w-100 mb-4"
+                  className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.user}
                 />
@@ -45,16 +51,15 @@ export function Login(props: LoginProps) {
                   name="password"
                   control={control}
                   label="Password"
-                  className="w-100 mb-4"
+                  className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.password}
-                  fieldset
                 />
                 <SelectControl
                   name="gender"
                   control={control}
                   label="Giới tính"
-                  className="w-100 mb-4"
+                  className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.gender}
                   options={[
@@ -62,7 +67,24 @@ export function Login(props: LoginProps) {
                     { label: 'Nữ', value: 0 },
                   ]}
                 />
-                <button>Submit</button>
+                <DatetimePickerControl
+                  name="dob"
+                  control={control}
+                  label="Ngày sinh"
+                  type="date"
+                  className="mb-4"
+                  validates={{ required: 'This field is required' }}
+                  errors={errors.dob}
+                />
+                <ImageUploadControl
+                  name="image"
+                  control={control}
+                  label="Ảnh đại diện"
+                  className="mb-4"
+                  validates={{ required: 'This field is required' }}
+                  errors={errors.image}
+                />
+                <button>{t('auth.login.title')}</button>
               </form>
             </div>
           </div>

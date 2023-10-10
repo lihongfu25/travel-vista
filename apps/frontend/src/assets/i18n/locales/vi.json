@@ -1,0 +1,9 @@
+{
+  "hello": "Xin chào",
+  "welcome": "Chào mừng bạn đến với trang web của chúng tôi",
+  "auth": {
+    "login": {
+      "title": "Đăng nhập"
+    }
+  }
+}
