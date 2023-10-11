@@ -33,4 +33,9 @@ export interface DatetimePickerControlProps extends ControlProps {
 
 export interface ImageUploadControlProps extends ControlProps {
   apiEndpoint?: string;
+  multiple?: boolean;
 }
+
+// export interface ColorPickerControlProps extends ControlProps {
+
+// }

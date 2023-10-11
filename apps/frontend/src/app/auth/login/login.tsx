@@ -1,4 +1,5 @@
 import {
+  ColorPickerControl,
   DatetimePickerControl,
   ImageUploadControl,
   PasswordControl,
@@ -19,11 +20,12 @@ export function Login(props: LoginProps) {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      user: '',
-      password: '',
-      gender: null,
+      user: 'lehongphu',
+      password: 'secret',
+      gender: 1,
       dob: null,
       image: null,
+      color: '#aabbcc',
     },
   });
 
@@ -83,6 +85,15 @@ export function Login(props: LoginProps) {
                   className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.image}
+                  multiple
+                />
+                <ColorPickerControl
+                  name="color"
+                  control={control}
+                  label="Màu sắc"
+                  className="mb-4"
+                  validates={{ required: 'This field is required' }}
+                  errors={errors.color}
                 />
                 <button>{t('auth.login.title')}</button>
               </form>

@@ -24,12 +24,6 @@ const StyledFormLabel = styled(FormLabel)`
 const StyledSelectField = styled(MuiSelect)``;
 
 export function SelectControl(props: SelectControlProps) {
-  const [value, setValue] = React.useState(props.defaultValue || '');
-
-  const handleChange = (event: SelectChangeEvent<any>) => {
-    setValue(event.target.value);
-  };
-
   return (
     <Controller
       name={props.name}
@@ -51,12 +45,7 @@ export function SelectControl(props: SelectControlProps) {
           <StyledSelectField
             {...field}
             id={props.id}
-            value={value}
             label={props.fieldset ? props.label : undefined}
-            onChange={(e) => {
-              handleChange(e);
-              field.onChange(e.target.value);
-            }}
           >
             {props.options?.map((option, i) => (
               <MenuItem key={i} value={option.value}>
