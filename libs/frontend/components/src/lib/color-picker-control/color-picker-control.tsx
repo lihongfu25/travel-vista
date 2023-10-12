@@ -1,15 +1,23 @@
+import InputLabel from '@mui/material/InputLabel';
+import { styled } from '@mui/system';
 import React from 'react';
-import styles from './color-picker-control.module.scss';
 import { HexColorPicker } from 'react-colorful';
-import { Button, Popover, Typography } from '@mui/material';
 import { Controller } from 'react-hook-form';
-import { ControlProps } from '../types';
-
+import { ColorPickerControlProps } from '../types';
+import styles from './color-picker-control.module.scss';
+const StyledInputLabel = styled(InputLabel)`
+  .MuiFormLabel-asterisk {
+    color: red;
+  }
+`;
 /* eslint-disable-next-line */
 
-export function ColorPickerControl(props: ControlProps) {
-  const [color, setColor] = React.useState<string>('#aabbcc');
+export function ColorPickerControl(props: ColorPickerControlProps) {
+  const [color, setColor] = React.useState<string>(
+    props.defaultValue || '#aabbcc'
+  );
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
   React.useEffect(() => {
     const handleClickOutside = (e: Event) => {
       if (e.target instanceof Element) {
@@ -33,19 +41,31 @@ export function ColorPickerControl(props: ControlProps) {
       control={props.control}
       rules={props.validates}
       render={({ field }) => (
-        <div className={styles['color-picker']}>
-          <button
-            type="button"
-            className={`${styles['color-picker__swatch']} color-picker__btn`}
-            style={{ backgroundColor: color }}
-            onClick={(e) => setIsOpen(!isOpen)}
-          />
+        <div className={`${styles['color-picker']} ${props.className}`}>
+          <StyledInputLabel
+            className="mb-1"
+            required={Boolean(props.validates.required)}
+          >
+            {props.label}
+          </StyledInputLabel>
+          <div className="d-flex align-items-center">
+            <button
+              type="button"
+              className={`${styles['color-picker__swatch']} color-picker__btn`}
+              style={{ backgroundColor: color }}
+              onClick={(e) => setIsOpen(!isOpen)}
+            ></button>
+            {props.showCode && (
+              <InputLabel className="ms-2">{color}</InputLabel>
+            )}
+          </div>
           {isOpen && (
             <div className={styles['color-picker__popover']}>
               <HexColorPicker
                 color={color}
                 onChange={(e) => {
                   setColor(e);
+                  field.onChange(e);
                 }}
               />
             </div>

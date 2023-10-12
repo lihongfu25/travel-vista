@@ -6,9 +6,10 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import React from 'react';
+import React, { ReactComponentElement } from 'react';
 import { Controller } from 'react-hook-form';
 import { DatetimePickerControlProps } from '../types';
+import moment, { Moment } from 'moment';
 const StyledFormControl = styled(FormControl)`
   .MuiFormLabel-asterisk {
     color: red;
@@ -54,6 +55,10 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
           )}
           <PickerComponent
             {...field}
+            value={moment(field.value)}
+            onChange={(e: Moment) => {
+              field.onChange(e.format('YYYY-MM-DD HH:mm:ss'));
+            }}
             slotProps={{
               textField: {
                 size: 'small',

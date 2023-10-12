@@ -70,9 +70,8 @@ export function ImageUploadControl(props: ImageUploadControlProps) {
           )}
           <div className={styles['image-upload']}>
             {selectedImages?.map((image, i) => (
-              <div className={styles['image-upload__preview']}>
+              <div className={styles['image-upload__preview']} key={i}>
                 <img
-                  key={i}
                   src={URL.createObjectURL(image)}
                   alt="Preview"
                   className="object-fit-cover w-100 h-100"

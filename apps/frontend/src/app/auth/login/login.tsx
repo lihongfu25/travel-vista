@@ -9,6 +9,7 @@ import {
 import { useForm } from 'react-hook-form';
 import styles from './login.module.scss';
 import { useTranslation } from 'react-i18next';
+import moment from 'moment';
 /* eslint-disable-next-line */
 export interface LoginProps {}
 
@@ -18,14 +19,15 @@ export function Login(props: LoginProps) {
     control,
     handleSubmit,
     formState: { errors },
+    getValues,
   } = useForm({
     defaultValues: {
       user: 'lehongphu',
       password: 'secret',
       gender: 1,
-      dob: null,
+      dob: '02-05-2001',
       image: null,
-      color: '#aabbcc',
+      color: '#1a1a1a',
     },
   });
 
@@ -57,18 +59,6 @@ export function Login(props: LoginProps) {
                   validates={{ required: 'This field is required' }}
                   errors={errors.password}
                 />
-                <SelectControl
-                  name="gender"
-                  control={control}
-                  label="Giới tính"
-                  className="mb-4"
-                  validates={{ required: 'This field is required' }}
-                  errors={errors.gender}
-                  options={[
-                    { label: 'Nam', value: 1 },
-                    { label: 'Nữ', value: 0 },
-                  ]}
-                />
                 <DatetimePickerControl
                   name="dob"
                   control={control}
@@ -85,7 +75,6 @@ export function Login(props: LoginProps) {
                   className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.image}
-                  multiple
                 />
                 <ColorPickerControl
                   name="color"
@@ -94,6 +83,8 @@ export function Login(props: LoginProps) {
                   className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.color}
+                  defaultValue={getValues('color')}
+                  showCode
                 />
                 <button>{t('auth.login.title')}</button>
               </form>

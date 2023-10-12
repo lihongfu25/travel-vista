@@ -36,6 +36,6 @@ export interface ImageUploadControlProps extends ControlProps {
   multiple?: boolean;
 }
 
-// export interface ColorPickerControlProps extends ControlProps {
-
-// }
+export interface ColorPickerControlProps extends ControlProps {
+  showCode?: boolean;
+}

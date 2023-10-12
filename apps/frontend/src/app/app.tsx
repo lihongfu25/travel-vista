@@ -2,15 +2,14 @@
 import { theme } from '@frontend/configuration';
 import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import 'moment/locale/de';
+import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Link, Route, Routes } from 'react-router-dom';
 import Login from './auth/login/login';
 
 export function App() {
   return (
     <ThemeProvider theme={theme}>
-      <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
+      <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="en-gb">
         <Routes>
           <Route
             path="/"
