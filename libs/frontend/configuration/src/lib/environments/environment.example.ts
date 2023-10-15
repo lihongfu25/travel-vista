@@ -4,6 +4,7 @@ export const environment = {
   defaultTokenStorage: 'local',
   apiUrl: 'http://localhost:3000/api',
   serverUrl: 'http://localhost:3000',
+  requestTimeout: 5000,
   defaultLanguage: 'vi',
   languageLocalStorageKey: 'lang',
   availabelLanguages: ['vi', 'en'],

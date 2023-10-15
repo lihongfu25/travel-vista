@@ -1,20 +1,25 @@
 import {
+  AvatarUploadControl,
   ColorPickerControl,
   DatetimePickerControl,
   ImageUploadControl,
   PasswordControl,
-  SelectControl,
+  SimplePagination,
+  SimpleSearch,
   TextControl,
 } from '@frontend/components';
 import { useForm } from 'react-hook-form';
-import styles from './login.module.scss';
 import { useTranslation } from 'react-i18next';
-import moment from 'moment';
+import styles from './login.module.scss';
+import React from 'react';
+import { useLocation } from 'react-router-dom';
+import { showToast } from '@frontend/common';
 /* eslint-disable-next-line */
 export interface LoginProps {}
 
 export function Login(props: LoginProps) {
   const { t } = useTranslation();
+  const { search } = useLocation();
   const {
     control,
     handleSubmit,
@@ -31,8 +36,24 @@ export function Login(props: LoginProps) {
     },
   });
 
+  React.useEffect(() => {
+    console.log(search);
+  }, [search]);
+
+  const pagination = {
+    itemCount: 1,
+    totalItems: 2,
+    itemsPerPage: 1,
+    currentPage: 1,
+    totalPages: 2,
+  };
+
   const onSubmit = (data: any) => {
     console.log(data);
+  };
+
+  const handleShowToast = () => {
+    showToast('Đăng nhập thành công', 'success');
   };
   return (
     <div
@@ -86,7 +107,15 @@ export function Login(props: LoginProps) {
                   defaultValue={getValues('color')}
                   showCode
                 />
-                <button>{t('auth.login.title')}</button>
+                <AvatarUploadControl
+                  src="https://cdn.vntrip.vn/cam-nang/wp-content/uploads/2020/03/bien-my-khe.jpg"
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                  }}
+                />
+
+                <button className="mt-5">{t('auth.login.title')}</button>
               </form>
             </div>
           </div>

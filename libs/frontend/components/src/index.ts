@@ -1,3 +1,6 @@
+export * from './lib/avatar-upload-control/avatar-upload-control';
+export * from './lib/simple-pagination/simple-pagination';
+export * from './lib/simple-search/simple-search';
 export * from './lib/color-picker-control/color-picker-control';
 export * from './lib/image-upload-control/image-upload-control';
 export * from './lib/datetime-picker-control/datetime-picker-control';

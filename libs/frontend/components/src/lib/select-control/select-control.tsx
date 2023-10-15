@@ -3,7 +3,7 @@ import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import MuiSelect, { SelectChangeEvent } from '@mui/material/Select';
+import MuiSelect from '@mui/material/Select';
 import { styled } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';

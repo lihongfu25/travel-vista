@@ -4,8 +4,9 @@ import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import { Link, Route, Routes } from 'react-router-dom';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Login from './auth/login/login';
-
 export function App() {
   return (
     <ThemeProvider theme={theme}>
@@ -32,6 +33,7 @@ export function App() {
             <Route path="login" element={<Login />} />
           </Route>
         </Routes>
+        <ToastContainer />
       </LocalizationProvider>
     </ThemeProvider>
   );

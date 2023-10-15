@@ -17,4 +17,5 @@ export const environment = {
   pdfUploadPath: 'assets/uploads',
   enableLoginFailedCheck: true,
   maxLoginFailed: 5,
+  firebaseServiceAccount: {},
 };

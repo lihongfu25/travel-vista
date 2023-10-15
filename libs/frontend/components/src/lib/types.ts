@@ -4,6 +4,19 @@ export interface SelectOptions {
   label: string;
   value: any;
 }
+
+interface PaginationOptions {
+  itemCount: number;
+  totalItems: number;
+  itemsPerPage: number;
+  currentPage: number;
+  totalPages: number;
+}
+
+export interface PaginationProps {
+  pagination: PaginationOptions;
+}
+
 export interface ControlProps {
   name: string;
   label: string;

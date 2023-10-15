@@ -5,7 +5,8 @@
     "add": "Add",
     "update": "Update",
     "delete": "Delete",
-    "upload": "Upload"
+    "upload": "Upload",
+    "search": "Search"
   },
   "hello": "Hello",
   "welcome": "Welcome to our website",
