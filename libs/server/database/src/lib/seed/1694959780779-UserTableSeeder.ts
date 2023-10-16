@@ -3,7 +3,7 @@ import { MigrationInterface, QueryRunner } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 const enum UserStatus {
-  active = 1,
+  ACTIVE = 1,
 }
 
 export class UserTableSeeder1649669979240 implements MigrationInterface {
@@ -15,12 +15,21 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     const items = [
       {
+        email: 'superadmin@app.com.vn',
+        username: 'superadmin',
+        password: this.hash('secret'),
+        role: 'superadmin',
+        phoneNumber: '0123456788',
+        status: UserStatus.ACTIVE,
+        loginFailed: 0,
+      },
+      {
         email: 'admin@app.com.vn',
         username: 'admin',
         password: this.hash('secret'),
         role: 'admin',
         phoneNumber: '0123456788',
-        status: UserStatus.active,
+        status: UserStatus.ACTIVE,
         loginFailed: 0,
       },
       {
@@ -30,7 +39,7 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
         role: 'user',
         phoneNumber: '0123456787',
         image: '',
-        status: UserStatus.active,
+        status: UserStatus.ACTIVE,
         loginFailed: 0,
       },
     ];
