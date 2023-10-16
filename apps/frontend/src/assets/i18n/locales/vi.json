@@ -8,12 +8,24 @@
     "upload": "Tải lên",
     "search": "Tìm kiếm"
   },
-
-  "hello": "Xin chào",
-  "welcome": "Chào mừng bạn đến với trang web của chúng tôi",
   "auth": {
     "login": {
-      "title": "Đăng nhập"
+      "title": "Đăng nhập",
+      "email": "Email / Tên đăng nhập",
+      "password": "Mật khẩu"
     }
+  },
+  "form": {
+    "validators": {
+      "minlength": "Vui lòng nhập tối thiểu {{length}} kí tự",
+      "maxlength": "Vui lòng nhập tối đa {{length}} kí tự",
+      "required": "Trường không được bỏ trống",
+      "email": "Vui lòng nhập đúng định dạng email",
+      "pattern": "Vui lòng điền đúng định dạng"
+    }
+  },
+  "language": {
+    "vi": "Tiếng Việt",
+    "en": "Tiếng Anh"
   }
 }

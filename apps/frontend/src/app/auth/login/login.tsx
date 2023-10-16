@@ -1,25 +1,18 @@
-import {
-  AvatarUploadControl,
-  ColorPickerControl,
-  DatetimePickerControl,
-  ImageUploadControl,
-  PasswordControl,
-  SimplePagination,
-  SimpleSearch,
-  TextControl,
-} from '@frontend/components';
+import { showToast } from '@frontend/common';
+import { PasswordControl, TextControl } from '@frontend/components';
+import { useValidators } from '@frontend/hooks';
+import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import styles from './login.module.scss';
-import React from 'react';
 import { useLocation } from 'react-router-dom';
-import { showToast } from '@frontend/common';
+import styles from './login.module.scss';
 /* eslint-disable-next-line */
 export interface LoginProps {}
 
 export function Login(props: LoginProps) {
   const { t } = useTranslation();
   const { search } = useLocation();
+  const validators = useValidators();
   const {
     control,
     handleSubmit,
@@ -67,55 +60,21 @@ export function Login(props: LoginProps) {
                 <TextControl
                   name="user"
                   control={control}
-                  label="Email"
+                  label={t('auth.login.email')}
                   className="mb-4"
-                  validates={{ required: 'This field is required' }}
+                  validates={validators.email}
                   errors={errors.user}
                 />
                 <PasswordControl
                   name="password"
                   control={control}
-                  label="Password"
+                  label={t('auth.login.password')}
                   className="mb-4"
                   validates={{ required: 'This field is required' }}
                   errors={errors.password}
                 />
-                <DatetimePickerControl
-                  name="dob"
-                  control={control}
-                  label="Ngày sinh"
-                  type="date"
-                  className="mb-4"
-                  validates={{ required: 'This field is required' }}
-                  errors={errors.dob}
-                />
-                <ImageUploadControl
-                  name="image"
-                  control={control}
-                  label="Ảnh đại diện"
-                  className="mb-4"
-                  validates={{ required: 'This field is required' }}
-                  errors={errors.image}
-                />
-                <ColorPickerControl
-                  name="color"
-                  control={control}
-                  label="Màu sắc"
-                  className="mb-4"
-                  validates={{ required: 'This field is required' }}
-                  errors={errors.color}
-                  defaultValue={getValues('color')}
-                  showCode
-                />
-                <AvatarUploadControl
-                  src="https://cdn.vntrip.vn/cam-nang/wp-content/uploads/2020/03/bien-my-khe.jpg"
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                  }}
-                />
 
-                <button className="mt-5">{t('auth.login.title')}</button>
+                <button className="">{t('auth.login.title')}</button>
               </form>
             </div>
           </div>

@@ -8,11 +8,24 @@
     "upload": "Upload",
     "search": "Search"
   },
-  "hello": "Hello",
-  "welcome": "Welcome to our website",
   "auth": {
     "login": {
-      "title": "Login"
+      "title": "Login",
+      "email": "Email/Username",
+      "password": "Password"
     }
+  },
+  "form": {
+    "validators": {
+      "minlength": "The minimum length for this field is {{length}} characters",
+      "maxlength": "The maximum length for this field is {{length}} characters",
+      "required": "The field is required",
+      "email": "Please enter an valid email",
+      "pattern": "Please enter an valid data"
+    }
+  },
+  "language": {
+    "vi": "Vietnamese",
+    "en": "English"
   }
 }
