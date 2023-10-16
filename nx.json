@@ -62,6 +62,14 @@
         "linter": "eslint",
         "unitTestRunner": "jest"
       }
+    },
+    "@nx/react": {
+      "application": {
+        "babel": true
+      },
+      "library": {
+        "unitTestRunner": "jest"
+      }
     }
   }
 }

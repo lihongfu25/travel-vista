@@ -1,0 +1,19 @@
+{
+  "common": {
+    "save": "Lưu",
+    "create": "Tạo mới",
+    "add": "Thêm mới",
+    "update": "Cập nhật",
+    "delete": "Xóa",
+    "upload": "Tải lên",
+    "search": "Tìm kiếm"
+  },
+
+  "hello": "Xin chào",
+  "welcome": "Chào mừng bạn đến với trang web của chúng tôi",
+  "auth": {
+    "login": {
+      "title": "Đăng nhập"
+    }
+  }
+}

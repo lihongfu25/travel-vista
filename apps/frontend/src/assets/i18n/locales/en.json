@@ -1,0 +1,18 @@
+{
+  "common": {
+    "save": "Save",
+    "create": "Create",
+    "add": "Add",
+    "update": "Update",
+    "delete": "Delete",
+    "upload": "Upload",
+    "search": "Search"
+  },
+  "hello": "Hello",
+  "welcome": "Welcome to our website",
+  "auth": {
+    "login": {
+      "title": "Login"
+    }
+  }
+}
