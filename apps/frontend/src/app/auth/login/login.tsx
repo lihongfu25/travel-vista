@@ -62,7 +62,7 @@ export function Login(props: LoginProps) {
                   control={control}
                   label={t('auth.login.email')}
                   className="mb-4"
-                  validates={validators.email}
+                  validates={{ ...validators.required, ...validators.email }}
                   errors={errors.user}
                 />
                 <PasswordControl
@@ -70,7 +70,10 @@ export function Login(props: LoginProps) {
                   control={control}
                   label={t('auth.login.password')}
                   className="mb-4"
-                  validates={{ required: 'This field is required' }}
+                  validates={{
+                    ...validators.required,
+                    ...validators.minLength(6),
+                  }}
                   errors={errors.password}
                 />
 
