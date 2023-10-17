@@ -3,6 +3,7 @@ import { styled } from '@mui/system';
 import React from 'react';
 import { HexColorPicker } from 'react-colorful';
 import { Controller } from 'react-hook-form';
+import { mergeValidates } from '../methods';
 import { ColorPickerControlProps } from '../types';
 import styles from './color-picker-control.module.scss';
 const StyledInputLabel = styled(InputLabel)`
@@ -17,6 +18,8 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     props.defaultValue || '#aabbcc'
   );
   const [isOpen, setIsOpen] = React.useState<boolean>(false);
+
+  const validates = mergeValidates(props.validates);
 
   React.useEffect(() => {
     const handleClickOutside = (e: Event) => {
@@ -39,12 +42,12 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     <Controller
       name={props.name}
       control={props.control}
-      rules={props.validates}
+      rules={validates}
       render={({ field }) => (
         <div className={`${styles['color-picker']} ${props.className}`}>
           <StyledInputLabel
             className="mb-1"
-            required={Boolean(props.validates.required)}
+            required={Boolean(validates.required)}
           >
             {props.label}
           </StyledInputLabel>

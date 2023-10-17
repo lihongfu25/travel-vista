@@ -17,7 +17,6 @@ export function Login(props: LoginProps) {
     control,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm({
     defaultValues: {
       user: 'lehongphu',
@@ -62,19 +61,20 @@ export function Login(props: LoginProps) {
                   control={control}
                   label={t('auth.login.email')}
                   className="mb-4"
-                  validates={{ ...validators.required, ...validators.email }}
+                  validates={[validators.required, validators.email]}
                   errors={errors.user}
+                  size="medium"
+                  fieldset
                 />
                 <PasswordControl
                   name="password"
                   control={control}
                   label={t('auth.login.password')}
                   className="mb-4"
-                  validates={{
-                    ...validators.required,
-                    ...validators.minLength(6),
-                  }}
+                  validates={[validators.required, validators.minLength(6)]}
                   errors={errors.password}
+                  size="medium"
+                  fieldset
                 />
 
                 <button className="">{t('auth.login.title')}</button>

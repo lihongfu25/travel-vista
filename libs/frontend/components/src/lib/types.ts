@@ -23,11 +23,14 @@ export interface ControlProps {
   id?: string;
   className?: string;
   fullWidth?: boolean;
+  size?: 'medium' | 'small';
   style?: any;
   variant?: 'outlined' | 'filled' | 'standard';
   defaultValue?: any;
   control: Control<any>;
-  validates?: any;
+  validates?: Array<{
+    [key: string]: { value: boolean | number | RegExp; message: string };
+  }>;
   errors?: FieldError;
   fieldset?: boolean;
 }

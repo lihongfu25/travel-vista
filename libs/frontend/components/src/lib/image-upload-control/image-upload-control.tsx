@@ -11,6 +11,7 @@ import { Controller } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { ImageUploadControlProps } from '../types';
 import styles from './image-upload-control.module.scss';
+import { mergeValidates } from '../methods';
 
 const StyledFormControl = styled(FormControl)`
   .MuiFormLabel-asterisk {
@@ -29,6 +30,8 @@ export function ImageUploadControl(props: ImageUploadControlProps) {
   const [selectedImages, setSelectedImages] = React.useState<File[] | null>(
     null
   );
+
+  const validates = mergeValidates(props.validates);
 
   const handleImageChange = async (
     event: React.ChangeEvent<HTMLInputElement>
@@ -56,14 +59,14 @@ export function ImageUploadControl(props: ImageUploadControlProps) {
     <Controller
       name={props.name}
       control={props.control}
-      rules={props.validates}
+      rules={validates}
       render={({ field }) => (
         <StyledFormControl
-          size="small"
+          size={props.size || 'small'}
           fullWidth
           className={props.className}
           error={Boolean(props.errors)}
-          required={Boolean(props.validates.required)}
+          required={Boolean(validates.required)}
         >
           {!props.fieldset && (
             <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>

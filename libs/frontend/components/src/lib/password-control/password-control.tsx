@@ -7,7 +7,7 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { TextControlProps } from '../types';
-import { generateUniqueId } from '../methods';
+import { generateUniqueId, mergeValidates } from '../methods';
 import { Controller } from 'react-hook-form';
 import FormHelperText from '@mui/material/FormHelperText';
 import { styled } from '@mui/system';
@@ -23,6 +23,7 @@ const StyledFormLabel = styled(FormLabel)`
     color: red;
   }
 `;
+
 export function PasswordControl(props: TextControlProps) {
   const [showPassword, setShowPassword] = React.useState(false);
 
@@ -35,20 +36,21 @@ export function PasswordControl(props: TextControlProps) {
   };
 
   const uniqueId = generateUniqueId(props.name);
+  const validates = mergeValidates(props.validates);
 
   return (
     <Controller
       name={props.name}
       control={props.control}
-      rules={props.validates}
+      rules={validates}
       render={({ field }) => (
         <FormControl
           variant={props.variant || 'outlined'}
           fullWidth
           className={props.className}
-          required={Boolean(props.validates.required)}
+          required={Boolean(validates.required)}
           error={Boolean(props.errors)}
-          size="small"
+          size={props.size || 'small'}
         >
           {props.fieldset ? (
             <StyledInputLabel htmlFor={uniqueId}>
@@ -73,7 +75,7 @@ export function PasswordControl(props: TextControlProps) {
                   onClick={handleClickShowPassword}
                   onMouseDown={handleMouseDownPassword}
                   edge="end"
-                  size="small"
+                  size={props.size || 'small'}
                 >
                   {showPassword ? <VisibilityOff /> : <Visibility />}
                 </IconButton>

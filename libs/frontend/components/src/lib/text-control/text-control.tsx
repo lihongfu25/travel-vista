@@ -2,12 +2,12 @@ import InputLabel from '@mui/material/InputLabel';
 import { styled } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';
-import { generateUniqueId } from '../methods';
-import { TextControlProps } from '../types';
+import { generateUniqueId, mergeValidates } from '../methods';
 import FormControl from '@mui/material/FormControl';
 import FormLabel from '@mui/material/FormLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
+import { TextControlProps } from '../types';
 
 const StyledInputLabel = styled(InputLabel)`
   .MuiFormLabel-asterisk {
@@ -22,19 +22,20 @@ const StyledFormLabel = styled(FormLabel)`
 
 export function TextControl(props: TextControlProps) {
   const uniqueId = generateUniqueId(props.name);
+  const validates = mergeValidates(props.validates);
   return (
     <Controller
       name={props.name}
       control={props.control}
-      rules={props.validates}
+      rules={validates}
       render={({ field }) => (
         <FormControl
           variant={props.variant || 'outlined'}
           fullWidth
           className={props.className}
-          required={Boolean(props.validates.required)}
+          required={Boolean(validates.required)}
           error={Boolean(props.errors)}
-          size="small"
+          size={props.size || 'small'}
         >
           {props.fieldset ? (
             <StyledInputLabel htmlFor={uniqueId}>

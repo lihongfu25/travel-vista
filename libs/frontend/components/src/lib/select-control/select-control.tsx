@@ -8,6 +8,7 @@ import { styled } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';
 import { SelectControlProps } from '../types';
+import { mergeValidates } from '../methods';
 
 const StyledInputLabel = styled(InputLabel)`
   .MuiFormLabel-asterisk {
@@ -24,18 +25,19 @@ const StyledFormLabel = styled(FormLabel)`
 const StyledSelectField = styled(MuiSelect)``;
 
 export function SelectControl(props: SelectControlProps) {
+  const validates = mergeValidates(props.validates);
   return (
     <Controller
       name={props.name}
       control={props.control}
-      rules={props.validates}
+      rules={validates}
       render={({ field }) => (
         <FormControl
           fullWidth
-          size="small"
+          size={props.size || 'small'}
           className={props.className}
           error={Boolean(props.errors)}
-          required={Boolean(props.validates.required)}
+          required={Boolean(validates.required)}
         >
           {props.fieldset ? (
             <StyledInputLabel className="mb-1">{props.label}</StyledInputLabel>

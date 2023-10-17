@@ -2,14 +2,15 @@ import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
 import FormLabel from '@mui/material/FormLabel';
 import { styled } from '@mui/system';
+import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
-import React, { ReactComponentElement } from 'react';
-import { Controller } from 'react-hook-form';
-import { DatetimePickerControlProps } from '../types';
 import moment, { Moment } from 'moment';
+import React from 'react';
+import { Controller } from 'react-hook-form';
+import { mergeValidates } from '../methods';
+import { DatetimePickerControlProps } from '../types';
 const StyledFormControl = styled(FormControl)`
   .MuiFormLabel-asterisk {
     color: red;
@@ -24,6 +25,8 @@ const StyledFormLabel = styled(FormLabel)`
 export function DatetimePickerControl(props: DatetimePickerControlProps) {
   const [PickerComponent, setPickerComponent] =
     React.useState<any>(DateTimePicker);
+
+  const validates = mergeValidates(props.validates);
 
   React.useEffect(() => {
     if (props.type === 'datetime') {
@@ -41,14 +44,14 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
     <Controller
       name={props.name}
       control={props.control}
-      rules={props.validates}
+      rules={validates}
       render={({ field }) => (
         <StyledFormControl
           fullWidth
-          size="small"
+          size={props.size || 'small'}
           className={`date-time-picker ${props.className}`}
           error={Boolean(props.errors)}
-          required={Boolean(props.validates.required)}
+          required={Boolean(validates.required)}
         >
           {!props.fieldset && (
             <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
@@ -61,11 +64,14 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
             }}
             slotProps={{
               textField: {
-                size: 'small',
+                size: props.size || 'small',
                 label: props.fieldset ? props.label : undefined,
                 error: Boolean(props.errors),
-                required: Boolean(props.validates.required),
+                required: Boolean(validates.required),
               },
+            }}
+            sx={{
+              borderRadius: '10px',
             }}
           />
           <FormHelperText>{props.errors?.message}</FormHelperText>
