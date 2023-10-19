@@ -1,3 +1,5 @@
+export * from './lib/password-icon-control/password-icon-control';
+export * from './lib/text-icon-control/text-icon-control';
 export * from './lib/avatar-upload-control/avatar-upload-control';
 export * from './lib/simple-pagination/simple-pagination';
 export * from './lib/simple-search/simple-search';

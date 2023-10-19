@@ -1,15 +1,19 @@
 import { showToast } from '@frontend/common';
-import { PasswordControl, TextControl } from '@frontend/components';
+import { PasswordIconControl, TextIconControl } from '@frontend/components';
 import { useValidators } from '@frontend/hooks';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import styles from './login.module.scss';
-/* eslint-disable-next-line */
-export interface LoginProps {}
+import Button from '@mui/material/Button';
+import LoadingButton from '@mui/lab/LoadingButton';
 
-export function Login(props: LoginProps) {
+export function Login() {
+  const [loading, setLoading] = React.useState(false);
+
   const { t } = useTranslation();
   const { search } = useLocation();
   const validators = useValidators();
@@ -20,6 +24,7 @@ export function Login(props: LoginProps) {
   } = useForm({
     defaultValues: {
       user: 'lehongphu',
+      usericon: 'lehongphu',
       password: 'secret',
       gender: 1,
       dob: '02-05-2001',
@@ -47,6 +52,11 @@ export function Login(props: LoginProps) {
   const handleShowToast = () => {
     showToast('Đăng nhập thành công', 'success');
   };
+
+  const handleClick = () => {
+    setLoading(true);
+  };
+
   return (
     <div
       className={`${styles['login']} position-fixed top-0 bottom-0 start-0 end-0`}
@@ -55,8 +65,8 @@ export function Login(props: LoginProps) {
         <div className="row justify-content-center py-0 py-lg-4 my-0 my-lg-2">
           <div className="col-12 col-lg-6 max-w-600">
             <div className="shadow p-4 rounded-10 bg-glass">
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <TextControl
+              <form onSubmit={handleSubmit(onSubmit)} className="p-2">
+                <TextIconControl
                   name="user"
                   control={control}
                   label={t('auth.login.email')}
@@ -64,9 +74,10 @@ export function Login(props: LoginProps) {
                   validates={[validators.required, validators.email]}
                   errors={errors.user}
                   size="medium"
-                  fieldset
+                  icon={PersonOutlineRoundedIcon}
+                  color="primary"
                 />
-                <PasswordControl
+                <PasswordIconControl
                   name="password"
                   control={control}
                   label={t('auth.login.password')}
@@ -74,10 +85,27 @@ export function Login(props: LoginProps) {
                   validates={[validators.required, validators.minLength(6)]}
                   errors={errors.password}
                   size="medium"
-                  fieldset
+                  icon={LockOutlinedIcon}
+                  color="primary"
                 />
-
-                <button className="">{t('auth.login.title')}</button>
+                {/* <Button
+                  variant="contained"
+                  size="large"
+                  fullWidth
+                  disableElevation
+                >
+                  {t('auth.login.title')}
+                </Button> */}
+                <LoadingButton
+                  size="large"
+                  onClick={handleClick}
+                  loading={loading}
+                  variant="contained"
+                  disableElevation
+                  fullWidth
+                >
+                  <span>{t('auth.login.title')}</span>
+                </LoadingButton>
               </form>
             </div>
           </div>

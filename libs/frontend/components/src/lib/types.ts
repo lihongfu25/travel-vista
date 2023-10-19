@@ -1,3 +1,4 @@
+import { InputBasePropsColorOverrides } from '@mui/material';
 import { Control, FieldError } from 'react-hook-form';
 
 export interface SelectOptions {
@@ -37,6 +38,12 @@ export interface ControlProps {
 
 export interface TextControlProps extends ControlProps {
   placeholder?: string;
+}
+
+export interface TextIconControlProps extends ControlProps {
+  placeholder?: string;
+  icon?: any;
+  color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
 }
 
 export interface SelectControlProps extends ControlProps {
