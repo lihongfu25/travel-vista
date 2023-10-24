@@ -12,7 +12,22 @@
     "login": {
       "title": "Login",
       "email": "Email/Username",
+      "password": "Password",
+      "remember": "Remember",
+      "or": "Or",
+      "loginWithGoogle": "Connect with Google",
+      "loginWithFacebook": "Connect with Facebook",
+      "dontHaveAccount": "Don’t have an account?",
+      "goToRegister": "Create Account"
+    },
+    "register": {
+      "title": "Register",
+      "email": "Email",
       "password": "Password"
+    },
+    "forgetPassword": {
+      "title": "Forget Password",
+      "email": "Email"
     }
   },
   "form": {
@@ -26,6 +41,20 @@
   },
   "language": {
     "vi": "Vietnamese",
-    "en": "English"
+    "en": "English",
+    "tooltip": "Change language"
+  },
+  "menu": {
+    "login": "Login",
+    "logout": "Logout",
+    "profile": "Profile"
+  },
+  "notification": {
+    "login": {
+      "success": "You have successfully logged in!",
+      "error403": "Your account has been locked due to too many incorrect login attempts. Please contact us to unlock your account",
+      "error404": "Username or password is incorrect"
+    },
+    "logout": "You have logged out of the system!"
   }
 }

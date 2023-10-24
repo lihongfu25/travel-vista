@@ -1,0 +1,21 @@
+.side-bar {
+  margin: 1.5rem 0 1.5rem 1.5rem;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  transition: width 0.5s ease;
+  &.collapsed {
+    width: 80px;
+  }
+  &.expand {
+    @media (max-width: 1535px) {
+      width: 280px;
+    }
+
+    @media (min-width: 1536px) {
+      width: 300px;
+    }
+  }
+  @media (max-width: 1199px) {
+    display: none;
+  }
+}

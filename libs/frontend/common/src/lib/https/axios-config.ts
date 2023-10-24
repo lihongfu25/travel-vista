@@ -14,6 +14,7 @@ axiosInstance.interceptors.request.use(
     return config;
   },
   (error) => {
+    removeToken();
     return Promise.reject(error);
   }
 );
@@ -24,6 +25,7 @@ axiosInstance.interceptors.response.use(
   },
   (error) => {
     removeToken();
+    return Promise.reject(error);
   }
 );
 

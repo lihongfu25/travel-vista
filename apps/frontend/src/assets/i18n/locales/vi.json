@@ -12,7 +12,22 @@
     "login": {
       "title": "Đăng nhập",
       "email": "Email / Tên đăng nhập",
+      "password": "Mật khẩu",
+      "remember": "Ghi nhớ tài khoản",
+      "or": "Hoặc",
+      "loginWithGoogle": "Đăng nhập bằng Google",
+      "loginWithFacebook": "Đăng nhập bằng Facebook",
+      "dontHaveAccount": "Bạn chưa có tài khoản?",
+      "goToRegister": "Đăng ký ngay"
+    },
+    "register": {
+      "title": "Đăng ký",
+      "email": "Email",
       "password": "Mật khẩu"
+    },
+    "forgetPassword": {
+      "title": "Quên mật khẩu",
+      "email": "Email"
     }
   },
   "form": {
@@ -26,6 +41,20 @@
   },
   "language": {
     "vi": "Tiếng Việt",
-    "en": "Tiếng Anh"
+    "en": "Tiếng Anh",
+    "tooltip": "Thay đổi ngôn ngữ"
+  },
+  "menu": {
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất",
+    "profile": "Tài khoản"
+  },
+  "notification": {
+    "login": {
+      "success": "Bạn đã đăng nhập thành công!",
+      "error403": "Tài khoản của bạn đã bị khóa do đăng nhập sai quá nhiều, vui lòng liên hệ để được mở khóa tài khoản",
+      "error404": "Tài khoản hoặc mật khẩu không chính xác"
+    },
+    "logout": "Bạn đã đăng xuất khỏi hệ thống!"
   }
 }

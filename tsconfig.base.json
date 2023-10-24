@@ -15,6 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@i18n": ["apps/frontend/src/assets/i18n/i18next.ts"],
       "@frontend/common": ["libs/frontend/common/src/index.ts"],
       "@frontend/components": ["libs/frontend/components/src/index.ts"],
       "@frontend/configuration": ["libs/frontend/configuration/src/index.ts"],

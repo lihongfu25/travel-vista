@@ -1,0 +1,37 @@
+.header {
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 12px;
+  @media (max-width: 1199px) {
+    .header {
+      &__left {
+        &__collapse {
+          display: none;
+        }
+        &__drawer {
+          display: inline-flex;
+        }
+      }
+    }
+  }
+
+  @media (min-width: 1200px) {
+    .header {
+      &__left {
+        &__collapse {
+          display: inline-flex;
+        }
+        &__drawer {
+          display: none;
+        }
+      }
+    }
+  }
+  &__right {
+    padding: 0 12px;
+  }
+}
+.drawer {
+  width: 320px;
+}

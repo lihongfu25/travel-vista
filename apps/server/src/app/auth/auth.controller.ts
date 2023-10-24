@@ -98,7 +98,13 @@ export class AuthController {
 
     await this.authService.resetLoginFailed(user.id);
 
-    const token = this.authService.generateToken(user);
+    let expiresIn = environment.jwtTtl;
+
+    if (data.remember) {
+      expiresIn = environment.jwtTtl * 7;
+    }
+
+    const token = this.authService.generateToken(user, expiresIn);
 
     return this.response.object({ token });
   }
@@ -205,7 +211,7 @@ export class AuthController {
 
     await this.passwordResetService.expireAllToken(user.email);
 
-    const expiresIn = 15 * 60 * 1000;
+    const expiresIn = 15 * 60;
 
     const token = this.authService.generateToken(user, expiresIn);
 

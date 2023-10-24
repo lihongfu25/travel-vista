@@ -5,6 +5,8 @@ import { initReactI18next } from 'react-i18next';
 import enTranslation from './locales/en.json';
 import viTranslation from './locales/vi.json';
 
+const lang = localStorage.getItem('lang') || environment.defaultLanguage;
+
 i18n.use(initReactI18next).init({
   resources: {
     en: {
@@ -14,7 +16,7 @@ i18n.use(initReactI18next).init({
       translation: viTranslation,
     },
   },
-  fallbackLng: environment.defaultLanguage,
+  fallbackLng: lang,
   debug: true,
   interpolation: {
     escapeValue: false,

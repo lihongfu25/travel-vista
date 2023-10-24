@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsJWT, MaxLength, MinLength } from 'class-validator';
+import { Type } from 'class-transformer';
+import {
+  IsEmail,
+  IsJWT,
+  IsOptional,
+  MaxLength,
+  MinLength,
+} from 'class-validator';
 export const DEFAULT_PASSWORD_MIN_LENGTH = 6;
 export const DEFAULT_PASSWORD_MAX_LENGTH = 24;
 export const USER_DEFAULT_STATUS = 1;
@@ -11,6 +18,11 @@ export class LoginDto {
   @MinLength(DEFAULT_PASSWORD_MIN_LENGTH)
   @MaxLength(DEFAULT_PASSWORD_MAX_LENGTH)
   password: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @Type(() => Boolean)
+  remember: boolean;
 }
 
 export class LoginFirebaseDto {

@@ -1,17 +1,34 @@
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { theme } from '@frontend/configuration';
+import { getToken, theme } from '@frontend/configuration';
+import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import React from 'react';
 import { Link, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useAuthActon } from './auth/action';
 import Login from './auth/login/login';
+import { DashboardComponent, AdminLayout } from './admin';
 export function App() {
+  const { fetchMyProfile } = useAuthActon();
+  React.useEffect(() => {
+    const token = getToken();
+    if (token) {
+      fetchMyProfile();
+    }
+  }, []);
   return (
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="en-gb">
         <Routes>
+          <Route path="/auth">
+            <Route path="login" element={<Login />} />
+          </Route>
+          <Route path="/admin/*" element={<AdminLayout />}>
+            <Route index element={<DashboardComponent />} />
+          </Route>
           <Route
             path="/"
             element={
@@ -21,17 +38,6 @@ export function App() {
               </div>
             }
           />
-          <Route
-            path="/page-2"
-            element={
-              <div>
-                <Link to="/">Click here to go back to root page.</Link>
-              </div>
-            }
-          />
-          <Route path="/auth">
-            <Route path="login" element={<Login />} />
-          </Route>
         </Routes>
         <ToastContainer />
       </LocalizationProvider>

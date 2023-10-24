@@ -1,60 +1,58 @@
-import { showToast } from '@frontend/common';
-import { PasswordIconControl, TextIconControl } from '@frontend/components';
+import { Http, showToast } from '@frontend/common';
+import {
+  Button,
+  CheckboxControl,
+  PasswordIconControl,
+  TextIconControl,
+} from '@frontend/components';
 import { useValidators } from '@frontend/hooks';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import GoogleIcon from '@mui/icons-material/Google';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
+import { Box, Divider, Link as MuiLink, Typography } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useAuthActon } from '../action';
 import styles from './login.module.scss';
-import Button from '@mui/material/Button';
-import LoadingButton from '@mui/lab/LoadingButton';
-
 export function Login() {
   const [loading, setLoading] = React.useState(false);
 
   const { t } = useTranslation();
-  const { search } = useLocation();
   const validators = useValidators();
+  const authActions = useAuthActon();
+  const http = new Http();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      user: 'lehongphu',
-      usericon: 'lehongphu',
+      user: 'admin@app.com.vn',
       password: 'secret',
-      gender: 1,
-      dob: '02-05-2001',
-      image: null,
-      color: '#1a1a1a',
+      remember: false,
     },
   });
 
-  React.useEffect(() => {
-    console.log(search);
-  }, [search]);
+  // React.useEffect(() => {
+  //   console.log(search);
+  // }, [search]);
 
-  const pagination = {
-    itemCount: 1,
-    totalItems: 2,
-    itemsPerPage: 1,
-    currentPage: 1,
-    totalPages: 2,
-  };
-
-  const onSubmit = (data: any) => {
-    console.log(data);
-  };
-
-  const handleShowToast = () => {
-    showToast('Đăng nhập thành công', 'success');
-  };
-
-  const handleClick = () => {
+  const onSubmit = async (formValue: any) => {
     setLoading(true);
+    try {
+      const { data } = await http.post('auth/login', formValue);
+      authActions.loginSuccess(data.data.token);
+      showToast(t('notification.login.success'), 'success');
+    } catch (error: any) {
+      if (error.response.status === 403)
+        showToast(t('notification.login.error403'), 'error');
+      if (error.response.status === 404)
+        showToast(t('notification.login.error404'), 'error');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -65,12 +63,17 @@ export function Login() {
         <div className="row justify-content-center py-0 py-lg-4 my-0 my-lg-2">
           <div className="col-12 col-lg-6 max-w-600">
             <div className="shadow p-4 rounded-10 bg-glass">
-              <form onSubmit={handleSubmit(onSubmit)} className="p-2">
+              <div className={`${styles['login']} px-2 mb-4`}>
+                <Typography variant="h4" color="primary">
+                  {t('auth.login.title')}
+                </Typography>
+              </div>
+              <form onSubmit={handleSubmit(onSubmit)} className="px-2">
                 <TextIconControl
                   name="user"
                   control={control}
                   label={t('auth.login.email')}
-                  className="mb-4"
+                  className="mb-3"
                   validates={[validators.required, validators.email]}
                   errors={errors.user}
                   size="medium"
@@ -81,32 +84,82 @@ export function Login() {
                   name="password"
                   control={control}
                   label={t('auth.login.password')}
-                  className="mb-4"
+                  className="mb-3"
                   validates={[validators.required, validators.minLength(6)]}
                   errors={errors.password}
                   size="medium"
                   icon={LockOutlinedIcon}
                   color="primary"
                 />
-                {/* <Button
+                <Box className="d-flex justify-content-between mb-4">
+                  <CheckboxControl
+                    name="remember"
+                    control={control}
+                    label={t('auth.login.remember')}
+                    color="primary"
+                    className="pb-2"
+                  />
+                  <MuiLink
+                    href={'/auth/forget-password'}
+                    underline="hover"
+                    sx={{
+                      fontWeight: 500,
+                    }}
+                  >
+                    {t('auth.forgetPassword.title')}
+                  </MuiLink>
+                </Box>
+                <Button
                   variant="contained"
-                  size="large"
+                  size="medium"
                   fullWidth
                   disableElevation
+                  loading={loading}
+                  type="submit"
                 >
                   {t('auth.login.title')}
-                </Button> */}
-                <LoadingButton
-                  size="large"
-                  onClick={handleClick}
-                  loading={loading}
-                  variant="contained"
-                  disableElevation
-                  fullWidth
-                >
-                  <span>{t('auth.login.title')}</span>
-                </LoadingButton>
+                </Button>
               </form>
+              <div className="px-2 mb-4">
+                <Divider className="my-4">
+                  <Typography color="primary">{t('auth.login.or')}</Typography>
+                </Divider>
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  fullWidth
+                  disableElevation
+                  startIcon={<GoogleIcon />}
+                  className="mb-4"
+                >
+                  {t('auth.login.loginWithGoogle')}
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="medium"
+                  fullWidth
+                  disableElevation
+                  startIcon={<FacebookIcon />}
+                >
+                  {t('auth.login.loginWithFacebook')}
+                </Button>
+              </div>
+              <div className="px-2">
+                <Box className="d-flex align-items-center justify-content-center">
+                  <Typography color="primary" className="me-1">
+                    {t('auth.login.dontHaveAccount')}
+                  </Typography>
+                  <MuiLink
+                    href={'/auth/register'}
+                    underline="hover"
+                    sx={{
+                      fontWeight: 500,
+                    }}
+                  >
+                    {t('auth.login.goToRegister')}
+                  </MuiLink>
+                </Box>
+              </div>
             </div>
           </div>
         </div>

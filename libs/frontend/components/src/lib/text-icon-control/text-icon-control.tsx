@@ -10,6 +10,9 @@ import React from 'react';
 
 const StyledOutlinedInput = styled(OutlinedInput)(({ color, theme }) => ({
   color: theme.palette[color as keyof typeof theme.palette].main,
+  '.MuiOutlinedInput-notchedOutline': {
+    borderColor: theme.palette[color as keyof typeof theme.palette].main,
+  },
 }));
 
 export function TextIconControl(props: TextIconControlProps) {
@@ -29,7 +32,6 @@ export function TextIconControl(props: TextIconControlProps) {
           required={Boolean(validates.required)}
           error={Boolean(props.errors)}
           size={props.size || 'small'}
-          focused
         >
           <StyledOutlinedInput
             {...field}

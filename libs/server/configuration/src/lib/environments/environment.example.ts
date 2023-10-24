@@ -5,7 +5,7 @@ export const environment = {
   appPrefix: 'api',
   appVersion: '1.0',
   appUrl: 'http://localhost:3000',
-  jwtTtl: '86400000',
+  jwtTtl: 86400,
   dbLog: false,
   migrationsRun: false,
   dbConnection: 'mysql',

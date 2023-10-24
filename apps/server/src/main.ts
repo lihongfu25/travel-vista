@@ -8,6 +8,9 @@ import { AppModule } from './app/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
+
+  if (environment.appPrefix) app.setGlobalPrefix(environment.appPrefix);
+
   const options = new DocumentBuilder()
     .addBearerAuth()
     .setTitle(environment?.appName || 'Api Documentation')

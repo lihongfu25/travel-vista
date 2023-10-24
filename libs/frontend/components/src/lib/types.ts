@@ -27,6 +27,7 @@ export interface ControlProps {
   size?: 'medium' | 'small';
   style?: any;
   variant?: 'outlined' | 'filled' | 'standard';
+  color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
   defaultValue?: any;
   control: Control<any>;
   validates?: Array<{
@@ -43,7 +44,6 @@ export interface TextControlProps extends ControlProps {
 export interface TextIconControlProps extends ControlProps {
   placeholder?: string;
   icon?: any;
-  color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
 }
 
 export interface SelectControlProps extends ControlProps {
