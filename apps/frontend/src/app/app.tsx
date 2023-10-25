@@ -17,6 +17,7 @@ export function App() {
     if (token) {
       fetchMyProfile();
     }
+    console.log('chạy nè');
   }, []);
   return (
     <ThemeProvider theme={theme}>

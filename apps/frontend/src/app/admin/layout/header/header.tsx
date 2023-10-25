@@ -205,11 +205,15 @@ export function Header(props: HeaderProps) {
             onClick={handleOpenUserMenu}
           >
             <Avatar
-              sx={{ bgcolor: deepOrange[500] }}
-              alt="Remy Sharp"
+              sx={{ bgcolor: deepOrange[500], width: 36, height: 36 }}
+              alt={user ? (user.firstName ? user.firstName : user.email) : ''}
               src={user && user.image}
             >
-              {user && user.firstName['0']}
+              {user
+                ? user.firstName
+                  ? user.firstName['0']
+                  : user.email['0']
+                : ''}
             </Avatar>
           </IconButton>
         </div>
