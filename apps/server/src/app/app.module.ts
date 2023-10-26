@@ -12,17 +12,34 @@ import { UserRole } from './user-role/user-role.entity';
 import { User } from './user/user.entity';
 import { UserModule } from './user/user.module';
 import { FileModule } from './file/file.module';
+import { MenuModule } from './menu/menu.module';
+import { MenuItemModule } from './menu-item/menu-item.module';
+import { MenuMenuItemModule } from './menu-menu-item/menu-menu-item.module';
+import { Menu } from './menu/menu.entity';
+import { MenuItem } from './menu-item/menu-item.entity';
+import { MenuMenuItem } from './menu-menu-item/menu-menu-item.entity';
 
 @Module({
   imports: [
     SharedDatabaseModule.register({
-      entities: [User, Role, UserRole, PasswordReset],
+      entities: [
+        User,
+        Role,
+        UserRole,
+        PasswordReset,
+        Menu,
+        MenuItem,
+        MenuMenuItem,
+      ],
     }),
     AuthModule,
     UserModule,
     RoleModule,
     PasswordResetModule,
     FileModule,
+    MenuModule,
+    MenuItemModule,
+    MenuMenuItemModule,
   ],
   controllers: [AppController],
   providers: [
