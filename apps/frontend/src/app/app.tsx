@@ -9,7 +9,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthActon } from './auth/action';
 import Login from './auth/login/login';
-import { DashboardComponent, AdminLayout } from './admin';
+import { DashboardComponent, AdminLayout, MenuComponent } from './admin';
 export function App() {
   const { fetchMyProfile } = useAuthActon();
   React.useEffect(() => {
@@ -28,7 +28,8 @@ export function App() {
             <Route path="login" element={<Login />} />
           </Route>
           <Route path="/admin/*" element={<AdminLayout />}>
-            <Route index element={<DashboardComponent />} />
+            {/* <Route index element={<DashboardComponent />} /> */}
+            <Route index element={<MenuComponent />} />
           </Route>
           <Route
             path="/"

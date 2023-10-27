@@ -23,9 +23,6 @@ export class Menu {
   @Column()
   roleId: string;
 
-  @Column()
-  position: string;
-
   @CreateDateColumn({
     type: 'timestamp',
     precision: null,

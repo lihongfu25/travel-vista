@@ -13,12 +13,12 @@ export function Menu(props: MenuProps) {
   React.useEffect(() => {
     setMenu([
       {
-        name: 'Dashboard',
+        name: 'L',
         link: '/admin/dashboard',
         icon: '123',
       },
       {
-        name: 'Product',
+        name: 'U',
         link: '/admin/product',
         icon: '123',
       },

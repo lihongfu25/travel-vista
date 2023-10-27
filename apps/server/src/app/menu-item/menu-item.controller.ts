@@ -1,7 +1,20 @@
-import { BadRequestException, Controller, Get, Query } from '@nestjs/common';
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import {
+  ApiCollectionResponse,
+  ApiItemResponse,
   ApiResponseService,
+  ApiSuccessResponse,
   Auth,
   AuthenticatedUser,
   FindManyQueryParam,
@@ -11,7 +24,7 @@ import { MenuItemService } from './menu-item.service';
 import { SelectQueryBuilder } from 'typeorm';
 import { MenuItem } from './menu-item.entity';
 import { MenuItemTransformer } from './menu-item.transformer';
-import { FindMenuQueryParam } from './types';
+import { FindMenuQueryParam, MenuItemDto } from './types';
 
 @Controller('menu-item')
 @ApiTags('Menu Item')
@@ -24,11 +37,8 @@ export class MenuItemController {
   @Get('menu-item-by-role')
   @Auth()
   async getMenuItemByRole(
-    @AuthenticatedUser() user: User,
-    @Query() param: FindManyQueryParam
-  ) {
-    const page = param.page ?? 1;
-    const limit = param.limit ?? 20;
+    @AuthenticatedUser() user: User
+  ): Promise<ApiCollectionResponse<MenuItem>> {
     const roleIds = await this.menuItemService.getUserRoles(user.id);
     if (!Array.isArray(roleIds) || roleIds.length === 0) {
       throw new BadRequestException('User does not have any role');
@@ -41,8 +51,8 @@ export class MenuItemController {
     if (roleIds) {
       query.andWhere(`menu.roleId IN (${roleIdsTranform.join(',')})`);
     }
-    const result = await this.menuItemService.paginate(query, { page, limit });
-    return this.response.paginate(result, MenuItemTransformer);
+    const result = await query.getMany();
+    return this.response.collection(result, MenuItemTransformer);
   }
 
   @Get('menu-item-by-name')
@@ -54,5 +64,41 @@ export class MenuItemController {
       .where('menu.name = :menuName', { menuName: param.menuName });
     const result = await query.getMany();
     return this.response.collection(result, MenuItemTransformer);
+  }
+
+  @Post()
+  @Auth('superadmin', 'admin')
+  async create(
+    @Body() dto: MenuItemDto | MenuItemDto[]
+  ): Promise<ApiItemResponse<MenuItem> | ApiCollectionResponse<MenuItem>> {
+    if (Array.isArray(dto)) {
+      const result: MenuItem[] = [];
+      for (const data of dto) {
+        result.push(await this.menuItemService.create(data));
+      }
+      return this.response.collection(result, MenuItemTransformer);
+    } else {
+      const result = await this.menuItemService.create(dto);
+      return this.response.item(result, MenuItemTransformer);
+    }
+  }
+
+  @Put(':menuItemId')
+  @Auth('superadmin', 'admin')
+  async update(
+    @Param('menuItemId') menuItemId: number,
+    @Body() dto: MenuItemDto
+  ): Promise<ApiItemResponse<MenuItem>> {
+    const result = await this.menuItemService.update(menuItemId, dto);
+    return this.response.item(result, MenuItemTransformer);
+  }
+
+  @Delete(':menuItemId')
+  @Auth('superadmin', 'admin')
+  async destroy(
+    @Param('menuItemId') menuItemId: number
+  ): Promise<ApiSuccessResponse> {
+    await this.menuItemService.destroy(menuItemId);
+    return this.response.success();
   }
 }

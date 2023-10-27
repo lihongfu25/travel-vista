@@ -23,14 +23,17 @@ import { Menu } from './menu.entity';
 import { MenuService } from './menu.service';
 import { MenuTransformer } from './menu.transformer';
 import { CreateMenuDto, UpdateMenuDto } from './types';
+import { MenuItemCommonService } from '../common/menu-item-common/menu-item-common.service';
 
 @Controller('menu')
 @ApiTags('Menu')
 export class MenuController {
   constructor(
     private menuService: MenuService,
-    private response: ApiResponseService
+    private response: ApiResponseService,
+    private menuItemCommonService: MenuItemCommonService
   ) {}
+
   @Get()
   @Auth('superadmin', 'admin')
   async index(
@@ -94,6 +97,7 @@ export class MenuController {
   @Auth('superadmin', 'admin')
   async destroy(@Param('menuId') menuId: number): Promise<ApiSuccessResponse> {
     await this.menuService.destroy(menuId);
+    await this.menuItemCommonService.destroyAllMenuItemsByMenu(menuId);
     return this.response.success();
   }
 }

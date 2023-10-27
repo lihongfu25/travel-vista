@@ -24,18 +24,13 @@ export class CreateMenuItemTable1698330134703 implements MigrationInterface {
           },
           {
             name: 'icon',
-            type: 'varchar',
+            type: 'longtext',
             isNullable: true,
           },
           {
             name: 'sort',
-            default: 0,
             type: 'int',
-          },
-          {
-            name: 'type',
-            type: 'varchar',
-            isNullable: true,
+            default: 0,
           },
           {
             name: 'parentId',

@@ -3,8 +3,7 @@ export class MenuItemTransformer {
   label: string;
   link: string;
   icon: string;
-  sort: string;
-  type: number;
+  sort: number;
   parentId: number;
   createdAt: Date;
   updatedAt: Date;

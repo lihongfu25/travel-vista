@@ -18,11 +18,6 @@ export class CreateMenuTable1698330122774 implements MigrationInterface {
             type: 'varchar',
           },
           {
-            name: 'position',
-            type: 'varchar',
-            isNullable: true,
-          },
-          {
             name: 'roleId',
             type: 'varchar',
             length: '36',

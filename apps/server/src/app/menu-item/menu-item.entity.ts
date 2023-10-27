@@ -25,11 +25,8 @@ export class MenuItem {
   @Column({ nullable: true })
   icon: string;
 
-  @Column({ default: 1 })
+  @Column({ default: 0 })
   sort: number;
-
-  @Column({ nullable: true })
-  type: number;
 
   @Column({ nullable: true })
   parentId: number;

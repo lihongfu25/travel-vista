@@ -18,6 +18,7 @@ import { MenuMenuItemModule } from './menu-menu-item/menu-menu-item.module';
 import { Menu } from './menu/menu.entity';
 import { MenuItem } from './menu-item/menu-item.entity';
 import { MenuMenuItem } from './menu-menu-item/menu-menu-item.entity';
+import { MenuItemCommonModule } from './common/menu-item-common/menu-item-common.module';
 
 @Module({
   imports: [
@@ -40,6 +41,7 @@ import { MenuMenuItem } from './menu-menu-item/menu-menu-item.entity';
     MenuModule,
     MenuItemModule,
     MenuMenuItemModule,
+    MenuItemCommonModule,
   ],
   controllers: [AppController],
   providers: [

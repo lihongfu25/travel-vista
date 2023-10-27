@@ -1,3 +1,4 @@
+export * from './lib/table/table';
 export * from './lib/checkbox-control/checkbox-control';
 export * from './lib/button/button';
 export * from './lib/password-icon-control/password-icon-control';
