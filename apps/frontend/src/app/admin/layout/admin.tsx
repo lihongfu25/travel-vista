@@ -13,9 +13,7 @@ export function AdminLayout() {
   const user = useSelector((state: any) => state.user);
   const navigate = useNavigate();
   React.useEffect(() => {
-    if (!user) {
-      navigate('/auth/login');
-    } else {
+    if (user) {
       const userRoles = user.roles.map((role: Role) => role.slug);
       if (!userRoles.includes('superadmin') && !userRoles.includes('admin')) {
         navigate('/');

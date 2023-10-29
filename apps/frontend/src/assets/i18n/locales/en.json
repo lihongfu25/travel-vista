@@ -3,7 +3,9 @@
     "save": "Save",
     "create": "Create",
     "add": "Add",
+    "cancel": "Cancel",
     "update": "Update",
+    "edit": "Edit",
     "delete": "Delete",
     "upload": "Upload",
     "search": "Search"
@@ -37,6 +39,11 @@
       "required": "The field is required",
       "email": "Please enter an valid email",
       "pattern": "Please enter an valid data"
+    },
+    "heading": {
+      "add": "Add data",
+      "delete": "Delete data",
+      "update": "Update data"
     }
   },
   "language": {
@@ -56,5 +63,16 @@
       "error404": "Username or password is incorrect"
     },
     "logout": "You have logged out of the system!"
+  },
+  "breadcrumb": {
+    "dashboard": "Dashboard",
+    "menu": "Menu",
+    "setting": "Setting"
+  },
+  "menuPage": {
+    "label": {
+      "name": "Name",
+      "role": "Role"
+    }
   }
 }

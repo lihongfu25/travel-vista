@@ -4,9 +4,8 @@ import React from 'react';
 import { createSearchParams, useLocation, useNavigate } from 'react-router-dom';
 
 /* eslint-disable-next-line */
-export interface SimplePaginationProps {}
 
-export function SimplePagination({ pagination }: PaginationProps) {
+export function SimplePagination({ pagination, color }: PaginationProps) {
   const [page, setPage] = React.useState(pagination.currentPage);
 
   const navigate = useNavigate();
@@ -29,6 +28,7 @@ export function SimplePagination({ pagination }: PaginationProps) {
       variant="outlined"
       shape="rounded"
       onChange={handleChange}
+      color={color}
     />
   );
 }

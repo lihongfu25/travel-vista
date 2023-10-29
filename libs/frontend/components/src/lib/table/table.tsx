@@ -1,5 +1,4 @@
 import styles from './table.module.scss';
-import { styled } from '@mui/system';
 import {
   Table as MuiTable,
   TableBody,
@@ -8,42 +7,39 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
+import React from 'react';
 /* eslint-disable-next-line */
+export interface ITableColumn {
+  key: string;
+  label: string;
+}
 export interface TableProps {
-  columns: string[];
+  columns: ITableColumn[];
   data: any[];
+  size?: 'small' | 'medium';
+  actions: (row: any) => React.ReactNode;
 }
 
-const StyledHeadRow = styled(TableRow)(() => ({}));
-const StyledHeadCell = styled(TableCell)(() => ({
-  fontSize: '1rem',
-  padding: '8px 16px',
-}));
-
-const StyledBodyRow = styled(TableRow)(() => ({}));
-const StyledBodyCell = styled(TableCell)(() => ({
-  fontSize: '1rem',
-  padding: '8px 16px',
-}));
-
-export function Table({ columns, data }: TableProps) {
+export function Table({ columns, data, actions, ...props }: TableProps) {
   return (
     <TableContainer className={`${styles['table']}`}>
-      <MuiTable>
+      <MuiTable size={props.size}>
         <TableHead>
-          <StyledHeadRow>
-            {columns.map((column, index) => (
-              <StyledHeadCell key={index}>{column}</StyledHeadCell>
+          <TableRow>
+            {columns.map((column: ITableColumn, index) => (
+              <TableCell key={index}>{column.label}</TableCell>
             ))}
-          </StyledHeadRow>
+            <TableCell></TableCell>
+          </TableRow>
         </TableHead>
         <TableBody>
           {data.map((item, rowIndex) => (
-            <StyledBodyRow key={rowIndex}>
-              {columns.map((column, colIndex) => (
-                <StyledBodyCell key={colIndex}>{item[column]}</StyledBodyCell>
+            <TableRow key={rowIndex}>
+              {columns.map((column: ITableColumn, colIndex) => (
+                <TableCell key={colIndex}>{item[column.key]}</TableCell>
               ))}
-            </StyledBodyRow>
+              <TableCell>{actions(item)}</TableCell>
+            </TableRow>
           ))}
         </TableBody>
       </MuiTable>
@@ -51,4 +47,4 @@ export function Table({ columns, data }: TableProps) {
   );
 }
 
-export default Table;
+export default React.memo(Table);

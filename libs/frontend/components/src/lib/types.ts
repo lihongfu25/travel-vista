@@ -16,6 +16,7 @@ interface PaginationOptions {
 
 export interface PaginationProps {
   pagination: PaginationOptions;
+  color?: 'primary' | 'secondary' | 'standard';
 }
 
 export interface ControlProps {

@@ -3,7 +3,9 @@
     "save": "Lưu",
     "create": "Tạo mới",
     "add": "Thêm mới",
+    "cancel": "Hủy",
     "update": "Cập nhật",
+    "edit": "Chỉnh sửa",
     "delete": "Xóa",
     "upload": "Tải lên",
     "search": "Tìm kiếm"
@@ -37,6 +39,11 @@
       "required": "Trường không được bỏ trống",
       "email": "Vui lòng nhập đúng định dạng email",
       "pattern": "Vui lòng điền đúng định dạng"
+    },
+    "heading": {
+      "add": "Thêm dữ liệu",
+      "delete": "Xóa dữ liệu",
+      "update": "Cập nhật dữ liệu"
     }
   },
   "language": {
@@ -56,5 +63,16 @@
       "error404": "Tài khoản hoặc mật khẩu không chính xác"
     },
     "logout": "Bạn đã đăng xuất khỏi hệ thống!"
+  },
+  "breadcrumb": {
+    "dashboard": "Bảng điều khiển",
+    "menu": "Menu",
+    "setting": "Cài đặt"
+  },
+  "menuPage": {
+    "label": {
+      "name": "Tên",
+      "role": "Role"
+    }
   }
 }

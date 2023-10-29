@@ -30,22 +30,28 @@ export function SimpleSearch() {
     });
   };
   return (
-    <div className={styles['search']}>
-      <OutlinedInput
-        size="small"
-        value={keyword}
-        onChange={(e) => setKeyword(e.target.value)}
-      />
-      <Button
-        variant="contained"
-        disableElevation
-        sx={{
-          padding: '8px 16px',
-        }}
-        onClick={handleSearch}
-      >
-        {t('common.search')}
-      </Button>
+    <div className={`${styles['search']} row g-3`}>
+      <div className="col-12 col-md-8 col-lg-7">
+        <OutlinedInput
+          size="small"
+          value={keyword}
+          onChange={(e) => setKeyword(e.target.value)}
+          className={styles['search__input']}
+        />
+      </div>
+      <div className="col-12 col-md-4">
+        <Button
+          variant="contained"
+          disableElevation
+          sx={{
+            padding: '8px 16px',
+          }}
+          onClick={handleSearch}
+          className={styles['search__btn']}
+        >
+          {t('common.search')}
+        </Button>
+      </div>
     </div>
   );
 }

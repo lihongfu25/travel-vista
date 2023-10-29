@@ -4,7 +4,13 @@ import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
 import React from 'react';
-import { Link, Route, Routes } from 'react-router-dom';
+import {
+  Link,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { useAuthActon } from './auth/action';
@@ -12,12 +18,20 @@ import Login from './auth/login/login';
 import { DashboardComponent, AdminLayout, MenuComponent } from './admin';
 export function App() {
   const { fetchMyProfile } = useAuthActon();
+  const location = useLocation();
+  const navigate = useNavigate();
   React.useEffect(() => {
     const token = getToken();
     if (token) {
       fetchMyProfile();
+    } else {
+      const breadcumbs = location.pathname.split('/');
+      if (breadcumbs.includes('admin') || breadcumbs.includes('user')) {
+        navigate('/auth/login');
+      } else {
+        navigate(location.pathname);
+      }
     }
-    console.log('chạy nè');
   }, []);
   return (
     <ThemeProvider theme={theme}>
