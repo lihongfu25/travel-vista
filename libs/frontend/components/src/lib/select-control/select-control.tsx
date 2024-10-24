@@ -26,40 +26,82 @@ const StyledSelectField = styled(MuiSelect)``;
 
 export function SelectControl(props: SelectControlProps) {
   const validates = mergeValidates(props.validates);
-  return (
-    <Controller
-      name={props.name}
-      control={props.control}
-      rules={validates}
-      render={({ field }) => (
-        <FormControl
-          fullWidth
-          size={props.size || 'small'}
-          className={props.className}
-          error={Boolean(props.errors)}
-          required={Boolean(validates.required)}
-        >
-          {props.fieldset ? (
-            <StyledInputLabel className="mb-1">{props.label}</StyledInputLabel>
-          ) : (
-            <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
-          )}
-          <StyledSelectField
-            {...field}
-            id={props.id}
-            label={props.fieldset ? props.label : undefined}
+  if (props.control && props.name)
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        rules={validates}
+        render={({ field }) => (
+          <FormControl
+            fullWidth
+            size={props.size || 'small'}
+            className={props.className}
+            error={Boolean(props.errors)}
+            required={Boolean(validates.required)}
           >
-            {props.options?.map((option, i) => (
-              <MenuItem key={i} value={option.value}>
-                {option.label}
-              </MenuItem>
-            ))}
-          </StyledSelectField>
-          <FormHelperText>{props.errors?.message}</FormHelperText>
-        </FormControl>
-      )}
-    />
-  );
+            {props.fieldset ? (
+              <StyledInputLabel className="mb-1">
+                {props.label}
+              </StyledInputLabel>
+            ) : (
+              <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+            )}
+            <StyledSelectField
+              {...field}
+              id={props.id}
+              label={props.fieldset ? props.label : undefined}
+            >
+              {props.options?.map((option, i) => (
+                <MenuItem key={i} value={option.value}>
+                  {option.label}
+                </MenuItem>
+              ))}
+            </StyledSelectField>
+            <FormHelperText
+              sx={{
+                fontSize: '12px',
+              }}
+            >
+              {props.errors?.message}
+            </FormHelperText>
+          </FormControl>
+        )}
+      />
+    );
+  else
+    return (
+      <FormControl
+        fullWidth
+        size={props.size || 'small'}
+        className={props.className}
+        error={Boolean(props.errors)}
+        required={Boolean(validates.required)}
+      >
+        {props.fieldset ? (
+          <StyledInputLabel className="mb-1">{props.label}</StyledInputLabel>
+        ) : (
+          <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+        )}
+        <StyledSelectField
+          id={props.id}
+          label={props.fieldset ? props.label : undefined}
+        >
+          {props.options?.map((option, i) => (
+            <MenuItem key={i} value={option.value}>
+              {option.label}
+            </MenuItem>
+          ))}
+        </StyledSelectField>
+        <FormHelperText
+          sx={{
+            fontSize: '12px',
+          }}
+        >
+          {props.errors?.message}
+        </FormHelperText>
+      </FormControl>
+    );
 }
 
 export default React.memo(SelectControl);

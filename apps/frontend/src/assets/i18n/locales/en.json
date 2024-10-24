@@ -25,7 +25,12 @@
     "register": {
       "title": "Register",
       "email": "Email",
-      "password": "Password"
+      "password": "Password",
+      "confirmPassword": "Confirm passowrd",
+      "haveAccount": "You have an account?",
+      "goToLogin": "Login now",
+      "agreeWith": "I agree with ",
+      "terms": "Terms and Conditions"
     },
     "forgetPassword": {
       "title": "Forget Password",
@@ -38,7 +43,9 @@
       "maxlength": "The maximum length for this field is {{length}} characters",
       "required": "The field is required",
       "email": "Please enter an valid email",
-      "pattern": "Please enter an valid data"
+      "pattern": "Please enter an valid data",
+      "confirmPassword": "Re-entered password is incorrect",
+      "exist": "{{key}} already exists"
     },
     "heading": {
       "add": "Add data",
@@ -62,6 +69,10 @@
       "error403": "Your account has been locked due to too many incorrect login attempts. Please contact us to unlock your account",
       "error404": "Username or password is incorrect"
     },
+    "register": {
+      "success": "You have successfully logged in!"
+    },
+    "error": "An error occurred, please try again later",
     "logout": "You have logged out of the system!"
   },
   "breadcrumb": {

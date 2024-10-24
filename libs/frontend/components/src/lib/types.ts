@@ -1,4 +1,3 @@
-import { InputBasePropsColorOverrides } from '@mui/material';
 import { Control, FieldError } from 'react-hook-form';
 
 export interface SelectOptions {
@@ -20,7 +19,7 @@ export interface PaginationProps {
 }
 
 export interface ControlProps {
-  name: string;
+  name?: string;
   label: string;
   id?: string;
   className?: string;
@@ -30,7 +29,7 @@ export interface ControlProps {
   variant?: 'outlined' | 'filled' | 'standard';
   color?: 'primary' | 'secondary' | 'error' | 'info' | 'success' | 'warning';
   defaultValue?: any;
-  control: Control<any>;
+  control?: Control<any>;
   validates?: Array<{
     [key: string]: { value: boolean | number | RegExp; message: string };
   }>;
@@ -62,4 +61,9 @@ export interface ImageUploadControlProps extends ControlProps {
 
 export interface ColorPickerControlProps extends ControlProps {
   showCode?: boolean;
+}
+
+export interface CheckboxControlProps extends ControlProps {
+  checked?: boolean;
+  onChange?: () => void;
 }

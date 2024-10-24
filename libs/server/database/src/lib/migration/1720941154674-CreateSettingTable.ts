@@ -1,31 +1,30 @@
 import { MigrationInterface, QueryRunner, Table, TableIndex } from 'typeorm';
 
-export class CreateMenuTable1698330122774 implements MigrationInterface {
+export class CreateSettingTable1720941154674 implements MigrationInterface {
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.createTable(
       new Table({
-        name: 'menu',
+        name: 'setting',
         columns: [
           {
             name: 'id',
-            type: 'int',
-            isPrimary: true,
-            isGenerated: true,
-            generationStrategy: 'increment',
-          },
-          {
-            name: 'name',
-            type: 'varchar',
-          },
-          {
-            name: 'position',
-            type: 'int',
-            default: 0,
-          },
-          {
-            name: 'roleId',
             type: 'varchar',
             length: '36',
+            isPrimary: true,
+            isGenerated: false,
+          },
+          {
+            name: 'category',
+            type: 'varchar',
+            isNullable: true,
+          },
+          {
+            name: 'key',
+            type: 'varchar',
+          },
+          {
+            name: 'value',
+            type: 'longtext',
             isNullable: true,
           },
           {
@@ -43,22 +42,29 @@ export class CreateMenuTable1698330122774 implements MigrationInterface {
       true
     );
     await queryRunner.createIndex(
-      'menu',
+      'setting',
       new TableIndex({
-        name: 'IDX_MENU_NAME',
-        columnNames: ['name'],
+        name: 'IDX_SETTING_CATEGORY',
+        columnNames: ['category'],
       })
     );
     await queryRunner.createIndex(
-      'menu',
+      'setting',
       new TableIndex({
-        name: 'IDX_MENU_POSITION',
-        columnNames: ['position'],
+        name: 'IDX_SETTING_KEY',
+        columnNames: ['key'],
+      })
+    );
+    await queryRunner.createIndex(
+      'setting',
+      new TableIndex({
+        name: 'IDX_SETTING_VALUE',
+        columnNames: ['value'],
       })
     );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    await queryRunner.dropTable('menu');
+    await queryRunner.dropTable('setting');
   }
 }

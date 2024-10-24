@@ -12,7 +12,7 @@ html {
 }
 
 :root {
-  --color-1: #ffc113;
+  --color-1: #1c4456;
   --color-2: #fd851a;
   --color-3: #1877f2;
   --color-4: #f5f5f5;
@@ -321,5 +321,23 @@ html {
   &-glass {
     background-color: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(15px);
+  }
+}
+
+.text-decoration {
+  &-none {
+    text-decoration: none !important;
+  }
+  &-underline {
+    text-decoration: underline !important;
+    &-hover {
+      text-decoration: none !important;
+      &:hover {
+        text-decoration: underline !important;
+      }
+    }
+  }
+  &-line-through {
+    text-decoration: line-through !important;
   }
 }

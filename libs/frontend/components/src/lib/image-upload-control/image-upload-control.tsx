@@ -55,86 +55,171 @@ export function ImageUploadControl(props: ImageUploadControlProps) {
     return newFiles?.map((file) => URL.createObjectURL(file)) || null;
   };
 
-  return (
-    <Controller
-      name={props.name}
-      control={props.control}
-      rules={validates}
-      render={({ field }) => (
-        <StyledFormControl
-          size={props.size || 'small'}
-          fullWidth
-          className={props.className}
-          error={Boolean(props.errors)}
-          required={Boolean(validates.required)}
-        >
-          {!props.fieldset && (
-            <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
-          )}
-          <div className={styles['image-upload']}>
-            {selectedImages?.map((image, i) => (
-              <div className={styles['image-upload__preview']} key={i}>
-                <img
-                  src={URL.createObjectURL(image)}
-                  alt="Preview"
-                  className="object-fit-cover w-100 h-100"
-                />
-                <div
-                  className={`${styles['image-upload__preview__backdrop']} position-absolute top-0 bottom-0 start-0 end-0 rounded-4`}
-                >
-                  <Tooltip title={t('common.delete')}>
-                    <IconButton
-                      aria-label="delete"
-                      onClick={() => {
-                        const urls = handleRemoveImage(image);
-                        field.onChange(urls);
-                      }}
-                    >
-                      <DeleteOutlinedIcon
-                        sx={{
-                          color: '#f5f5f5',
-                          fontSize: '1.5rem',
+  if (props.control && props.name)
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        rules={validates}
+        render={({ field }) => (
+          <StyledFormControl
+            size={props.size || 'small'}
+            fullWidth
+            className={props.className}
+            error={Boolean(props.errors)}
+            required={Boolean(validates.required)}
+          >
+            {!props.fieldset && (
+              <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+            )}
+            <div className={styles['image-upload']}>
+              {selectedImages?.map((image, i) => (
+                <div className={styles['image-upload__preview']} key={i}>
+                  <img
+                    src={URL.createObjectURL(image)}
+                    alt="Preview"
+                    className="object-fit-cover w-100 h-100"
+                  />
+                  <div
+                    className={`${styles['image-upload__preview__backdrop']} position-absolute top-0 bottom-0 start-0 end-0 rounded-4`}
+                  >
+                    <Tooltip title={t('common.delete')}>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => {
+                          const urls = handleRemoveImage(image);
+                          field.onChange(urls);
                         }}
-                      />
-                    </IconButton>
-                  </Tooltip>
+                      >
+                        <DeleteOutlinedIcon
+                          sx={{
+                            color: '#f5f5f5',
+                            fontSize: '1.5rem',
+                          }}
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </div>
                 </div>
-              </div>
-            ))}
-            <div
-              className={`${styles['image-upload__input']} ${
-                Boolean(props.errors) && styles['error']
-              }`}
-            >
-              <AddIcon
-                sx={{
-                  fontSize: '1.5rem',
-                  color: '#1a1a1a',
-                }}
-              />
-              <p
-                className="mb-0 mt-2"
-                style={{
-                  color: '#1a1a1a',
-                }}
+              ))}
+              <div
+                className={`${styles['image-upload__input']} ${
+                  Boolean(props.errors) && styles['error']
+                }`}
               >
-                {t('common.upload')}
-              </p>
-              <input
-                type="file"
-                multiple={props.multiple}
-                onChange={async (e) => {
-                  const urls = await handleImageChange(e);
-                  field.onChange(urls);
-                }}
-              />
+                <AddIcon
+                  sx={{
+                    fontSize: '1.5rem',
+                    color: '#1a1a1a',
+                  }}
+                />
+                <p
+                  className="mb-0 mt-2"
+                  style={{
+                    color: '#1a1a1a',
+                  }}
+                >
+                  {t('common.upload')}
+                </p>
+                <input
+                  type="file"
+                  multiple={props.multiple}
+                  onChange={async (e) => {
+                    const urls = await handleImageChange(e);
+                    field.onChange(urls);
+                  }}
+                />
+              </div>
             </div>
+            <FormHelperText
+              sx={{
+                fontSize: '12px',
+              }}
+            >
+              {props.errors?.message}
+            </FormHelperText>
+          </StyledFormControl>
+        )}
+      />
+    );
+  else
+    return (
+      <StyledFormControl
+        size={props.size || 'small'}
+        fullWidth
+        className={props.className}
+        error={Boolean(props.errors)}
+        required={Boolean(validates.required)}
+      >
+        {!props.fieldset && (
+          <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+        )}
+        <div className={styles['image-upload']}>
+          {selectedImages?.map((image, i) => (
+            <div className={styles['image-upload__preview']} key={i}>
+              <img
+                src={URL.createObjectURL(image)}
+                alt="Preview"
+                className="object-fit-cover w-100 h-100"
+              />
+              <div
+                className={`${styles['image-upload__preview__backdrop']} position-absolute top-0 bottom-0 start-0 end-0 rounded-4`}
+              >
+                <Tooltip title={t('common.delete')}>
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() => {
+                      handleRemoveImage(image);
+                    }}
+                  >
+                    <DeleteOutlinedIcon
+                      sx={{
+                        color: '#f5f5f5',
+                        fontSize: '1.5rem',
+                      }}
+                    />
+                  </IconButton>
+                </Tooltip>
+              </div>
+            </div>
+          ))}
+          <div
+            className={`${styles['image-upload__input']} ${
+              Boolean(props.errors) && styles['error']
+            }`}
+          >
+            <AddIcon
+              sx={{
+                fontSize: '1.5rem',
+                color: '#1a1a1a',
+              }}
+            />
+            <p
+              className="mb-0 mt-2"
+              style={{
+                color: '#1a1a1a',
+              }}
+            >
+              {t('common.upload')}
+            </p>
+            <input
+              type="file"
+              multiple={props.multiple}
+              onChange={async (e) => {
+                await handleImageChange(e);
+              }}
+            />
           </div>
-          <FormHelperText>{props.errors?.message}</FormHelperText>
-        </StyledFormControl>
-      )}
-    />
-  );
+        </div>
+        <FormHelperText
+          sx={{
+            fontSize: '12px',
+          }}
+        >
+          {props.errors?.message}
+        </FormHelperText>
+      </StyledFormControl>
+    );
 }
 
 export default ImageUploadControl;

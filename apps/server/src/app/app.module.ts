@@ -19,6 +19,8 @@ import { Menu } from './menu/menu.entity';
 import { MenuItem } from './menu-item/menu-item.entity';
 import { MenuMenuItem } from './menu-menu-item/menu-menu-item.entity';
 import { MenuItemCommonModule } from './common/menu-item-common/menu-item-common.module';
+import { SettingModule } from './setting/setting.module';
+import { Setting } from './setting/setting.entity';
 
 @Module({
   imports: [
@@ -31,6 +33,7 @@ import { MenuItemCommonModule } from './common/menu-item-common/menu-item-common
         Menu,
         MenuItem,
         MenuMenuItem,
+        Setting,
       ],
     }),
     AuthModule,
@@ -42,6 +45,7 @@ import { MenuItemCommonModule } from './common/menu-item-common/menu-item-common
     MenuItemModule,
     MenuMenuItemModule,
     MenuItemCommonModule,
+    SettingModule,
   ],
   controllers: [AppController],
   providers: [

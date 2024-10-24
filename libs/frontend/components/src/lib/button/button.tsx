@@ -11,7 +11,7 @@ interface ButtonProps extends MuiButtonProps {
 export function Button({ children, loading, ...props }: ButtonProps) {
   return (
     <Box sx={{ position: 'relative' }}>
-      <MuiButton {...props} disabled={loading}>
+      <MuiButton {...props} disabled={loading || props.disabled}>
         {children}
       </MuiButton>
       {loading && (

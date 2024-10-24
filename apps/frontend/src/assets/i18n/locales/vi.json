@@ -25,7 +25,12 @@
     "register": {
       "title": "Đăng ký",
       "email": "Email",
-      "password": "Mật khẩu"
+      "password": "Mật khẩu",
+      "confirmPassword": "Nhập lại mật khẩu",
+      "haveAccount": "Bạn đã có tài khoản?",
+      "goToLogin": "Đăng nhập ngay",
+      "agreeWith": "Tôi đồng ý với ",
+      "terms": "Điều khoản và chính sách sử dụng"
     },
     "forgetPassword": {
       "title": "Quên mật khẩu",
@@ -38,7 +43,9 @@
       "maxlength": "Vui lòng nhập tối đa {{length}} kí tự",
       "required": "Trường không được bỏ trống",
       "email": "Vui lòng nhập đúng định dạng email",
-      "pattern": "Vui lòng điền đúng định dạng"
+      "pattern": "Vui lòng điền đúng định dạng",
+      "confirmPassword": "Nhập lại mật khẩu không chính xác",
+      "exist": "{{key}} đã tồn tại"
     },
     "heading": {
       "add": "Thêm dữ liệu",
@@ -62,6 +69,10 @@
       "error403": "Tài khoản của bạn đã bị khóa do đăng nhập sai quá nhiều, vui lòng liên hệ để được mở khóa tài khoản",
       "error404": "Tài khoản hoặc mật khẩu không chính xác"
     },
+    "register": {
+      "success": "Bạn đã đăng nhập thành công!"
+    },
+    "error": "Đã có lỗi xảy ra, vui lòng thử lại sau",
     "logout": "Bạn đã đăng xuất khỏi hệ thống!"
   },
   "breadcrumb": {

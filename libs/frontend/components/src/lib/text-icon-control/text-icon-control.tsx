@@ -16,44 +16,85 @@ const StyledOutlinedInput = styled(OutlinedInput)(({ color, theme }) => ({
 }));
 
 export function TextIconControl(props: TextIconControlProps) {
-  const uniqueId = generateUniqueId(props.name);
+  const uniqueId = generateUniqueId(props.name ?? props.label);
   const validates = mergeValidates(props.validates);
   const Icon = props.icon;
-  return (
-    <Controller
-      name={props.name}
-      control={props.control}
-      rules={validates}
-      render={({ field }) => (
-        <FormControl
-          variant={props.variant || 'outlined'}
-          fullWidth
-          className={props.className}
-          required={Boolean(validates.required)}
-          error={Boolean(props.errors)}
-          size={props.size || 'small'}
+  if (props.control && props.name)
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        rules={validates}
+        render={({ field }) => (
+          <FormControl
+            variant={props.variant || 'outlined'}
+            fullWidth
+            className={props.className}
+            required={Boolean(validates.required)}
+            error={Boolean(props.errors)}
+            size={props.size || 'small'}
+          >
+            <StyledOutlinedInput
+              {...field}
+              id={uniqueId}
+              placeholder={props.label}
+              sx={{
+                ...props.style,
+              }}
+              defaultValue={props.defaultValue}
+              label={props.fieldset ? props.label : undefined}
+              color={props.color}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Icon color={props.errors ? 'error' : props.color} />
+                </InputAdornment>
+              }
+            />
+            <FormHelperText
+              sx={{
+                fontSize: '12px',
+              }}
+            >
+              {props.errors?.message}
+            </FormHelperText>
+          </FormControl>
+        )}
+      />
+    );
+  else
+    return (
+      <FormControl
+        variant={props.variant || 'outlined'}
+        fullWidth
+        className={props.className}
+        required={Boolean(validates.required)}
+        error={Boolean(props.errors)}
+        size={props.size || 'small'}
+      >
+        <StyledOutlinedInput
+          id={uniqueId}
+          placeholder={props.label}
+          sx={{
+            ...props.style,
+          }}
+          defaultValue={props.defaultValue}
+          label={props.fieldset ? props.label : undefined}
+          color={props.color}
+          startAdornment={
+            <InputAdornment position="start">
+              <Icon color={props.errors ? 'error' : props.color} />
+            </InputAdornment>
+          }
+        />
+        <FormHelperText
+          sx={{
+            fontSize: '12px',
+          }}
         >
-          <StyledOutlinedInput
-            {...field}
-            id={uniqueId}
-            placeholder={props.label}
-            sx={{
-              ...props.style,
-            }}
-            defaultValue={props.defaultValue}
-            label={props.fieldset ? props.label : undefined}
-            color={props.color}
-            startAdornment={
-              <InputAdornment position="start">
-                <Icon color={props.errors ? 'error' : props.color} />
-              </InputAdornment>
-            }
-          />
-          <FormHelperText>{props.errors?.message}</FormHelperText>
-        </FormControl>
-      )}
-    />
-  );
+          {props.errors?.message}
+        </FormHelperText>
+      </FormControl>
+    );
 }
 
 export default React.memo(TextIconControl);

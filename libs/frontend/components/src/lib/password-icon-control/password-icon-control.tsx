@@ -29,64 +29,125 @@ export function PasswordIconControl(props: TextIconControlProps) {
     event.preventDefault();
   };
 
-  const uniqueId = generateUniqueId(props.name);
+  const uniqueId = generateUniqueId(props.name ?? props.label);
   const validates = mergeValidates(props.validates);
   const Icon = props.icon;
-  return (
-    <Controller
-      name={props.name}
-      control={props.control}
-      rules={validates}
-      render={({ field }) => (
-        <FormControl
-          variant={props.variant || 'outlined'}
-          fullWidth
-          className={props.className}
-          required={Boolean(validates.required)}
-          error={Boolean(props.errors)}
-          size={props.size || 'small'}
+  if (props.control && props.name)
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        rules={validates}
+        render={({ field }) => (
+          <FormControl
+            variant={props.variant || 'outlined'}
+            fullWidth
+            className={props.className}
+            required={Boolean(validates.required)}
+            error={Boolean(props.errors)}
+            size={props.size || 'small'}
+          >
+            <StyledOutlinedInput
+              {...field}
+              id={uniqueId}
+              placeholder={props.label}
+              type={showPassword ? 'text' : 'password'}
+              sx={{
+                ...props.style,
+              }}
+              defaultValue={props.defaultValue}
+              label={props.fieldset ? props.label : undefined}
+              color={props.color}
+              startAdornment={
+                <InputAdornment position="start">
+                  <Icon color={props.errors ? 'error' : props.color} />
+                </InputAdornment>
+              }
+              endAdornment={
+                <InputAdornment position="end">
+                  <IconButton
+                    aria-label="toggle password visibility"
+                    onClick={handleClickShowPassword}
+                    onMouseDown={handleMouseDownPassword}
+                    edge="end"
+                    size={props.size || 'small'}
+                  >
+                    {showPassword ? (
+                      <VisibilityOff
+                        color={props.errors ? 'error' : props.color}
+                      />
+                    ) : (
+                      <Visibility
+                        color={props.errors ? 'error' : props.color}
+                      />
+                    )}
+                  </IconButton>
+                </InputAdornment>
+              }
+            />
+            <FormHelperText
+              sx={{
+                fontSize: '12px',
+              }}
+            >
+              {props.errors?.message}
+            </FormHelperText>
+          </FormControl>
+        )}
+      />
+    );
+  else
+    return (
+      <FormControl
+        variant={props.variant || 'outlined'}
+        fullWidth
+        className={props.className}
+        required={Boolean(validates.required)}
+        error={Boolean(props.errors)}
+        size={props.size || 'small'}
+      >
+        <StyledOutlinedInput
+          id={uniqueId}
+          placeholder={props.label}
+          type={showPassword ? 'text' : 'password'}
+          sx={{
+            ...props.style,
+          }}
+          defaultValue={props.defaultValue}
+          label={props.fieldset ? props.label : undefined}
+          color={props.color}
+          startAdornment={
+            <InputAdornment position="start">
+              <Icon color={props.errors ? 'error' : props.color} />
+            </InputAdornment>
+          }
+          endAdornment={
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle password visibility"
+                onClick={handleClickShowPassword}
+                onMouseDown={handleMouseDownPassword}
+                edge="end"
+                size={props.size || 'small'}
+              >
+                {showPassword ? (
+                  <VisibilityOff color={props.errors ? 'error' : props.color} />
+                ) : (
+                  <Visibility color={props.errors ? 'error' : props.color} />
+                )}
+              </IconButton>
+            </InputAdornment>
+          }
+        />
+        <FormHelperText
+          sx={{
+            fontSize: '12px',
+          }}
         >
-          <StyledOutlinedInput
-            {...field}
-            id={uniqueId}
-            placeholder={props.label}
-            type={showPassword ? 'text' : 'password'}
-            sx={{
-              ...props.style,
-            }}
-            defaultValue={props.defaultValue}
-            label={props.fieldset ? props.label : undefined}
-            color={props.color}
-            startAdornment={
-              <InputAdornment position="start">
-                <Icon color={props.errors ? 'error' : props.color} />
-              </InputAdornment>
-            }
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                  size={props.size || 'small'}
-                >
-                  {showPassword ? (
-                    <VisibilityOff
-                      color={props.errors ? 'error' : props.color}
-                    />
-                  ) : (
-                    <Visibility color={props.errors ? 'error' : props.color} />
-                  )}
-                </IconButton>
-              </InputAdornment>
-            }
-          />
-          <FormHelperText>{props.errors?.message}</FormHelperText>
-        </FormControl>
-      )}
-    />
-  );
+          {props.errors?.message}
+        </FormHelperText>
+      </FormControl>
+    );
 }
 
 export default React.memo(PasswordIconControl);

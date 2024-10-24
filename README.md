@@ -59,7 +59,7 @@ Generate library: nx g @nrwl/react:library
 ```
 
 ```
-Generate component: nx g @nrwl/react:component --project frontend --directory=app/:folder
+Generate component: nx g @nrwl/react:component --project frontend --export --directory=app/:folder
 ```
 
 **_Server Command_**

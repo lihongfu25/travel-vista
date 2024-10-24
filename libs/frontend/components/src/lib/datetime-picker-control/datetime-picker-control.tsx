@@ -23,6 +23,7 @@ const StyledFormLabel = styled(FormLabel)`
 `;
 
 export function DatetimePickerControl(props: DatetimePickerControlProps) {
+  const [value, setValue] = React.useState<string | null>(null);
   const [PickerComponent, setPickerComponent] =
     React.useState<any>(DateTimePicker);
 
@@ -39,46 +40,90 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
       setPickerComponent(DateCalendar);
     }
   }, [props.type]);
-
-  return (
-    <Controller
-      name={props.name}
-      control={props.control}
-      rules={validates}
-      render={({ field }) => (
-        <StyledFormControl
-          fullWidth
-          size={props.size || 'small'}
-          className={`date-time-picker ${props.className}`}
-          error={Boolean(props.errors)}
-          required={Boolean(validates.required)}
+  if (props.control && props.name)
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        rules={validates}
+        render={({ field }) => (
+          <StyledFormControl
+            fullWidth
+            size={props.size || 'small'}
+            className={`date-time-picker ${props.className}`}
+            error={Boolean(props.errors)}
+            required={Boolean(validates.required)}
+          >
+            {!props.fieldset && (
+              <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+            )}
+            <PickerComponent
+              {...field}
+              value={moment(field.value)}
+              onChange={(e: Moment) => {
+                field.onChange(e.format('YYYY-MM-DD HH:mm:ss'));
+              }}
+              slotProps={{
+                textField: {
+                  size: props.size || 'small',
+                  label: props.fieldset ? props.label : undefined,
+                  error: Boolean(props.errors),
+                  required: Boolean(validates.required),
+                },
+              }}
+              sx={{
+                borderRadius: '10px',
+              }}
+            />
+            <FormHelperText
+              sx={{
+                fontSize: '12px',
+              }}
+            >
+              {props.errors?.message}
+            </FormHelperText>
+          </StyledFormControl>
+        )}
+      />
+    );
+  else
+    return (
+      <StyledFormControl
+        fullWidth
+        size={props.size || 'small'}
+        className={`date-time-picker ${props.className}`}
+        error={Boolean(props.errors)}
+        required={Boolean(validates.required)}
+      >
+        {!props.fieldset && (
+          <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+        )}
+        <PickerComponent
+          value={moment(value)}
+          onChange={(e: Moment) => {
+            setValue(e.format('YYYY-MM-DD HH:mm:ss'));
+          }}
+          slotProps={{
+            textField: {
+              size: props.size || 'small',
+              label: props.fieldset ? props.label : undefined,
+              error: Boolean(props.errors),
+              required: Boolean(validates.required),
+            },
+          }}
+          sx={{
+            borderRadius: '10px',
+          }}
+        />
+        <FormHelperText
+          sx={{
+            fontSize: '12px',
+          }}
         >
-          {!props.fieldset && (
-            <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
-          )}
-          <PickerComponent
-            {...field}
-            value={moment(field.value)}
-            onChange={(e: Moment) => {
-              field.onChange(e.format('YYYY-MM-DD HH:mm:ss'));
-            }}
-            slotProps={{
-              textField: {
-                size: props.size || 'small',
-                label: props.fieldset ? props.label : undefined,
-                error: Boolean(props.errors),
-                required: Boolean(validates.required),
-              },
-            }}
-            sx={{
-              borderRadius: '10px',
-            }}
-          />
-          <FormHelperText>{props.errors?.message}</FormHelperText>
-        </StyledFormControl>
-      )}
-    />
-  );
+          {props.errors?.message}
+        </FormHelperText>
+      </StyledFormControl>
+    );
 }
 
 export default React.memo(DatetimePickerControl);

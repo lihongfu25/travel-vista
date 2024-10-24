@@ -10,24 +10,33 @@ import { Role } from '@frontend/model';
 export interface AdminProps {}
 
 export function AdminLayout() {
+  const [hasPermission, setHasPermission] = React.useState<boolean>(false);
   const user = useSelector((state: any) => state.user);
   const navigate = useNavigate();
   React.useEffect(() => {
-    if (user) {
-      const userRoles = user.roles.map((role: Role) => role.slug);
-      if (!userRoles.includes('superadmin') && !userRoles.includes('admin')) {
-        navigate('/');
+    const checkPermission = async () => {
+      if (user) {
+        const userRoles = user.roles.map((role: Role) => role.slug);
+        if (!userRoles.includes('superadmin') && !userRoles.includes('admin')) {
+          navigate('/');
+        } else {
+          setHasPermission(true);
+        }
       }
-    }
-  }, []);
-  return (
-    <div
-      className={`${styles['admin']} d-flex position-fixed top-0 bottom-0 start-0 end-0`}
-    >
-      <SideBar />
-      <ContentPanel />
-    </div>
-  );
+    };
+    checkPermission();
+  }, [hasPermission, user, navigate]);
+
+  if (hasPermission) {
+    return (
+      <div
+        className={`${styles['admin']} d-flex position-fixed top-0 bottom-0 start-0 end-0`}
+      >
+        <SideBar />
+        <ContentPanel />
+      </div>
+    );
+  }
 }
 
 export default React.memo(AdminLayout);

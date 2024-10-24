@@ -28,9 +28,9 @@ export const useValidators = () => {
         message: t('form.validators.maxLength', { length }),
       },
     }),
-    pattern: (length: RegExp) => ({
+    pattern: (regex: RegExp) => ({
       min: {
-        value: length,
+        value: regex,
         message: t('form.validators.pattern'),
       },
     }),

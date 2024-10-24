@@ -37,46 +37,76 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
     }
     return () => window.removeEventListener('click', handleClickOutside);
   }, [isOpen]);
-
-  return (
-    <Controller
-      name={props.name}
-      control={props.control}
-      rules={validates}
-      render={({ field }) => (
-        <div className={`${styles['color-picker']} ${props.className}`}>
-          <StyledInputLabel
-            className="mb-1"
-            required={Boolean(validates.required)}
-          >
-            {props.label}
-          </StyledInputLabel>
-          <div className="d-flex align-items-center">
-            <button
-              type="button"
-              className={`${styles['color-picker__swatch']} color-picker__btn`}
-              style={{ backgroundColor: color }}
-              onClick={(e) => setIsOpen(!isOpen)}
-            ></button>
-            {props.showCode && (
-              <InputLabel className="ms-2">{color}</InputLabel>
+  if (props.control && props.name)
+    return (
+      <Controller
+        name={props.name}
+        control={props.control}
+        rules={validates}
+        render={({ field }) => (
+          <div className={`${styles['color-picker']} ${props.className}`}>
+            <StyledInputLabel
+              className="mb-1"
+              required={Boolean(validates.required)}
+            >
+              {props.label}
+            </StyledInputLabel>
+            <div className="d-flex align-items-center">
+              <button
+                type="button"
+                className={`${styles['color-picker__swatch']} color-picker__btn`}
+                style={{ backgroundColor: color }}
+                onClick={(e) => setIsOpen(!isOpen)}
+              ></button>
+              {props.showCode && (
+                <InputLabel className="ms-2">{color}</InputLabel>
+              )}
+            </div>
+            {isOpen && (
+              <div className={styles['color-picker__popover']}>
+                <HexColorPicker
+                  color={color}
+                  onChange={(e) => {
+                    setColor(e);
+                    field.onChange(e);
+                  }}
+                />
+              </div>
             )}
           </div>
-          {isOpen && (
-            <div className={styles['color-picker__popover']}>
-              <HexColorPicker
-                color={color}
-                onChange={(e) => {
-                  setColor(e);
-                  field.onChange(e);
-                }}
-              />
-            </div>
-          )}
+        )}
+      />
+    );
+  else
+    return (
+      <div className={`${styles['color-picker']} ${props.className}`}>
+        <StyledInputLabel
+          className="mb-1"
+          required={Boolean(validates.required)}
+        >
+          {props.label}
+        </StyledInputLabel>
+        <div className="d-flex align-items-center">
+          <button
+            type="button"
+            className={`${styles['color-picker__swatch']} color-picker__btn`}
+            style={{ backgroundColor: color }}
+            onClick={(e) => setIsOpen(!isOpen)}
+          ></button>
+          {props.showCode && <InputLabel className="ms-2">{color}</InputLabel>}
         </div>
-      )}
-    />
-  );
+        {isOpen && (
+          <div className={styles['color-picker__popover']}>
+            <HexColorPicker
+              color={color}
+              onChange={(e) => {
+                setColor(e);
+              }}
+            />
+          </div>
+        )}
+      </div>
+    );
 }
 
 export default ColorPickerControl;

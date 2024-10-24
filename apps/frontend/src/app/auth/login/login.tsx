@@ -10,15 +10,28 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
-import { Box, Divider, Link as MuiLink, Typography } from '@mui/material';
+import { Box, Divider, Typography } from '@mui/material';
+import { FirebaseApp, initializeApp } from 'firebase/app';
+import {
+  FacebookAuthProvider,
+  GoogleAuthProvider,
+  getAuth,
+  signInWithPopup,
+} from 'firebase/auth';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { useAuthActon } from '../action';
+
+import { environment } from '@frontend/configuration';
+import { Link } from 'react-router-dom';
 import styles from './login.module.scss';
 export function Login() {
   const [loading, setLoading] = React.useState(false);
-
+  const [firebaseApp, setFirebaseApp] = React.useState<FirebaseApp>(
+    initializeApp(environment.firebaseConfig)
+  );
+  const [loginGateways, setLoginGateways] = React.useState<Array<string>>([]);
   const { t } = useTranslation();
   const validators = useValidators();
   const authActions = useAuthActon();
@@ -35,9 +48,13 @@ export function Login() {
     },
   });
 
-  // React.useEffect(() => {
-  //   console.log(search);
-  // }, [search]);
+  React.useEffect(() => {
+    const fetchLoginGateways = async () => {
+      const { data } = await http.get('setting/login-gateway');
+      setLoginGateways(data.data);
+    };
+    fetchLoginGateways();
+  }, []);
 
   const onSubmit = async (formValue: any) => {
     setLoading(true);
@@ -46,13 +63,58 @@ export function Login() {
       authActions.loginSuccess(data.data.token);
       showToast(t('notification.login.success'), 'success');
     } catch (error: any) {
-      if (error.response.status === 403)
+      if (error?.response?.status === 403)
         showToast(t('notification.login.error403'), 'error');
-      if (error.response.status === 404)
+      else if (error?.response?.status === 404)
         showToast(t('notification.login.error404'), 'error');
+      else {
+        showToast(t('notification.error'), 'error');
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  const loginWithGoogle = () => {
+    const auth = getAuth(firebaseApp);
+    const googleProvider = new GoogleAuthProvider();
+
+    signInWithPopup(auth, googleProvider)
+      .then(async (result) => {
+        const user = result.user;
+        const token = await user.getIdToken();
+        const { data } = await http.post('auth/login-firebase', {
+          token: token,
+        });
+        authActions.loginSuccess(data.data.token);
+        showToast(t('notification.login.success'), 'success');
+      })
+      .catch((error) => {
+        showToast(t('notification.error'), 'error');
+      });
+  };
+
+  const loginWithFacebook = () => {
+    const auth = getAuth(firebaseApp);
+    const facebookProvider = new FacebookAuthProvider();
+
+    signInWithPopup(auth, facebookProvider)
+      .then(async (result) => {
+        const user = result.user;
+        const token = await user.getIdToken();
+        const { data } = await http.post('auth/login-firebase', {
+          token: token,
+        });
+        authActions.loginSuccess(data.data.token);
+        showToast(t('notification.login.success'), 'success');
+      })
+      .catch((error) => {
+        showToast(t('notification.error'), 'error');
+      });
+  };
+
+  const isEnableGateway = (gateway: string) => {
+    return loginGateways.includes(gateway);
   };
 
   return (
@@ -99,15 +161,12 @@ export function Login() {
                     color="primary"
                     className="pb-2"
                   />
-                  <MuiLink
-                    href={'/auth/forget-password'}
-                    underline="hover"
-                    sx={{
-                      fontWeight: 500,
-                    }}
+                  <Link
+                    to={'/auth/forget-password'}
+                    className="text-decoration-underline-hover fw-3 color-1"
                   >
                     {t('auth.forgetPassword.title')}
-                  </MuiLink>
+                  </Link>
                 </Box>
                 <Button
                   variant="contained"
@@ -120,44 +179,52 @@ export function Login() {
                   {t('auth.login.title')}
                 </Button>
               </form>
-              <div className="px-2 mb-4">
-                <Divider className="my-4">
-                  <Typography color="primary">{t('auth.login.or')}</Typography>
-                </Divider>
-                <Button
-                  variant="outlined"
-                  size="medium"
-                  fullWidth
-                  disableElevation
-                  startIcon={<GoogleIcon />}
-                  className="mb-4"
-                >
-                  {t('auth.login.loginWithGoogle')}
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="medium"
-                  fullWidth
-                  disableElevation
-                  startIcon={<FacebookIcon />}
-                >
-                  {t('auth.login.loginWithFacebook')}
-                </Button>
-              </div>
-              <div className="px-2">
+              {isEnableGateway('google') || isEnableGateway('facebook') ? (
+                <div className="px-2 mb-4">
+                  <Divider className="my-4">
+                    <Typography color="primary">
+                      {t('auth.login.or')}
+                    </Typography>
+                  </Divider>
+                  {isEnableGateway('google') && (
+                    <Button
+                      variant="outlined"
+                      size="medium"
+                      fullWidth
+                      disableElevation
+                      startIcon={<GoogleIcon />}
+                      className={isEnableGateway('facebook') ? 'mb-4' : ''}
+                      onClick={loginWithGoogle}
+                    >
+                      {t('auth.login.loginWithGoogle')}
+                    </Button>
+                  )}
+                  {isEnableGateway('facebook') && (
+                    <Button
+                      variant="outlined"
+                      size="medium"
+                      fullWidth
+                      disableElevation
+                      startIcon={<FacebookIcon />}
+                      onClick={loginWithFacebook}
+                    >
+                      {t('auth.login.loginWithFacebook')}
+                    </Button>
+                  )}
+                </div>
+              ) : null}
+
+              <div className="px-2 mt-4">
                 <Box className="d-flex align-items-center justify-content-center">
                   <Typography color="primary" className="me-1">
                     {t('auth.login.dontHaveAccount')}
                   </Typography>
-                  <MuiLink
-                    href={'/auth/register'}
-                    underline="hover"
-                    sx={{
-                      fontWeight: 500,
-                    }}
+                  <Link
+                    to={'/auth/register'}
+                    className="text-decoration-underline-hover color-1 fw-3"
                   >
                     {t('auth.login.goToRegister')}
-                  </MuiLink>
+                  </Link>
                 </Box>
               </div>
             </div>

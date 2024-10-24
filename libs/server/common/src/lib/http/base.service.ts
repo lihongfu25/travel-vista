@@ -101,6 +101,36 @@ export class BaseService<T> {
   }
 
   /**
+   * Get the first record matching the attributes or create it
+   *
+   * @param options FindOneOptions
+   * @param values
+   */
+  async firstOrCreate(
+    options: FindOneOptions,
+    data: QueryDeepPartialEntity<T>
+  ): Promise<T> {
+    return (
+      (await this.repository.findOne(options)) ?? (await this.create(data))
+    );
+  }
+
+  /**
+   * Create or Update an entity in repository by id
+   *
+   * @param id number | string
+   * @param data
+   */
+  async createOrUpdate(
+    options: FindOneOptions,
+    data: QueryDeepPartialEntity<T>
+  ): Promise<T | null> {
+    const record = await this.repository.findOne(options);
+
+    return record ? this.update(record['id'], data) : this.create(data);
+  }
+
+  /**
    * Destroy the models for the given ID
    *
    * @param id Number | String

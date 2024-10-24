@@ -37,7 +37,7 @@ import {
   ResetPasswordDto,
   USER_DEFAULT_STATUS,
 } from './types';
-
+import { DecodedIdToken } from 'firebase-admin/lib/auth/token-verifier';
 @Controller('auth')
 @ApiTags('Auth')
 export class AuthController {
@@ -115,16 +115,19 @@ export class AuthController {
   async loginFirebase(
     @Body() data: LoginFirebaseDto
   ): Promise<ApiObjectResponse<{ token: string }>> {
-    firebaseAdmin.initializeApp({
-      credential: firebaseAdmin.credential.cert(
-        this.config.firebaseServiceAccount
-      ),
-    });
-    const firebaseUser = await firebaseAdmin.auth().verifyIdToken(data.token);
-    if (!firebaseUser) {
+    let firebaseUser: DecodedIdToken | null = null;
+    try {
+      firebaseAdmin.initializeApp({
+        credential: firebaseAdmin.credential.cert(
+          this.config.firebaseServiceAccount
+        ),
+      });
+      firebaseUser = await firebaseAdmin.auth().verifyIdToken(data.token);
+    } catch (error) {
       throw new UnauthorizedException('Xác thực người dùng không thành công');
+    } finally {
+      firebaseAdmin.app().delete();
     }
-    firebaseAdmin.app().delete();
 
     const user = await this.authService.repository.findOne({
       where: [{ email: firebaseUser.email }],
@@ -147,7 +150,7 @@ export class AuthController {
       const user = await this.authService.create({
         password: this.hashService.hash('123456'),
         email: firebaseUser.email,
-        image: firebaseUser.phone_number,
+        image: firebaseUser.picture,
         phoneNumber: firebaseUser.phone_number,
         verified: firebaseUser.email_verified,
         status: USER_DEFAULT_STATUS,
@@ -168,7 +171,7 @@ export class AuthController {
 
   @Post('register')
   @ApiUnauthorizedResponse()
-  @ApiConflictResponse({ description: 'Email already exist' })
+  @ApiConflictResponse({ status: 409, description: 'Email already exist' })
   @ApiBadRequestResponse({ status: 400, description: 'Validation Error' })
   async register(
     @Body() data: RegisterDto

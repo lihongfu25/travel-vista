@@ -35,10 +35,10 @@ export const useAuthActon = () => {
       if (userRoles.includes('superadmin') || userRoles.includes('admin')) {
         navigate('/admin');
       } else if (userRoles.includes('user')) {
-        navigate(-1);
+        navigate('/');
       }
     } catch (error: any) {
-      if (error.response.status === 401) {
+      if (error?.response?.status === 401) {
         removeToken();
         const breadcumbs = location.pathname.split('/');
         if (breadcumbs.includes('admin') || breadcumbs.includes('user')) {

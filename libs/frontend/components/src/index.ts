@@ -1,3 +1,4 @@
+export * from './lib/banner-slider/banner-slider';
 export * from './lib/table/table';
 export * from './lib/checkbox-control/checkbox-control';
 export * from './lib/button/button';
@@ -12,3 +13,4 @@ export * from './lib/datetime-picker-control/datetime-picker-control';
 export * from './lib/password-control/password-control';
 export * from './lib/select-control/select-control';
 export * from './lib/text-control/text-control';
+export * from './lib/banner-slider/banner-slider';

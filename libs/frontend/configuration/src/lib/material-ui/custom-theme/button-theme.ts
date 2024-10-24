@@ -4,6 +4,10 @@ export const buttonTheme: OverridesStyleRules = {
   styleOverrides: {
     root: {
       borderRadius: '10px',
+      '&.Mui-disabled': {
+        cursor: 'not-allowed',
+        pointerEvents: 'auto',
+      },
     },
   },
   variants: [
