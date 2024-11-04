@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Controller,
   Inject,
   Post,
@@ -9,12 +10,15 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { ApiConsumes, ApiTags } from '@nestjs/swagger';
 import { ApiMultiFile, ApiResponseService, Auth } from '@server/common';
 import {
+  environment,
   SERVER_CONFIGURATION,
   ServerConfigurationInterface,
 } from '@server/configuration';
-import { Multer, diskStorage } from 'multer';
-import { join } from 'path';
+import { UploadApiOptions } from 'cloudinary';
+import { Multer } from 'multer';
+import { FileCommonService } from '../common/file-common/file-common.service';
 import { FileTransformer } from './file.transformer';
+
 @Controller('file')
 @ApiTags('File')
 export class FileController {
@@ -22,6 +26,7 @@ export class FileController {
 
   constructor(
     private response: ApiResponseService,
+    private fileCommonService: FileCommonService,
     @Inject(SERVER_CONFIGURATION) private config: ServerConfigurationInterface
   ) {}
 
@@ -29,37 +34,21 @@ export class FileController {
   @Auth()
   @ApiConsumes('multipart/form-data')
   @ApiMultiFile()
-  @UseInterceptors(
-    FilesInterceptor('files', 10, {
-      storage: diskStorage({
-        destination: join(__dirname, 'public', 'uploads'),
-        filename: (req, file: Express.Multer.File, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}-${file.originalname}`);
-        },
-      }),
-      fileFilter: (req, file: Express.Multer.File, cb) => {
-        if (!file.originalname.match(/\.(jpg|jpeg|png|gif|xlsx|xls|csv)$/)) {
-          return new Error('Only image, excel or csv files are allowed!');
-        }
-        cb(null, true);
-      },
-    })
-  )
-  uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
-    const result = files.map((item) => ({
-      ...item,
-      ...{
-        url: `${this.config.appUrl}/uploads/${item.filename}`,
-      },
-      ...{
-        path: `/uploads/${item.filename}`,
-      },
-    }));
-    return this.response.collection(result, FileTransformer);
+  @UseInterceptors(FilesInterceptor('files', 10))
+  async uploadFile(@UploadedFiles() files: Array<Express.Multer.File>) {
+    const uploads = files.map(async (file) => {
+      const fileUrl = await this.fileCommonService.uploadFileToCloudinary(file);
+      return {
+        originalname: file.originalname,
+        mimetype: file.mimetype,
+        size: file.size,
+        url: fileUrl,
+      };
+    });
+
+    const results = await Promise.all(uploads);
+
+    return this.response.collection(results, FileTransformer);
   }
 
   @Post('upload-image')
@@ -68,34 +57,80 @@ export class FileController {
   @ApiMultiFile()
   @UseInterceptors(
     FilesInterceptor('files', 10, {
-      storage: diskStorage({
-        destination: join(__dirname, 'public', 'uploads'),
-        filename: (req, file: Express.Multer.File, cb) => {
-          const randomName = Array(32)
-            .fill(null)
-            .map(() => Math.round(Math.random() * 16).toString(16))
-            .join('');
-          cb(null, `${randomName}-${file.originalname}`);
-        },
-      }),
       fileFilter: (req, file: Express.Multer.File, cb) => {
         if (!file.originalname.match(/\.(jpg|jpeg|png|svg|webp)$/)) {
-          return new Error('Only image files are allowed!');
+          return cb(
+            new BadRequestException('Only image files are allowed!'),
+            false
+          );
         }
         cb(null, true);
       },
     })
   )
-  uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
-    const result = files.map((item) => ({
-      ...item,
-      ...{
-        url: `${this.config.appUrl}/uploads/${item.filename}`,
+  async uploadImage(@UploadedFiles() files: Array<Express.Multer.File>) {
+    const uploads = files.map(async (file) => {
+      const options: UploadApiOptions = {
+        resource_type: 'image',
+        format: 'webp',
+        folder: `${environment.appName}/images`,
+        public_id: this.fileCommonService.randomFileName(file),
+      };
+      const url = await this.fileCommonService.uploadFileToCloudinary(
+        file,
+        options
+      );
+      return {
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        url,
+      };
+    });
+
+    const results = await Promise.all(uploads);
+
+    return this.response.collection(results, FileTransformer);
+  }
+
+  @Post('upload-svg')
+  @Auth()
+  @ApiConsumes('multipart/form-data')
+  @ApiMultiFile()
+  @UseInterceptors(
+    FilesInterceptor('files', 1, {
+      fileFilter: (req, file: Express.Multer.File, cb) => {
+        if (!file.originalname.match(/\.svg$/)) {
+          return cb(
+            new BadRequestException('Only SVG files are allowed!'),
+            false
+          );
+        }
+        cb(null, true);
       },
-      ...{
-        path: `/uploads/${item.filename}`,
-      },
-    }));
-    return this.response.collection(result, FileTransformer);
+    })
+  )
+  async uploadSvg(@UploadedFiles() files: Array<Express.Multer.File>) {
+    const uploads = files.map(async (file) => {
+      const options: UploadApiOptions = {
+        resource_type: 'auto',
+        folder: `${environment.appName}/images`,
+        public_id: this.fileCommonService.randomFileName(file),
+      };
+      const url = await this.fileCommonService.uploadFileToCloudinary(
+        file,
+        options
+      );
+      return {
+        originalName: file.originalname,
+        mimeType: file.mimetype,
+        size: file.size,
+        url,
+      };
+    });
+
+    const results = await Promise.all(uploads);
+
+    return this.response.collection(results, FileTransformer);
   }
 }
