@@ -8,7 +8,9 @@
     "edit": "Edit",
     "delete": "Delete",
     "upload": "Upload",
-    "search": "Search"
+    "search": "Search",
+    "detail": "Detail",
+    "agree": "Agree"
   },
   "auth": {
     "login": {
@@ -45,10 +47,11 @@
       "email": "Please enter an valid email",
       "pattern": "Please enter an valid data",
       "confirmPassword": "Re-entered password is incorrect",
-      "exist": "{{key}} already exists"
+      "exist": "{{key}} already exists",
+      "type": "Only {{type}} files are allowed!"
     },
     "heading": {
-      "add": "Add data",
+      "create": "Create data",
       "delete": "Delete data",
       "update": "Update data"
     }
@@ -82,8 +85,48 @@
   },
   "menuPage": {
     "label": {
-      "name": "Name",
+      "name": "Menu name",
       "role": "Role"
+    },
+    "notification": {
+      "error": {
+        "roleExists": "Role already has a menu",
+        "nameExists": "Menu name already exists",
+        "notFound": "Menu not found. Please check your data again"
+      },
+      "success": {
+        "created": "Menu created successfully",
+        "updated": "Menu updated successfully",
+        "deleted": "Menu deleted successfully"
+      }
+    },
+    "confirm": {
+      "delete": "Are you sure you want to delete this menu?"
+    }
+  },
+  "file": {
+    "type": {
+      "image": "image"
+    }
+  },
+  "menuItem": {
+    "label": {
+      "label": "Menu name",
+      "link": "Link",
+      "icon": "Icon",
+      "parent": "Parent menu"
+    },
+    "notification": {
+      "error": {
+        "nameExists": "Menu name already exists",
+        "linkExists": "Link already exists",
+        "notFound": "Menu not found. Please check your data again"
+      },
+      "success": {
+        "created": "Menu created successfully",
+        "updated": "Menu updated successfully",
+        "deleted": "Menu deleted successfully"
+      }
     }
   }
 }

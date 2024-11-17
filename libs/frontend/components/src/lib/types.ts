@@ -1,4 +1,4 @@
-import { Control, FieldError } from 'react-hook-form';
+import { Control, FieldError, UseFormClearErrors } from 'react-hook-form';
 
 export interface SelectOptions {
   label: string;
@@ -35,10 +35,16 @@ export interface ControlProps {
   }>;
   errors?: FieldError;
   fieldset?: boolean;
+  clearErrors?: UseFormClearErrors<any>;
+  disabled?: boolean;
 }
 
 export interface TextControlProps extends ControlProps {
   placeholder?: string;
+  multiline?: boolean;
+  rows?: number;
+  minRows?: number;
+  maxRows?: number;
 }
 
 export interface TextIconControlProps extends ControlProps {

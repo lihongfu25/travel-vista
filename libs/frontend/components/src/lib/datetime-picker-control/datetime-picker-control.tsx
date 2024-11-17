@@ -72,7 +72,7 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
                 },
               }}
               sx={{
-                borderRadius: '10px',
+                borderRadius: '8px',
               }}
             />
             <FormHelperText
@@ -112,7 +112,7 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
             },
           }}
           sx={{
-            borderRadius: '10px',
+            borderRadius: '8px',
           }}
         />
         <FormHelperText

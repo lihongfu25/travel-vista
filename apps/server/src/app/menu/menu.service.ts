@@ -11,12 +11,8 @@ export class MenuService extends BaseService<Menu> {
     super();
   }
 
-  async isExistMenu(roleId: string): Promise<boolean> {
-    return (
-      (await this.repository
-        .createQueryBuilder()
-        .where('roleId = :roleId', { roleId })
-        .getCount()) > 0
-    );
+  async existsMenu(key: string, value: string): Promise<boolean> {
+    const count = await this.repository.count({ where: { [key]: value } });
+    return count > 0;
   }
 }

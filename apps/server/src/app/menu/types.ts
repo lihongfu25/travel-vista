@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString } from 'class-validator';
+import { IsOptional, IsString } from 'class-validator';
 
 export class UpdateMenuDto {
   @ApiProperty()
@@ -8,7 +8,8 @@ export class UpdateMenuDto {
 }
 
 export class CreateMenuDto extends UpdateMenuDto {
-  @ApiProperty()
+  @ApiProperty({ required: false })
+  @IsOptional()
   @IsString()
   roleId: string;
 }

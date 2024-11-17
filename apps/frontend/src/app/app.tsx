@@ -1,23 +1,27 @@
+import { BannerSlider } from '@frontend/components';
 import { getToken, theme } from '@frontend/configuration';
 import { CssBaseline } from '@mui/material';
 import { ThemeProvider } from '@mui/material/styles';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterMoment } from '@mui/x-date-pickers/AdapterMoment';
+import { isEmpty } from 'lodash-es';
 import React from 'react';
-import {
-  Link,
-  Route,
-  Routes,
-  useLocation,
-  useNavigate,
-} from 'react-router-dom';
+import { shallowEqual, useSelector } from 'react-redux';
+import { Link, Route, Routes } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { AdminLayout, MenuComponent } from './admin';
+import {
+  AdminLayout,
+  DashboardComponent,
+  MenuComponent,
+  MenuDetailComponent,
+} from './admin';
 import { useAuthActon } from './auth/action';
 import Login from './auth/login/login';
 import Register from './auth/register/register';
-import { BannerSlider } from '@frontend/components';
+import { getUserState } from './reduxs/user/user';
+import { AdminGuard, UnauthenticatedGuard } from './routing-guard';
+
 export function App() {
   const [data, setData] = React.useState([
     {
@@ -58,19 +62,13 @@ export function App() {
       description: 'Săn mây ở đồi chè Tam Cốc',
     },
   ]);
-  const { fetchMyProfile } = useAuthActon();
-  const location = useLocation();
-  const navigate = useNavigate();
+  const { fetchCurrentUser } = useAuthActon();
+  const user = useSelector(getUserState, shallowEqual);
   React.useEffect(() => {
-    const token = getToken();
-    if (token) {
-      fetchMyProfile();
-    } else {
-      const breadcumbs = location.pathname.split('/');
-      if (breadcumbs.includes('admin') || breadcumbs.includes('user')) {
-        navigate('/auth/login');
-      } else {
-        navigate(location.pathname);
+    if (isEmpty(user)) {
+      const token = getToken();
+      if (token) {
+        fetchCurrentUser();
       }
     }
   }, []);
@@ -79,27 +77,38 @@ export function App() {
       <CssBaseline />
       <LocalizationProvider dateAdapter={AdapterMoment} adapterLocale="en-gb">
         <Routes>
-          <Route path="/auth">
+          <Route path="/auth/*" element={<UnauthenticatedGuard />}>
             <Route path="login" element={<Login />} />
             <Route path="register" element={<Register />} />
             <Route path="forgot-password" element={<Login />} />
           </Route>
-          <Route path="/admin/*" element={<AdminLayout />}>
-            {/* <Route index element={<DashboardComponent />} /> */}
-            <Route index element={<MenuComponent />} />
+          <Route
+            path="/admin/*"
+            element={
+              <AdminGuard>
+                <AdminLayout />
+              </AdminGuard>
+            }
+          >
+            <Route index element={<DashboardComponent />} />
+            <Route path="menu/*">
+              <Route index element={<MenuComponent />} />
+              <Route path=":id" element={<MenuDetailComponent />} />
+            </Route>
+            <Route path="*" element={<DashboardComponent />} />
           </Route>
           <Route
             path="/"
             element={
               <BannerSlider
                 data={data}
-                bannerWidth="100%"
-                bannerHeight="800px"
+                width="100%"
+                height="800px"
                 itemWidth="330px"
                 itemHeight="500px"
-                itemStartPosition="70%"
                 autoplay
                 mouseOverPause
+                disableNavigation
               />
             }
           />
@@ -108,7 +117,7 @@ export function App() {
             element={
               <div>
                 This is the generated root route.{' '}
-                <Link to="/">Click here for page 2.</Link>
+                <Link to="/admin">Click here for page 2.</Link>
               </div>
             }
           />

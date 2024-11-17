@@ -18,7 +18,7 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
         email: 'superadmin@app.com.vn',
         username: 'superadmin',
         password: this.hash('secret'),
-        role: 'superadmin',
+        role: ['superadmin', 'admin'],
         phoneNumber: '0123456788',
         status: UserStatus.ACTIVE,
         loginFailed: 0,
@@ -27,7 +27,7 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
         email: 'admin@app.com.vn',
         username: 'admin',
         password: this.hash('secret'),
-        role: 'admin',
+        role: ['admin'],
         phoneNumber: '0123456788',
         status: UserStatus.ACTIVE,
         loginFailed: 0,
@@ -36,7 +36,7 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
         email: 'user@app.com.vn',
         username: 'user',
         password: this.hash('secret'),
-        role: 'user',
+        role: ['user'],
         phoneNumber: '0123456787',
         image: '',
         status: UserStatus.ACTIVE,
@@ -63,13 +63,14 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
           phoneNumber: item.phoneNumber,
         })
         .execute();
-      const role = roles.find((r: any) => r.slug === item.role);
-      if (role) {
-        await queryRunner.manager
-          .createQueryBuilder()
-          .insert()
-          .into('userRole')
-          .values({ id: uuidv4(), userId: id, roleId: role.id })
+      const role = roles.filter((r: any) => item.role.includes(r.slug));
+      const roleQuery = queryRunner.manager
+        .createQueryBuilder()
+        .insert()
+        .into('userRole');
+      for (const r of role) {
+        await roleQuery
+          .values({ id: uuidv4(), userId: id, roleId: r.id })
           .execute();
       }
     }
@@ -77,5 +78,6 @@ export class UserTableSeeder1649669979240 implements MigrationInterface {
 
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.clearTable('user');
+    await queryRunner.clearTable('userRole');
   }
 }

@@ -18,4 +18,7 @@ export const environment = {
   enableLoginFailedCheck: true,
   maxLoginFailed: 5,
   firebaseServiceAccount: {},
+  cloudinaryCloudName: 'CloudName',
+  cloudinaryApiKey: 'ApiKey',
+  cloudinaryApiSecret: 'ApiSecret',
 };

@@ -1,6 +1,7 @@
 export const environment = {
   production: false,
   tokenKey: 'jwt',
+  authPersistKey: 'auth',
   defaultTokenStorage: 'local',
   apiUrl: 'http://localhost:3000/api',
   serverUrl: 'http://localhost:3000',
@@ -8,6 +9,7 @@ export const environment = {
   defaultLanguage: 'vi',
   languageLocalStorageKey: 'lang',
   availabelLanguages: ['vi', 'en'],
+  manage: ['superadmin', 'admin'],
   firebaseConfig: {
     apiKey: 'API_KEY',
     authDomain: 'AUTH_DOMAIN',

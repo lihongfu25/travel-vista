@@ -32,7 +32,7 @@ export const theme = createTheme({
     MuiTextField: {
       styleOverrides: {
         root: {
-          borderRadius: '10px',
+          borderRadius: '8px',
         },
       },
     },
@@ -41,6 +41,13 @@ export const theme = createTheme({
     MuiTableCell: tableCellTheme,
     MuiFormControl: formControlTheme,
     MuiInputLabel: inputLabelTheme,
+    MuiCssBaseline: {
+      styleOverrides: {
+        '.Mui-disabled': {
+          cursor: 'not-allowed!important',
+        },
+      },
+    },
   },
   palette: {
     primary: {

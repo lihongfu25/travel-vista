@@ -1,9 +1,11 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Delete,
   Get,
+  NotFoundException,
   Param,
   Post,
   Put,
@@ -17,24 +19,27 @@ import {
   ApiSuccessResponse,
   Auth,
   AuthenticatedUser,
-  FindManyQueryParam,
 } from '@server/common';
+import { Not, SelectQueryBuilder } from 'typeorm';
+import { MenuCommonService } from '../common/menu-common/menu-common.service';
 import { User } from '../user/user.entity';
-import { MenuItemService } from './menu-item.service';
-import { SelectQueryBuilder } from 'typeorm';
 import { MenuItem } from './menu-item.entity';
+import { MenuItemService } from './menu-item.service';
 import { MenuItemTransformer } from './menu-item.transformer';
 import { FindMenuQueryParam, MenuItemDto } from './types';
+import { MenuMenuItemService } from '../menu-menu-item/menu-menu-item.service';
 
 @Controller('menu-item')
 @ApiTags('Menu Item')
 export class MenuItemController {
   constructor(
     private response: ApiResponseService,
-    private menuItemService: MenuItemService
+    private menuItemService: MenuItemService,
+    private menuCommonService: MenuCommonService,
+    private menuMenuItemService: MenuMenuItemService
   ) {}
 
-  @Get('menu-item-by-role')
+  @Get('my-menu')
   @Auth()
   async getMenuItemByRole(
     @AuthenticatedUser() user: User
@@ -68,19 +73,42 @@ export class MenuItemController {
 
   @Post()
   @Auth('superadmin', 'admin')
-  async create(
-    @Body() dto: MenuItemDto | MenuItemDto[]
-  ): Promise<ApiItemResponse<MenuItem> | ApiCollectionResponse<MenuItem>> {
-    if (Array.isArray(dto)) {
-      const result: MenuItem[] = [];
-      for (const data of dto) {
-        result.push(await this.menuItemService.create(data));
+  async create(@Body() dto: MenuItemDto): Promise<ApiItemResponse<MenuItem>> {
+    if (dto.menuId) {
+      const menu = await this.menuCommonService.repository.findOne({
+        where: { id: dto.menuId },
+      });
+      if (!menu) {
+        throw new NotFoundException('menuPage.notification.error.notFound');
       }
-      return this.response.collection(result, MenuItemTransformer);
-    } else {
-      const result = await this.menuItemService.create(dto);
-      return this.response.item(result, MenuItemTransformer);
     }
+
+    if (dto.parentId) {
+      const parent = await this.menuItemService.repository.findOne({
+        where: { id: dto.parentId },
+      });
+      if (!parent) {
+        throw new NotFoundException('menuItem.notification.error.notFound');
+      }
+    }
+
+    if (await this.menuItemService.existsMenuItem('label', dto.label)) {
+      throw new ConflictException('menuItem.notification.error.nameExists');
+    }
+
+    if (await this.menuItemService.existsMenuItem('link', dto.link)) {
+      throw new ConflictException('menuItem.notification.error.linkExists');
+    }
+
+    const result = await this.menuItemService.create({
+      ...dto,
+      sort: await this.menuItemService.getLatestSortIndex(),
+    });
+    await this.menuMenuItemService.create({
+      menuItemId: result.id,
+      menuId: dto.menuId,
+    });
+    return this.response.item(result, MenuItemTransformer);
   }
 
   @Put(':menuItemId')
@@ -89,6 +117,18 @@ export class MenuItemController {
     @Param('menuItemId') menuItemId: number,
     @Body() dto: MenuItemDto
   ): Promise<ApiItemResponse<MenuItem>> {
+    let menuItem = await this.menuItemService.repository.findOne({
+      where: { label: dto.label, id: Not(menuItemId) },
+    });
+    if (menuItem) {
+      throw new ConflictException('menuItem.notification.error.nameExists');
+    }
+    menuItem = await this.menuItemService.repository.findOne({
+      where: { link: dto.link, id: Not(menuItemId) },
+    });
+    if (menuItem) {
+      throw new ConflictException('menuItem.notification.error.linkExists');
+    }
     const result = await this.menuItemService.update(menuItemId, dto);
     return this.response.item(result, MenuItemTransformer);
   }

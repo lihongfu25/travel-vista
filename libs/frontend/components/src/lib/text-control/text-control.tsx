@@ -54,6 +54,10 @@ export function TextControl(props: TextControlProps) {
               sx={props.style}
               defaultValue={props.defaultValue}
               label={props.fieldset ? props.label : undefined}
+              multiline={props.multiline}
+              rows={props.rows}
+              minRows={props.minRows}
+              maxRows={props.maxRows}
             />
             <FormHelperText
               sx={{

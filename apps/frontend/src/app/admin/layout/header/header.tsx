@@ -30,7 +30,7 @@ export interface HeaderProps {}
 const StyledIconButton = styled(IconButton)`
   & {
     padding: 4px;
-    border-radius: 10px;
+    border-radius: 8px;
   }
 `;
 const StyledButton = styled(MuiButton)({
@@ -63,7 +63,7 @@ export function Header(props: HeaderProps) {
   const [languageMenuAnchorEl, setLanguageMenuAnchorEl] =
     React.useState<null | HTMLElement>(null);
   const [language, setLanguage] = React.useState<string | null>(
-    localStorage.getItem('lang') || null
+    localStorage.getItem('lang') || 'vi'
   );
   const [userMenuAnchorEl, setUserMenuAnchorEl] =
     React.useState<null | HTMLElement>(null);
@@ -131,8 +131,8 @@ export function Header(props: HeaderProps) {
     setNotificationMenuAnchorEl(null);
   };
 
-  const logOut = () => {
-    authActions.logOut();
+  const logout = () => {
+    authActions.logout();
     handleCloseUserMenu();
     showToast(t('notification.logout'), 'success');
   };
@@ -275,7 +275,7 @@ export function Header(props: HeaderProps) {
           <Avatar /> {t('menu.profile')}
         </StyledUserMenuItem>
         {/* <Divider /> */}
-        <StyledUserMenuItem onClick={logOut}>
+        <StyledUserMenuItem onClick={logout}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
@@ -311,6 +311,9 @@ export function Header(props: HeaderProps) {
           },
         }}
       >
+        <StyledUserMenuItem onClick={handleCloseNotificationMenu}>
+          {t('menu.profile')}
+        </StyledUserMenuItem>
         <StyledUserMenuItem onClick={handleCloseNotificationMenu}>
           {t('menu.profile')}
         </StyledUserMenuItem>

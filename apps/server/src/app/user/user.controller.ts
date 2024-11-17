@@ -22,16 +22,19 @@ import {
   DEFAULT_LIMIT_PER_PAGE,
   HashService,
 } from '@server/common';
-import { UserService } from './user.service';
+import { omit } from 'lodash';
+import { Brackets } from 'typeorm';
 import {
   CreateUserRoleDto,
   GetUserQueryParam,
   UserChangePasswordDto,
   UserDto,
+  UserSensitiveData,
 } from './types';
 import { User } from './user.entity';
-import { Brackets } from 'typeorm';
+import { UserService } from './user.service';
 import { UserTransformer } from './user.transformer';
+import { Role } from '../role/role.entity';
 
 @Controller('user')
 @ApiTags('User')
@@ -47,7 +50,9 @@ export class UserController {
   async myProfile(
     @AuthenticatedUser() user: User
   ): Promise<ApiItemResponse<User>> {
-    return this.response.item(user, UserTransformer);
+    const res = omit(user, UserSensitiveData) as User;
+    res.roles = user.roles.map(({ slug }) => ({ slug } as Role));
+    return this.response.item(res, UserTransformer);
   }
 
   @Put('my-profile')

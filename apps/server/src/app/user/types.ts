@@ -53,3 +53,16 @@ export class UserChangePasswordDto {
   @MaxLength(DEFAULT_PASSWORD_MAX_LENGTH)
   password: string;
 }
+
+export const UserSensitiveData = [
+  'id',
+  'password',
+  'verifyToken',
+  'verified',
+  'verifiedAt',
+  'loginFailed',
+  'roles',
+  'createdAt',
+  'updatedAt',
+  'deletedAt',
+];

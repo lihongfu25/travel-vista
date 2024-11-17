@@ -8,7 +8,9 @@
     "edit": "Chỉnh sửa",
     "delete": "Xóa",
     "upload": "Tải lên",
-    "search": "Tìm kiếm"
+    "search": "Tìm kiếm",
+    "detail": "Chi tiết",
+    "agree": "Đồng ý"
   },
   "auth": {
     "login": {
@@ -45,10 +47,11 @@
       "email": "Vui lòng nhập đúng định dạng email",
       "pattern": "Vui lòng điền đúng định dạng",
       "confirmPassword": "Nhập lại mật khẩu không chính xác",
-      "exist": "{{key}} đã tồn tại"
+      "exist": "{{key}} đã tồn tại",
+      "type": "Chỉ cho phép tải lên tệp {{type}}!"
     },
     "heading": {
-      "add": "Thêm dữ liệu",
+      "create": "Thêm dữ liệu",
       "delete": "Xóa dữ liệu",
       "update": "Cập nhật dữ liệu"
     }
@@ -82,8 +85,48 @@
   },
   "menuPage": {
     "label": {
-      "name": "Tên",
-      "role": "Role"
+      "name": "Tên menu",
+      "role": "Vai trò"
+    },
+    "notification": {
+      "error": {
+        "roleExists": "Vai trò đã có menu. Vui lòng chọn vai trò khác",
+        "nameExists": "Tên menu đã tồn tại. Vui lòng nhập tên menu khác",
+        "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn"
+      },
+      "success": {
+        "created": "Tạo menu thành công",
+        "updated": "Cập nhật menu thành công",
+        "deleted": "Xóa menu thành công"
+      }
+    },
+    "confirm": {
+      "delete": "Bạn có chắc chắn muốn xóa menu này không?"
+    }
+  },
+  "file": {
+    "type": {
+      "image": "hình ảnh"
+    }
+  },
+  "menuItem": {
+    "label": {
+      "label": "Tên menu",
+      "link": "Đường dẫn",
+      "icon": "Biểu tượng",
+      "parent": "Menu cha"
+    },
+    "notification": {
+      "error": {
+        "nameExists": "Tên menu đã tồn tại",
+        "linkExists": "Đường dẫn menu tồn tại",
+        "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn"
+      },
+      "success": {
+        "created": "Tạo menu thành công",
+        "updated": "Cập nhật menu thành công",
+        "deleted": "Xóa menu thành công"
+      }
     }
   }
 }

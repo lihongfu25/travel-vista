@@ -1,9 +1,10 @@
 import { Http } from '@frontend/common';
-import { removeToken, setToken } from '@frontend/configuration';
+import { environment, removeToken, setToken } from '@frontend/configuration';
 import { Role } from '@frontend/model';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { clearUser, setUser } from '../../reduxs/user/user';
+import { persistor } from '../../reduxs/store';
 export const useAuthActon = () => {
   const http = new Http();
   const dispatch = useDispatch();
@@ -12,12 +13,13 @@ export const useAuthActon = () => {
 
   const loginSuccess = async (token: string) => {
     setToken(token);
-    fetchMyProfile();
+    fetchCurrentUser();
   };
 
-  const logOut = async () => {
+  const logout = async () => {
     removeToken();
     dispatch(clearUser());
+    persistor.purge();
     const breadcumbs = location.pathname.split('/');
     if (breadcumbs.includes('admin') || breadcumbs.includes('user')) {
       navigate('/auth/login');
@@ -26,33 +28,57 @@ export const useAuthActon = () => {
     }
   };
 
-  const fetchMyProfile = async () => {
+  const fetchCurrentUser = async () => {
     try {
-      const res = await http.get('user/my-profile');
-      const user = res.data.data;
-      dispatch(setUser(user));
-      const userRoles = user.roles.map((role: Role) => role.slug);
-      if (userRoles.includes('superadmin') || userRoles.includes('admin')) {
+      const response = await http.get('user/my-profile');
+      const currentUser = response.data.data;
+
+      dispatch(setUser(currentUser));
+      redirect(currentUser.roles);
+      /* eslint-disable-next-line */
+    } catch (error: any) {
+      handleError(error);
+    }
+  };
+
+  const redirect = (currentRoles: Role[]) => {
+    const isAuthPath = location.pathname.includes('auth');
+    const isAdminPath = location.pathname.includes('admin');
+
+    const manageRoles = new Set(environment.manage);
+
+    if (isAuthPath) {
+      if (currentRoles.some(({ slug }) => manageRoles.has(slug))) {
         navigate('/admin');
-      } else if (userRoles.includes('user')) {
+      } else {
         navigate('/');
       }
-    } catch (error: any) {
-      if (error?.response?.status === 401) {
-        removeToken();
-        const breadcumbs = location.pathname.split('/');
-        if (breadcumbs.includes('admin') || breadcumbs.includes('user')) {
-          navigate('/auth/login');
-        } else {
-          navigate(location.pathname);
-        }
-      }
+    }
+
+    if (
+      currentRoles.every(({ slug }) => !manageRoles.has(slug)) &&
+      isAdminPath
+    ) {
+      navigate('/');
+    }
+  };
+
+  /* eslint-disable-next-line */
+  const handleError = (error: any) => {
+    if (error?.response?.status === 401) {
+      removeToken();
+      const isAdminOrUserPath =
+        location.pathname.includes('admin') ||
+        location.pathname.includes('user');
+
+      // navigate(isAdminOrUserPath ? '/auth/login' : location.pathname);
     }
   };
 
   return {
     loginSuccess,
-    logOut,
-    fetchMyProfile,
+    logout,
+    fetchCurrentUser,
+    redirect,
   };
 };

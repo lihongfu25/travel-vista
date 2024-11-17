@@ -11,7 +11,7 @@ export function ContentPanel(props: ContentPanelProps) {
       className={`${styles['content-panel']} flex-grow-1 d-flex flex-column`}
     >
       <Header />
-      <div className="content flex-grow-1">{<Outlet />}</div>
+      <div className="content flex-grow-1 d-flex">{<Outlet />}</div>
     </div>
   );
 }

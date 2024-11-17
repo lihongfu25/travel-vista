@@ -8,6 +8,9 @@ export const formControlTheme: OverridesStyleRules = {
         '& .MuiInputBase-input': {
           padding: '0.875rem 1rem',
         },
+        '& .MuiInputBase-root.MuiInputBase-multiline': {
+          padding: '0',
+        },
       },
     },
   ],

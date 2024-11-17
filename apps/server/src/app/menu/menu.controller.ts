@@ -18,7 +18,7 @@ import {
   Auth,
   FindManyQueryParam,
 } from '@server/common';
-import { Brackets, SelectQueryBuilder } from 'typeorm';
+import { Brackets, Not, SelectQueryBuilder } from 'typeorm';
 import { Menu } from './menu.entity';
 import { MenuService } from './menu.service';
 import { MenuTransformer } from './menu.transformer';
@@ -76,8 +76,14 @@ export class MenuController {
   @Post()
   @Auth('superadmin', 'admin')
   async create(@Body() dto: CreateMenuDto): Promise<ApiItemResponse<Menu>> {
-    if (await this.menuService.isExistMenu(dto.roleId)) {
-      throw new ConflictException('Role already has a menu');
+    if (
+      dto.roleId &&
+      (await this.menuService.existsMenu('roleId', dto.roleId))
+    ) {
+      throw new ConflictException('menuPage.notification.error.roleExists');
+    }
+    if (await this.menuService.existsMenu('name', dto.name)) {
+      throw new ConflictException('menuPage.notification.error.nameExists');
     }
     const result = await this.menuService.create(dto);
     return this.response.item(result, MenuTransformer);
@@ -89,6 +95,12 @@ export class MenuController {
     @Param('menuId') menuId: number,
     @Body() dto: UpdateMenuDto
   ): Promise<ApiItemResponse<Menu>> {
+    const menu = await this.menuService.repository.findOne({
+      where: { name: dto.name, id: Not(menuId) },
+    });
+    if (menu) {
+      throw new ConflictException('menuPage.notification.error.nameExists');
+    }
     const result = await this.menuService.update(menuId, dto);
     return this.response.item(result, MenuTransformer);
   }

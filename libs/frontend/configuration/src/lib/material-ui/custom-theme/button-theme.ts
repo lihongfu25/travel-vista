@@ -3,7 +3,7 @@ import { OverridesStyleRules } from '@mui/material/styles/overrides';
 export const buttonTheme: OverridesStyleRules = {
   styleOverrides: {
     root: {
-      borderRadius: '10px',
+      borderRadius: '8px',
       '&.Mui-disabled': {
         cursor: 'not-allowed',
         pointerEvents: 'auto',

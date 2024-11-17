@@ -17,4 +17,7 @@ export interface ServerConfigurationInterface {
   dbPass: string;
   pdfUploadPath: string;
   firebaseServiceAccount: any;
+  cloudinaryCloudName: string;
+  cloudinaryApiKey: string;
+  cloudinaryApiSecret: string;
 }

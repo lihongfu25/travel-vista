@@ -25,7 +25,7 @@ export class MenuItem {
   @Column({ nullable: true })
   icon: string;
 
-  @Column({ default: 0 })
+  @Column({ default: 1 })
   sort: number;
 
   @Column({ nullable: true })

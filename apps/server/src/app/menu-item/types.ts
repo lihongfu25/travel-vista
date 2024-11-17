@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { FindManyQueryParam } from '@server/common';
 import { Type } from 'class-transformer';
-import { IsOptional, IsString } from 'class-validator';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FindMenuQueryParam extends FindManyQueryParam {
   @ApiProperty()
@@ -25,6 +25,13 @@ export class MenuItemDto {
 
   @ApiProperty({ required: false })
   @IsOptional()
+  @IsNumber()
   @Type(() => Number)
   parentId: number;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  menuId: number;
 }

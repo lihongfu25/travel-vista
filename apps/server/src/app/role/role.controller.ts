@@ -9,6 +9,7 @@ import { Role } from './role.entity';
 import { RoleService } from './role.service';
 import { RoleTransformer } from './role.transformer';
 import { ApiTags } from '@nestjs/swagger';
+import { RoleLevels } from './enums';
 
 @Controller('role')
 @ApiTags('Role')
@@ -23,6 +24,7 @@ export class RoleController {
   async getAllRoles(): Promise<ApiCollectionResponse<Role>> {
     const query: SelectQueryBuilder<Role> = this.roleService.repository
       .createQueryBuilder('role')
+      .where('role.level != :level', { level: RoleLevels.SUPER_ADMIN })
       .orderBy('role.level', 'ASC');
 
     const result = await query.getMany();

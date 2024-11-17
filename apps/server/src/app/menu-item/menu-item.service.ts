@@ -21,4 +21,18 @@ export class MenuItemService extends BaseService<MenuItem> {
 
     return user.roles.map((role) => role.id);
   }
+
+  async getLatestSortIndex(): Promise<number> {
+    const latestMenuItem = await this.repository
+      .createQueryBuilder('menuItem')
+      .orderBy('menuItem.sort', 'DESC')
+      .getOne();
+
+    return latestMenuItem ? latestMenuItem.sort + 1 : 1;
+  }
+
+  async existsMenuItem(key: string, value: string): Promise<boolean> {
+    const count = await this.repository.count({ where: { [key]: value } });
+    return count > 0;
+  }
 }
