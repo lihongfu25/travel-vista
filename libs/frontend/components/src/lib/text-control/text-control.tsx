@@ -37,6 +37,7 @@ export function TextControl(props: TextControlProps) {
             required={Boolean(validates.required)}
             error={Boolean(props.errors)}
             size={props.size || 'small'}
+            disabled={props.disabled}
           >
             {props.fieldset ? (
               <StyledInputLabel htmlFor={uniqueId}>
@@ -79,6 +80,7 @@ export function TextControl(props: TextControlProps) {
         required={Boolean(validates.required)}
         error={Boolean(props.errors)}
         size={props.size || 'small'}
+        disabled={props.disabled}
       >
         {props.fieldset ? (
           <StyledInputLabel htmlFor={uniqueId}>{props.label}</StyledInputLabel>

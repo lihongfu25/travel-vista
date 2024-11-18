@@ -131,6 +131,7 @@ export function ImageUploadControl(props: ImageUploadControlProps) {
             className={props.className}
             error={Boolean(props.errors)}
             required={Boolean(validates.required)}
+            disabled={props.disabled}
           >
             {!props.fieldset && (
               <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
@@ -226,6 +227,7 @@ export function ImageUploadControl(props: ImageUploadControlProps) {
         className={props.className}
         error={Boolean(props.errors)}
         required={Boolean(validates.required)}
+        disabled={props.disabled}
       >
         {!props.fieldset && (
           <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>

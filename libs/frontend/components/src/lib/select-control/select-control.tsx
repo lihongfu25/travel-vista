@@ -78,6 +78,7 @@ export function SelectControl(props: SelectControlProps) {
         className={props.className}
         error={Boolean(props.errors)}
         required={Boolean(validates.required)}
+        disabled={props.disabled}
       >
         {props.fieldset ? (
           <StyledInputLabel className="mb-1">{props.label}</StyledInputLabel>

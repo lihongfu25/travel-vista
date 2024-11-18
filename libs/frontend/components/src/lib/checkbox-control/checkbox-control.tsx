@@ -31,6 +31,7 @@ export function CheckboxControl(props: CheckboxControlProps) {
             label={props.label}
             color={props.color}
             className={props.className}
+            disabled={props.disabled}
           />
         )}
       />
@@ -44,6 +45,7 @@ export function CheckboxControl(props: CheckboxControlProps) {
         className={props.className}
         checked={props.checked}
         onChange={props.onChange}
+        disabled={props.disabled}
       />
     );
 }

@@ -53,6 +53,7 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
             className={`date-time-picker ${props.className}`}
             error={Boolean(props.errors)}
             required={Boolean(validates.required)}
+            disabled={props.disabled}
           >
             {!props.fieldset && (
               <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
@@ -94,6 +95,7 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
         className={`date-time-picker ${props.className}`}
         error={Boolean(props.errors)}
         required={Boolean(validates.required)}
+        disabled={props.disabled}
       >
         {!props.fieldset && (
           <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>

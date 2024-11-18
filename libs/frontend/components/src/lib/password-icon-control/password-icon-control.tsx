@@ -46,6 +46,7 @@ export function PasswordIconControl(props: TextIconControlProps) {
             required={Boolean(validates.required)}
             error={Boolean(props.errors)}
             size={props.size || 'small'}
+            disabled={props.disabled}
           >
             <StyledOutlinedInput
               {...field}
@@ -105,6 +106,7 @@ export function PasswordIconControl(props: TextIconControlProps) {
         required={Boolean(validates.required)}
         error={Boolean(props.errors)}
         size={props.size || 'small'}
+        disabled={props.disabled}
       >
         <StyledOutlinedInput
           id={uniqueId}
