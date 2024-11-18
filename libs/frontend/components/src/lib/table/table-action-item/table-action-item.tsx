@@ -10,6 +10,8 @@ export interface TableActionItemProps {
   /* eslint-disable-next-line */
   onClick?: (params: any) => void;
   children: ReactElement;
+  /* eslint-disable-next-line */
+  props?: any;
 }
 
 export function TableActionItem({
@@ -18,6 +20,7 @@ export function TableActionItem({
   children,
   tooltip,
   onClick,
+  props,
 }: TableActionItemProps) {
   /* eslint-disable-next-line */
   const ref = React.useRef<any>(null);
@@ -47,6 +50,7 @@ export function TableActionItem({
         hover ? () => handleMouseEnter(ref.current, hover) : undefined
       }
       onMouseLeave={hover ? () => handleMouseLeave(ref.current) : undefined}
+      {...props}
     >
       <Tooltip
         title={tooltip}

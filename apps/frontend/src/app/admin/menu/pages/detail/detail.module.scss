@@ -6,9 +6,12 @@
  * }
 */
 .menu__detail {
+  display: flex;
+  flex-direction: column;
   padding: 16px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   &__list {
+    flex: 1 1 auto;
     margin-top: 16px;
     display: flex;
     flex-direction: column;

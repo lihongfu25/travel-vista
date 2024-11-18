@@ -1,20 +1,31 @@
-import { Menu, MenuItem } from '@frontend/model';
-import React from 'react';
-import { useParams } from 'react-router-dom';
-import styles from './detail.module.scss';
+import { closestCenter, DndContext, useDroppable } from '@dnd-kit/core';
+import {
+  arrayMove,
+  rectSortingStrategy,
+  SortableContext,
+} from '@dnd-kit/sortable';
 import { Http, showToast } from '@frontend/common';
-import { useTranslation } from 'react-i18next';
-import { Button, SelectControl, TextControl } from '@frontend/components';
-import { useForm } from 'react-hook-form';
+import {
+  Button,
+  ConfirmModal,
+  SelectControl,
+  TextControl,
+} from '@frontend/components';
+import { useValidators } from '@frontend/hooks';
+import { Menu, MenuItem } from '@frontend/model';
 import {
   Dialog,
   DialogActions,
   DialogContent,
   DialogTitle,
 } from '@mui/material';
-import { useValidators } from '@frontend/hooks';
 import { isEmpty } from 'lodash-es';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { useParams } from 'react-router-dom';
 import { MenuItemComponent } from '../../components/menu-item/menu-item';
+import styles from './detail.module.scss';
 
 interface MenuItemForm {
   label: string | null;
@@ -33,11 +44,18 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [loadingAction, setLoadingAction] = React.useState<boolean>(false);
   const [fetchApi, setFetchApi] = React.useState<number>(Math.random());
-  const [mode, setMode] = React.useState<'create' | 'update'>('create');
+  const [mode, setMode] = React.useState<'create' | 'update' | 'view'>(
+    'create'
+  );
   const [openModal, setOpenModal] = React.useState<boolean>(false);
-  const [selectedItem, setSelectedItem] = React.useState<Menu | null>(null);
+  const [selectedItem, setSelectedItem] = React.useState<MenuItem | undefined>(
+    undefined
+  );
   const [openConfirmModal, setOpenConfirmModal] =
     React.useState<boolean>(false);
+  const { isOver, setNodeRef } = useDroppable({
+    id: 'menu-item-dropped',
+  });
   const { id } = useParams();
   const { t } = useTranslation();
   const validators = useValidators();
@@ -64,7 +82,6 @@ export function MenuDetailComponent(props: MenuDetailProps) {
         menuName: name,
       });
       setData(data.data);
-      console.log(data.data);
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -93,9 +110,19 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     fetchMenuItems(menu?.name);
   }, [menu, fetchApi]);
 
-  const handleOpenModal = (mode: 'create' | 'update') => {
-    setOpenModal(true);
+  const handleOpenModal = (
+    mode: 'create' | 'update' | 'view',
+    item?: MenuItem
+  ) => {
     setMode(mode);
+    setSelectedItem(item);
+    if (item) {
+      setValue('label', item.label);
+      setValue('link', item.link);
+      setValue('icon', item.icon);
+      setValue('parentId', item.parentId);
+    }
+    setOpenModal(true);
   };
 
   const handleCloseModal = () => {
@@ -107,7 +134,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   };
 
   const handleSaveChange = () => {
-    console.log('save change');
+    console.log('save change: ', data);
   };
 
   const onCreateMenuItem = async (data: any) => {
@@ -140,12 +167,59 @@ export function MenuDetailComponent(props: MenuDetailProps) {
       }
     } finally {
       setLoadingAction(false);
-      setSelectedItem(null);
+      setSelectedItem(undefined);
     }
   };
 
   const onSubmitForm = (data: any) => {
     mode === 'create' ? onCreateMenuItem(data) : onUpdateMenuItem(data);
+  };
+  const handleDragEnd = (event: any) => {
+    const { active, over } = event;
+
+    if (!over || active.id === over.id) {
+      return;
+    }
+
+    const oldIndex = data.findIndex((item) => item.id === active.id);
+    const newIndex = data.findIndex((item) => item.id === over?.id);
+
+    const updatedData = arrayMove(data, oldIndex, newIndex).map(
+      (item, index) => ({
+        ...item,
+        sort: index + 1,
+      })
+    );
+
+    setIsChange(true);
+    setData(updatedData);
+  };
+
+  const handleDelete = (item: MenuItem) => {
+    setSelectedItem(item);
+    setOpenConfirmModal(true);
+  };
+
+  const onCancelDelete = () => {
+    setOpenConfirmModal(false);
+    setSelectedItem(undefined);
+  };
+
+  const onConfirmDelete = async () => {
+    if (!selectedItem) return;
+    setLoadingAction(true);
+    try {
+      await http.delete('menu-item', selectedItem.id);
+      showToast(t('menuItem.notification.success.deleted'), 'success');
+      setOpenConfirmModal(false);
+      setFetchApi(Math.random());
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        showToast(t(error?.response?.data?.message), 'error');
+      }
+    } finally {
+      setLoadingAction(false);
+    }
   };
 
   return (
@@ -185,11 +259,27 @@ export function MenuDetailComponent(props: MenuDetailProps) {
             </div>
           </div>
         </div>
-        <div className={`${styles.menu__detail__list}`}>
-          {data?.map((item: MenuItem) => (
-            <MenuItemComponent key={item.id} data={item} />
-          ))}
-        </div>
+        <DndContext
+          collisionDetection={closestCenter}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={data.map((item) => item.id)}
+            strategy={rectSortingStrategy}
+          >
+            <div ref={setNodeRef} className={`${styles.menu__detail__list}`}>
+              {data?.map((item: MenuItem) => (
+                <MenuItemComponent
+                  key={item.id}
+                  data={item}
+                  onView={handleOpenModal}
+                  onEdit={handleOpenModal}
+                  onDelete={handleDelete}
+                />
+              ))}
+            </div>
+          </SortableContext>
+        </DndContext>
       </div>
       <Dialog
         open={openModal}
@@ -217,6 +307,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
               errors={errors.label}
               label={t('menuItem.label.label')}
               validates={[validators.required]}
+              disabled={mode === 'view'}
             />
             <TextControl
               name="link"
@@ -227,6 +318,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
               errors={errors.link}
               label={t('menuItem.label.link')}
               validates={[validators.required]}
+              disabled={mode === 'view'}
             />
             <TextControl
               name="icon"
@@ -238,6 +330,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
               label={t('menuItem.label.icon')}
               multiline
               rows={5}
+              disabled={mode === 'view'}
             />
             <SelectControl
               name="parentId"
@@ -250,7 +343,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
                 label: item.label,
                 value: item.id,
               }))}
-              disabled={data.length === 0}
+              disabled={data.length === 0 || mode === 'view'}
             />
           </DialogContent>
           <DialogActions
@@ -282,6 +375,13 @@ export function MenuDetailComponent(props: MenuDetailProps) {
           </DialogActions>
         </form>
       </Dialog>
+      <ConfirmModal
+        open={openConfirmModal}
+        title={t('form.heading.delete')}
+        content={t('menuItem.confirm.delete')}
+        onConfirm={onConfirmDelete}
+        onCancel={onCancelDelete}
+      />
     </>
   );
 }

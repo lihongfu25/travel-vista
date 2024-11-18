@@ -53,7 +53,8 @@
     "heading": {
       "create": "Thêm dữ liệu",
       "delete": "Xóa dữ liệu",
-      "update": "Cập nhật dữ liệu"
+      "update": "Cập nhật dữ liệu",
+      "view": "Chi tiết dữ liệu"
     }
   },
   "language": {
@@ -127,6 +128,9 @@
         "updated": "Cập nhật menu thành công",
         "deleted": "Xóa menu thành công"
       }
+    },
+    "confirm": {
+      "delete": "Bạn có chắc chắn muốn xóa menu này không?"
     }
   }
 }

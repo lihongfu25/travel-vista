@@ -107,6 +107,19 @@ export function TableActions({
           </svg>
         </TableActionItem>
       )}
+      {customActions?.length &&
+        customActions.map((action) => (
+          <TableActionItem
+            key={action.label}
+            row={row}
+            tooltip={action.label}
+            hover={action?.hover}
+            onClick={action.onClick}
+            props={action.props}
+          >
+            {action.icon}
+          </TableActionItem>
+        ))}
       {showDelete && (
         <TableActionItem
           row={row}

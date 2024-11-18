@@ -52,7 +52,9 @@ export class MenuItemController {
     const query: SelectQueryBuilder<MenuItem> = this.menuItemService.repository
       .createQueryBuilder('menuItem')
       .leftJoin('menuItem.menus', 'menu')
-      .leftJoinAndSelect('menuItem.children', 'children');
+      .leftJoinAndSelect('menuItem.children', 'children')
+      .where('menuItem.parentId IS NULL')
+      .orderBy('menuItem.sort', 'ASC');
     if (roleIds) {
       query.andWhere(`menu.roleId IN (${roleIdsTranform.join(',')})`);
     }
@@ -66,7 +68,9 @@ export class MenuItemController {
       .createQueryBuilder('menuItem')
       .leftJoin('menuItem.menus', 'menu')
       .leftJoinAndSelect('menuItem.children', 'children')
-      .where('menu.name = :menuName', { menuName: param.menuName });
+      .where('menu.name = :menuName', { menuName: param.menuName })
+      .andWhere('menuItem.parentId IS NULL')
+      .orderBy('menuItem.sort', 'ASC');
     const result = await query.getMany();
     return this.response.collection(result, MenuItemTransformer);
   }

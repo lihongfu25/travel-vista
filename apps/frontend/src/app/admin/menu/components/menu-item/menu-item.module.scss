@@ -8,4 +8,12 @@
 .menu__item {
   border: 1px dashed #6c6c6c;
   border-radius: 6px;
+  background-color: white;
+}
+
+.menu__list {
+  margin-left: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
