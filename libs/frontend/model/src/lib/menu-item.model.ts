@@ -6,7 +6,7 @@ export class MenuItem {
   link!: string;
   icon!: string;
   sort!: number;
-  parentId!: number;
+  parentId!: number | null;
   createdAt!: Date;
   updatedAt!: Date;
   children!: MenuItem[];

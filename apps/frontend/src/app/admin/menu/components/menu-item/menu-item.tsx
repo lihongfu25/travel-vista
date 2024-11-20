@@ -1,9 +1,3 @@
-import {
-  rectSortingStrategy,
-  SortableContext,
-  useSortable,
-} from '@dnd-kit/sortable';
-import { CSS } from '@dnd-kit/utilities';
 import { Icon, TableActions } from '@frontend/components';
 import { ITableActionItem, MenuItem } from '@frontend/model';
 import React from 'react';
@@ -23,18 +17,6 @@ export function MenuItemComponent({
   onEdit,
   onDelete,
 }: MenuItemProps) {
-  const {
-    attributes,
-    listeners,
-    setNodeRef,
-    transform,
-    transition,
-    isDragging,
-  } = useSortable({
-    id: data.id,
-    data: data,
-  });
-
   const handleView = (item: MenuItem) => {
     onView('view', item);
   };
@@ -119,68 +101,40 @@ export function MenuItemComponent({
           </svg>
         ),
         hover: '#3B82F6',
-        props: listeners,
       },
     ];
   }, []);
 
   return (
-    <>
-      <div
-        ref={setNodeRef}
-        {...attributes}
-        className={`${styles.menu__item} d-flex align-items-center justify-content-between px-3 py-2 gap-2 w-100`}
-        style={{
-          transform: CSS.Transform.toString(transform),
-          transition,
-          zIndex: isDragging ? 5 : 'unset',
-        }}
-      >
-        <div className="d-flex align-items-center gap-2">
-          {data.icon && (
-            <div className="">
-              <Icon src={data.icon} />
-            </div>
-          )}
-          <div className="">{data.label}</div>
-        </div>
-        <div className={`${styles.menu__item__actions}`}>
-          <TableActions
-            row={data}
-            showView
-            onView={handleView}
-            showEdit
-            onEdit={handleEdit}
-            showDelete
-            onDelete={handleDelete}
-            hover={{
-              view: '#3B82F6',
-              edit: '#3B82F6',
-              delete: '#EF4444',
-            }}
-            customActions={customActions}
-          />
-        </div>
-      </div>
-      {data.children && data.children.length > 0 && (
-        <SortableContext
-          items={data.children.map((item) => item.id)}
-          strategy={rectSortingStrategy}
-        >
-          <div className={`${styles.menu__list}`}>
-            {data.children.map((item: MenuItem) => (
-              <MenuItemComponent
-                key={item.id}
-                data={item}
-                onView={onView}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
-            ))}
+    <div
+      className={`${styles.menu__item} d-flex align-items-center justify-content-between px-3 py-2 gap-2 w-100`}
+    >
+      <div className="d-flex align-items-center gap-2">
+        {data.icon && (
+          <div className="">
+            <Icon src={data.icon} />
           </div>
-        </SortableContext>
-      )}
-    </>
+        )}
+        <div className="">{data.label}</div>
+      </div>
+      <div className={`${styles.menu__item__actions}`}>
+        <TableActions
+          row={data}
+          showView
+          onView={handleView}
+          showEdit
+          onEdit={handleEdit}
+          showDelete
+          onDelete={handleDelete}
+          hover={{
+            view: '#3B82F6',
+            edit: '#3B82F6',
+            delete: '#EF4444',
+          }}
+          customActions={customActions}
+        />
+      </div>
+    </div>
   );
 }
 

@@ -1,9 +1,3 @@
-import { closestCenter, DndContext, useDroppable } from '@dnd-kit/core';
-import {
-  arrayMove,
-  rectSortingStrategy,
-  SortableContext,
-} from '@dnd-kit/sortable';
 import { Http, showToast } from '@frontend/common';
 import {
   Button,
@@ -23,6 +17,8 @@ import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import Nestable from 'react-nestable';
+import 'react-nestable/dist/styles/index.css';
 import { useParams } from 'react-router-dom';
 import { MenuItemComponent } from '../../components/menu-item/menu-item';
 import styles from './detail.module.scss';
@@ -53,9 +49,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   );
   const [openConfirmModal, setOpenConfirmModal] =
     React.useState<boolean>(false);
-  const { isOver, setNodeRef } = useDroppable({
-    id: 'menu-item-dropped',
-  });
+
   const { id } = useParams();
   const { t } = useTranslation();
   const validators = useValidators();
@@ -137,7 +131,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     console.log('save change: ', data);
   };
 
-  const onCreateMenuItem = async (data: any) => {
+  const onCreateMenuItem = async (data: MenuItemForm) => {
     setLoadingAction(true);
     try {
       await http.post('menu-item', { ...data, menuId: menu?.id });
@@ -153,7 +147,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     }
   };
 
-  const onUpdateMenuItem = async (data: any) => {
+  const onUpdateMenuItem = async (data: MenuItemForm) => {
     setLoadingAction(true);
     try {
       if (!selectedItem) return;
@@ -171,28 +165,8 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     }
   };
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: MenuItemForm) => {
     mode === 'create' ? onCreateMenuItem(data) : onUpdateMenuItem(data);
-  };
-  const handleDragEnd = (event: any) => {
-    const { active, over } = event;
-
-    if (!over || active.id === over.id) {
-      return;
-    }
-
-    const oldIndex = data.findIndex((item) => item.id === active.id);
-    const newIndex = data.findIndex((item) => item.id === over?.id);
-
-    const updatedData = arrayMove(data, oldIndex, newIndex).map(
-      (item, index) => ({
-        ...item,
-        sort: index + 1,
-      })
-    );
-
-    setIsChange(true);
-    setData(updatedData);
   };
 
   const handleDelete = (item: MenuItem) => {
@@ -220,6 +194,31 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     } finally {
       setLoadingAction(false);
     }
+  };
+
+  const updateParent = (
+    data: MenuItem[],
+    parentId: number | null = null,
+    currentSort = 0
+  ): MenuItem[] => {
+    return data.map((item) => {
+      currentSort++;
+      const updatedItem = { ...item, parentId, sort: currentSort };
+      if (item.children && item.children.length > 0) {
+        updatedItem.children = updateParent(
+          item.children,
+          item.id,
+          currentSort
+        );
+      }
+      return updatedItem;
+    });
+  };
+
+  const handleMenuChange = (data: MenuItem[]) => {
+    const newData = updateParent(data);
+    setIsChange(true);
+    setData(newData);
   };
 
   return (
@@ -259,27 +258,20 @@ export function MenuDetailComponent(props: MenuDetailProps) {
             </div>
           </div>
         </div>
-        <DndContext
-          collisionDetection={closestCenter}
-          onDragEnd={handleDragEnd}
-        >
-          <SortableContext
-            items={data.map((item) => item.id)}
-            strategy={rectSortingStrategy}
-          >
-            <div ref={setNodeRef} className={`${styles.menu__detail__list}`}>
-              {data?.map((item: MenuItem) => (
-                <MenuItemComponent
-                  key={item.id}
-                  data={item}
-                  onView={handleOpenModal}
-                  onEdit={handleOpenModal}
-                  onDelete={handleDelete}
-                />
-              ))}
-            </div>
-          </SortableContext>
-        </DndContext>
+        <div className={styles.menu__detail__list}>
+          <Nestable
+            items={data}
+            renderItem={({ item }) => (
+              <MenuItemComponent
+                data={item as MenuItem}
+                onView={handleOpenModal}
+                onEdit={handleOpenModal}
+                onDelete={handleDelete}
+              />
+            )}
+            onChange={({ items }) => handleMenuChange(items as MenuItem[])}
+          />
+        </div>
       </div>
       <Dialog
         open={openModal}
