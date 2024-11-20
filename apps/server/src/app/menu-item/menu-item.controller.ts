@@ -26,7 +26,7 @@ import { User } from '../user/user.entity';
 import { MenuItem } from './menu-item.entity';
 import { MenuItemService } from './menu-item.service';
 import { MenuItemTransformer } from './menu-item.transformer';
-import { FindMenuQueryParam, MenuItemDto } from './types';
+import { FindMenuQueryParam, MenuItemDto, SortMenuItemDto } from './types';
 import { MenuMenuItemService } from '../menu-menu-item/menu-menu-item.service';
 
 @Controller('menu-item')
@@ -53,7 +53,6 @@ export class MenuItemController {
       .createQueryBuilder('menuItem')
       .leftJoin('menuItem.menus', 'menu')
       .leftJoinAndSelect('menuItem.children', 'children')
-      .where('menuItem.parentId IS NULL')
       .orderBy('menuItem.sort', 'ASC');
     if (roleIds) {
       query.andWhere(`menu.roleId IN (${roleIdsTranform.join(',')})`);
@@ -69,7 +68,6 @@ export class MenuItemController {
       .leftJoin('menuItem.menus', 'menu')
       .leftJoinAndSelect('menuItem.children', 'children')
       .where('menu.name = :menuName', { menuName: param.menuName })
-      .andWhere('menuItem.parentId IS NULL')
       .orderBy('menuItem.sort', 'ASC');
     const result = await query.getMany();
     return this.response.collection(result, MenuItemTransformer);
@@ -92,27 +90,52 @@ export class MenuItemController {
         where: { id: dto.parentId },
       });
       if (!parent) {
-        throw new NotFoundException('menuItem.notification.error.notFound');
+        throw new NotFoundException(
+          'menuItem.notification.error.parentNotFound'
+        );
       }
     }
 
-    if (await this.menuItemService.existsMenuItem('label', dto.label)) {
+    if (
+      await this.menuItemService.existsMenuItem('label', dto.label, dto.menuId)
+    ) {
       throw new ConflictException('menuItem.notification.error.nameExists');
     }
 
-    if (await this.menuItemService.existsMenuItem('link', dto.link)) {
+    if (
+      await this.menuItemService.existsMenuItem('link', dto.link, dto.menuId)
+    ) {
       throw new ConflictException('menuItem.notification.error.linkExists');
     }
 
     const result = await this.menuItemService.create({
       ...dto,
-      sort: await this.menuItemService.getLatestSortIndex(),
+      sort: await this.menuItemService.getLatestSortIndex(dto.menuId),
     });
     await this.menuMenuItemService.create({
       menuItemId: result.id,
       menuId: dto.menuId,
     });
     return this.response.item(result, MenuItemTransformer);
+  }
+
+  @Post('sort/menu/:menuId')
+  @Auth('superadmin', 'admin')
+  async sortMenuItem(
+    @Param('menuId') menuId: number,
+    @Body() dto: SortMenuItemDto[]
+  ): Promise<ApiSuccessResponse> {
+    const menu = await this.menuCommonService.repository.findOne({
+      where: { id: menuId },
+    });
+
+    if (!menu) {
+      throw new NotFoundException('menuPage.notification.error.notFound');
+    }
+
+    await this.menuItemService.sortMenuItems(menuId, dto);
+
+    return this.response.success();
   }
 
   @Put(':menuItemId')

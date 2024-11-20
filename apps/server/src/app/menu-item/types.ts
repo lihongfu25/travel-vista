@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { FindManyQueryParam } from '@server/common';
 import { Type } from 'class-transformer';
-import { IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsArray, IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class FindMenuQueryParam extends FindManyQueryParam {
   @ApiProperty()
@@ -34,4 +34,29 @@ export class MenuItemDto {
   @IsNumber()
   @Type(() => Number)
   menuId: number;
+}
+
+export class SortMenuItemDto {
+  @ApiProperty()
+  @IsString()
+  label: string;
+
+  @ApiProperty()
+  @IsString()
+  link: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsString()
+  icon: string;
+
+  @ApiProperty({ required: false })
+  @IsOptional()
+  @IsNumber()
+  @Type(() => Number)
+  parentId: number;
+
+  @ApiProperty()
+  @IsArray()
+  children: Array<SortMenuItemDto>;
 }

@@ -121,6 +121,7 @@
       "error": {
         "nameExists": "Tên menu đã tồn tại",
         "linkExists": "Đường dẫn menu tồn tại",
+        "parentNotFound": "Không tìm thấy menu cha. Vui lòng kiểm tra lại dữ liệu của bạn",
         "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn"
       },
       "success": {

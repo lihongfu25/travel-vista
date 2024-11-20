@@ -36,7 +36,9 @@ export interface MenuDetailProps {}
 export function MenuDetailComponent(props: MenuDetailProps) {
   const [menu, setMenu] = React.useState<Menu | null>(null);
   const [data, setData] = React.useState<Array<MenuItem>>([]);
+  const [flatData, setFlatData] = React.useState<Array<MenuItem>>([]);
   const [isChange, setIsChange] = React.useState<boolean>(false);
+  /* eslint-disable-next-line */
   const [loading, setLoading] = React.useState<boolean>(true);
   const [loadingAction, setLoadingAction] = React.useState<boolean>(false);
   const [fetchApi, setFetchApi] = React.useState<number>(Math.random());
@@ -69,13 +71,39 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     },
   });
 
+  const nestMenuItems = (flatData: MenuItem[]): MenuItem[] => {
+    const itemMap = new Map<number, MenuItem>();
+    const nestedData: MenuItem[] = [];
+
+    flatData.forEach((item) => {
+      item.children = [];
+      itemMap.set(item.id, item);
+    });
+
+    flatData.forEach((item) => {
+      if (item.parentId === null) {
+        nestedData.push(item);
+      } else {
+        const parent = itemMap.get(item.parentId);
+        if (parent) {
+          parent.children.push(item);
+        }
+      }
+    });
+
+    return nestedData;
+  };
+
   const fetchMenuItems = async (name: string | undefined) => {
     if (!name) return;
     try {
       const { data } = await http.get('menu-item/menu-item-by-name', {
         menuName: name,
       });
-      setData(data.data);
+      const nestedData = nestMenuItems(data.data);
+      setFlatData(data.data);
+      setData(nestedData);
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -88,8 +116,8 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     try {
       const { data } = await http.show('menu', id);
       setMenu(data.data);
+      /* eslint-disable-next-line */
     } catch (error: any) {
-      console.log(error);
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
       }
@@ -98,10 +126,12 @@ export function MenuDetailComponent(props: MenuDetailProps) {
 
   React.useEffect(() => {
     fetchMenu(id);
+    /* eslint-disable-next-line */
   }, [id]);
 
   React.useEffect(() => {
     fetchMenuItems(menu?.name);
+    /* eslint-disable-next-line */
   }, [menu, fetchApi]);
 
   const handleOpenModal = (
@@ -128,7 +158,25 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   };
 
   const handleSaveChange = () => {
-    console.log('save change: ', data);
+    onSaveChange();
+  };
+
+  const onSaveChange = () => {
+    const sort = async () => {
+      if (!menu) return;
+      try {
+        await http.post(`menu-item/sort/menu/${menu.id}`, data);
+        setFetchApi(Math.random());
+        setIsChange(false);
+        /* eslint-disable-next-line */
+      } catch (error: any) {
+        if (error?.response?.data?.message) {
+          showToast(t(error?.response?.data?.message), 'error');
+        }
+      }
+    };
+
+    sort();
   };
 
   const onCreateMenuItem = async (data: MenuItemForm) => {
@@ -138,6 +186,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
       showToast(t('menuItem.notification.success.created'), 'success');
       setFetchApi(Math.random());
       handleCloseModal();
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -155,6 +204,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
       showToast(t('menuItem.notification.success.updated'), 'success');
       setFetchApi(Math.random());
       handleCloseModal();
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -187,6 +237,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
       showToast(t('menuItem.notification.success.deleted'), 'success');
       setOpenConfirmModal(false);
       setFetchApi(Math.random());
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -331,11 +382,11 @@ export function MenuDetailComponent(props: MenuDetailProps) {
               control={control}
               errors={errors.parentId}
               label={t('menuItem.label.parent')}
-              options={data.map((item: MenuItem) => ({
+              options={flatData.map((item: MenuItem) => ({
                 label: item.label,
                 value: item.id,
               }))}
-              disabled={data.length === 0 || mode === 'view'}
+              disabled={flatData.length === 0 || mode === 'view'}
             />
           </DialogContent>
           <DialogActions

@@ -121,6 +121,7 @@
       "error": {
         "nameExists": "Menu name already exists",
         "linkExists": "Link already exists",
+        "parentNotFound": "Parent menu not found. Please check your data again",
         "notFound": "Menu not found. Please check your data again"
       },
       "success": {
