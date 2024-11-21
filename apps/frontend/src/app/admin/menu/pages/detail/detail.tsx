@@ -49,7 +49,11 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   const [selectedItem, setSelectedItem] = React.useState<MenuItem | undefined>(
     undefined
   );
-  const [openConfirmModal, setOpenConfirmModal] =
+  const [openConfirmDeleteModal, setOpenConfirmDeleteModal] =
+    React.useState<boolean>(false);
+  const [openConfirmSortModal, setOpenConfirmSortModal] =
+    React.useState<boolean>(false);
+  const [openConfirmDiscardChangeModal, setOpenConfirmDiscardChangeModal] =
     React.useState<boolean>(false);
 
   const { id } = useParams();
@@ -157,17 +161,29 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     setValue('parentId', null);
   };
 
-  const handleSaveChange = () => {
-    onSaveChange();
+  const handleAddItem = () => {
+    if (isChange) {
+      handleDiscard();
+    }
   };
 
-  const onSaveChange = () => {
+  const handleSaveSort = () => {
+    setOpenConfirmSortModal(true);
+  };
+
+  const onCancelSort = () => {
+    setOpenConfirmSortModal(false);
+  };
+
+  const onConfirmSort = () => {
     const sort = async () => {
       if (!menu) return;
       try {
         await http.post(`menu-item/sort/menu/${menu.id}`, data);
         setFetchApi(Math.random());
         setIsChange(false);
+        setOpenConfirmSortModal(false);
+        showToast(t('menuItem.notification.success.sorted'), 'success');
         /* eslint-disable-next-line */
       } catch (error: any) {
         if (error?.response?.data?.message) {
@@ -221,11 +237,11 @@ export function MenuDetailComponent(props: MenuDetailProps) {
 
   const handleDelete = (item: MenuItem) => {
     setSelectedItem(item);
-    setOpenConfirmModal(true);
+    setOpenConfirmDeleteModal(true);
   };
 
   const onCancelDelete = () => {
-    setOpenConfirmModal(false);
+    setOpenConfirmDeleteModal(false);
     setSelectedItem(undefined);
   };
 
@@ -235,7 +251,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     try {
       await http.delete('menu-item', selectedItem.id);
       showToast(t('menuItem.notification.success.deleted'), 'success');
-      setOpenConfirmModal(false);
+      setOpenConfirmDeleteModal(false);
       setFetchApi(Math.random());
       /* eslint-disable-next-line */
     } catch (error: any) {
@@ -245,6 +261,22 @@ export function MenuDetailComponent(props: MenuDetailProps) {
     } finally {
       setLoadingAction(false);
     }
+  };
+
+  const handleDiscard = () => {
+    setOpenConfirmDiscardChangeModal(true);
+  };
+
+  const onCancelDiscard = () => {
+    setOpenConfirmDiscardChangeModal(false);
+  };
+
+  /* eslint-disable-next-line */
+  const onConfirmDiscard = () => {
+    setOpenConfirmDiscardChangeModal(false);
+    handleOpenModal('create');
+    setIsChange(false);
+    setData(nestMenuItems(flatData));
   };
 
   const updateParent = (
@@ -287,7 +319,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
                 sx={{
                   padding: '8px 16px',
                 }}
-                onClick={() => handleSaveChange()}
+                onClick={handleSaveSort}
                 fullWidth
                 disabled={!isChange}
               >
@@ -301,7 +333,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
                 sx={{
                   padding: '8px 16px',
                 }}
-                onClick={() => handleOpenModal('create')}
+                onClick={handleAddItem}
                 fullWidth
               >
                 {t('common.add')}
@@ -419,11 +451,25 @@ export function MenuDetailComponent(props: MenuDetailProps) {
         </form>
       </Dialog>
       <ConfirmModal
-        open={openConfirmModal}
+        open={openConfirmDeleteModal}
         title={t('form.heading.delete')}
-        content={t('menuItem.confirm.delete')}
+        content={t('form.content.delete')}
         onConfirm={onConfirmDelete}
         onCancel={onCancelDelete}
+      />
+      <ConfirmModal
+        open={openConfirmSortModal}
+        title={t('form.heading.saveChange')}
+        content={t('form.content.saveChange')}
+        onConfirm={onConfirmSort}
+        onCancel={onCancelSort}
+      />
+      <ConfirmModal
+        open={openConfirmDiscardChangeModal}
+        title={t('form.heading.haveChange')}
+        content={t('form.content.haveChange')}
+        onConfirm={onConfirmDiscard}
+        onCancel={onCancelDiscard}
       />
     </>
   );

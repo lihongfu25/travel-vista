@@ -54,7 +54,15 @@
       "create": "Thêm dữ liệu",
       "delete": "Xóa dữ liệu",
       "update": "Cập nhật dữ liệu",
-      "view": "Chi tiết dữ liệu"
+      "view": "Chi tiết dữ liệu",
+      "saveChange": "Lưu thay đổi",
+      "haveChange": "Lưu ý: Bạn có thay đổi chưa được lưu"
+    },
+    "content": {
+      "delete": "Hành động này không thể hoàn tác. Bạn có muốn tiếp tục không?",
+      "cancel": "Bạn có chắc chắn muốn hủy? Mọi thay đổi sẽ không được lưu.",
+      "saveChange": "Hành động này không thể hoàn tác. Bạn có muốn tiếp tục không?",
+      "haveChange": "Bạn có thay đổi chưa được lưu. Thay đổi chưa được lưu sẽ bị mất nếu bạn tiếp tục."
     }
   },
   "language": {
@@ -96,9 +104,9 @@
         "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn"
       },
       "success": {
-        "created": "Tạo menu thành công",
-        "updated": "Cập nhật menu thành công",
-        "deleted": "Xóa menu thành công"
+        "created": "Tạo menu thành công!",
+        "updated": "Cập nhật menu thành công!",
+        "deleted": "Xóa menu thành công!"
       }
     },
     "confirm": {
@@ -125,9 +133,10 @@
         "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn"
       },
       "success": {
-        "created": "Tạo menu thành công",
-        "updated": "Cập nhật menu thành công",
-        "deleted": "Xóa menu thành công"
+        "created": "Tạo menu thành công!",
+        "updated": "Cập nhật menu thành công!",
+        "deleted": "Xóa menu thành công!",
+        "sorted": "Thứ tự sắp xếp danh sách menu đã được cập nhật thành công!"
       }
     },
     "confirm": {

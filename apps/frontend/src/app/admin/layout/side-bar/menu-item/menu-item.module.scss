@@ -4,9 +4,9 @@
   justify-content: flex-start;
   cursor: pointer;
   flex-wrap: nowrap;
-  padding: 12px;
+  padding: 12px !important;
   overflow-x: hidden;
-  border-radius: 8px;
+  border-radius: 8px !important;
 
   &__icon {
     margin-right: 16px;

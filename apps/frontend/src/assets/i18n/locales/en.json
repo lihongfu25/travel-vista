@@ -54,7 +54,15 @@
       "create": "Create data",
       "delete": "Delete data",
       "update": "Update data",
-      "view": "View data"
+      "view": "View data",
+      "saveChange": "Save changes",
+      "haveChange": "Attention: You have unsaved changes"
+    },
+    "content": {
+      "delete": "This action cannot be undone. Do you want to continue?",
+      "cancel": "Are you sure you want to cancel? All changes will not be saved.",
+      "saveChange": "This action cannot be undone. Do you want to continue?",
+      "haveChange": "You have unsaved changes. Unsaved changes will be lost if you proceed."
     }
   },
   "language": {
@@ -96,9 +104,9 @@
         "notFound": "Menu not found. Please check your data again"
       },
       "success": {
-        "created": "Menu created successfully",
-        "updated": "Menu updated successfully",
-        "deleted": "Menu deleted successfully"
+        "created": "Menu created successfully!",
+        "updated": "Menu updated successfully!",
+        "deleted": "Menu deleted successfully!"
       }
     },
     "confirm": {
@@ -125,9 +133,10 @@
         "notFound": "Menu not found. Please check your data again"
       },
       "success": {
-        "created": "Menu created successfully",
-        "updated": "Menu updated successfully",
-        "deleted": "Menu deleted successfully"
+        "created": "Menu created successfully!",
+        "updated": "Menu updated successfully!",
+        "deleted": "Menu deleted successfully!",
+        "sorted": "The sorting order of the product list has been successfully updated!"
       }
     },
     "confirm": {

@@ -1,8 +1,9 @@
 import React from 'react';
 import styles from './menu.module.scss';
 import MenuItemComponent from '../menu-item/menu-item';
-import { Http } from '@frontend/common';
+import { Http, showToast } from '@frontend/common';
 import { MenuItem } from '@frontend/model';
+import { useTranslation } from 'react-i18next';
 
 /* eslint-disable-next-line */
 export interface MenuProps {}
@@ -11,18 +12,47 @@ export function Menu(props: MenuProps) {
   const [menu, setMenu] = React.useState<Array<MenuItem>>([]);
 
   const http = React.useMemo(() => new Http(), []);
+  const { t } = useTranslation();
+
+  const nestMenuItems = (flatData: MenuItem[]): MenuItem[] => {
+    const itemMap = new Map<number, MenuItem>();
+    const nestedData: MenuItem[] = [];
+
+    flatData.forEach((item) => {
+      item.children = [];
+      itemMap.set(item.id, item);
+    });
+
+    flatData.forEach((item) => {
+      if (item.parentId === null) {
+        nestedData.push(item);
+      } else {
+        const parent = itemMap.get(item.parentId);
+        if (parent) {
+          parent.children.push(item);
+        }
+      }
+    });
+
+    return nestedData;
+  };
 
   const getMyMenu = async () => {
     try {
       const { data } = await http.get('menu-item/my-menu');
-      setMenu(data.data);
-    } catch (error) {
-      console.log(error);
+      const nestedData = nestMenuItems(data.data);
+      setMenu(nestedData);
+      /* eslint-disable-next-line */
+    } catch (error: any) {
+      if (error?.response?.data?.message) {
+        showToast(t(error?.response?.data?.message), 'error');
+      }
     }
   };
 
   React.useEffect(() => {
     getMyMenu();
+    /* eslint-disable-next-line */
   }, []);
   return (
     <div className={styles.menu}>
