@@ -10,6 +10,7 @@ export interface MenuProps {}
 
 export function Menu(props: MenuProps) {
   const [menu, setMenu] = React.useState<Array<MenuItem>>([]);
+  const [expandedId, setExpandedId] = React.useState<number | null>(null);
 
   const http = React.useMemo(() => new Http(), []);
   const { t } = useTranslation();
@@ -54,10 +55,20 @@ export function Menu(props: MenuProps) {
     getMyMenu();
     /* eslint-disable-next-line */
   }, []);
+
+  const onExpand = (item: MenuItem) => {
+    expandedId === item.id ? setExpandedId(null) : setExpandedId(item.id);
+  };
+
   return (
     <div className={styles.menu}>
       {menu?.map((item) => (
-        <MenuItemComponent key={item.id} data={item} />
+        <MenuItemComponent
+          key={item.id}
+          data={item}
+          onClick={onExpand}
+          expandedId={expandedId}
+        />
       ))}
     </div>
   );

@@ -1,0 +1,64 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.menu__item {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  flex-wrap: nowrap;
+  padding: 12px 40px 12px 12px !important;
+  overflow-x: hidden;
+  border-radius: 8px !important;
+  position: relative;
+
+  &__icon {
+    margin-right: 16px;
+  }
+
+  &__name {
+    flex: 1;
+    overflow: hidden;
+    font-size: 16px !important;
+  }
+
+  &__expandedIcon {
+    position: absolute;
+    top: 50%;
+    right: 12px;
+    transform: translateY(-50%);
+    svg {
+      transition: rotate 0.3s ease;
+    }
+  }
+
+  &:hover {
+    background-color: var(--color-1);
+    color: white;
+  }
+
+  &.collapsed {
+    .menu__item__name {
+      width: 0;
+    }
+  }
+
+  &.expanded {
+    .menu__item__expandedIcon {
+      svg {
+        rotate: 180deg;
+      }
+    }
+  }
+}
+
+.menu__accordion {
+  margin-top: 4px;
+  margin-left: 16px;
+  overflow-y: hidden;
+  transition: height 0.3s ease;
+}
