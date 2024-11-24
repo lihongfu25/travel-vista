@@ -162,9 +162,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   };
 
   const handleAddItem = () => {
-    if (isChange) {
-      handleDiscard();
-    }
+    isChange ? handleDiscard() : handleOpenModal('create');
   };
 
   const handleSaveSort = () => {

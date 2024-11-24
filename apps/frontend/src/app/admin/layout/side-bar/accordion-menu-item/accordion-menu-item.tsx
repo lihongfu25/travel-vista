@@ -36,15 +36,9 @@ export function AccordionMenuItem({
   children,
   onClick,
 }: AccordionMenuItemProps) {
-  const [contentHeight, setContentHeight] = React.useState(0);
   /* eslint-disable-next-line */
   const { isCollapsed } = useSelector((state: any) => state.layout);
-  const contentRef = React.useRef<HTMLDivElement>(null);
-  React.useEffect(() => {
-    if (contentRef.current) {
-      setContentHeight(contentRef.current.scrollHeight); // Lấy chiều cao thật của nội dung
-    }
-  }, [children]);
+
   return (
     <>
       <div
@@ -65,9 +59,12 @@ export function AccordionMenuItem({
       </div>
       <div
         className={styles.menu__accordion}
-        style={{ height: expandedId === data.id ? contentHeight : 0 }}
+        style={{
+          height: expandedId === data.id ? 52 * data.children.length : 0,
+          marginTop: expandedId === data.id ? 4 : 0,
+        }}
       >
-        <div ref={contentRef}>{children}</div>
+        {children}
       </div>
     </>
   );

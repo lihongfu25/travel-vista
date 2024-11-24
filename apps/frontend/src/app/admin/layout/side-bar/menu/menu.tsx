@@ -1,9 +1,9 @@
-import React from 'react';
-import styles from './menu.module.scss';
-import MenuItemComponent from '../menu-item/menu-item';
 import { Http, showToast } from '@frontend/common';
 import { MenuItem } from '@frontend/model';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import MenuItemComponent from '../menu-item/menu-item';
+import styles from './menu.module.scss';
 
 /* eslint-disable-next-line */
 export interface MenuProps {}
