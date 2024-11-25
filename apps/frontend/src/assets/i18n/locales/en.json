@@ -130,7 +130,8 @@
         "nameExists": "Menu name already exists",
         "linkExists": "Link already exists",
         "parentNotFound": "Parent menu not found. Please check your data again",
-        "notFound": "Menu not found. Please check your data again"
+        "notFound": "Menu not found. Please check your data again",
+        "maxDepthExceeded": "The menu depth has exceeded the allowed limit. Please use only 2 levels"
       },
       "success": {
         "created": "Menu created successfully!",

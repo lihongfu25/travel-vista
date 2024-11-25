@@ -8,18 +8,25 @@ import styles from './menu-item.module.scss';
 
 /* eslint-disable-next-line */
 export interface MenuItemProps {
+  index: number;
   data: MenuItemModel;
   expandedId: string | number | null;
   onClick: (params: MenuItemModel) => void;
 }
 
-export function MenuItem({ data, expandedId, onClick }: MenuItemProps) {
+export function MenuItem({ index, data, expandedId, onClick }: MenuItemProps) {
   /* eslint-disable-next-line */
   const { isCollapsed } = useSelector((state: any) => state.layout);
   return data.children && data.children.length > 0 ? (
-    <AccordionMenuItem data={data} expandedId={expandedId} onClick={onClick}>
-      {data.children.map((item) => (
+    <AccordionMenuItem
+      index={index}
+      data={data}
+      expandedId={expandedId}
+      onClick={onClick}
+    >
+      {data.children.map((item, idx) => (
         <MenuItem
+          index={idx}
           key={item.id}
           data={item}
           onClick={onClick}
@@ -37,7 +44,7 @@ export function MenuItem({ data, expandedId, onClick }: MenuItemProps) {
         <div
           className={`${styles.menu__item} ${
             isCollapsed ? styles.collapsed : ''
-          }`}
+          } ${index !== 0 ? 'mt-1' : ''}`}
         >
           {data.icon && (
             <div className={styles.menu__item__icon}>

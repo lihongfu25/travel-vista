@@ -342,6 +342,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
         <div className={styles.menu__detail__list}>
           <Nestable
             items={data}
+            maxDepth={2}
             renderItem={({ item }) => (
               <MenuItemComponent
                 data={item as MenuItem}

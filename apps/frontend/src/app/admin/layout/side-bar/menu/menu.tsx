@@ -62,9 +62,10 @@ export function Menu(props: MenuProps) {
 
   return (
     <div className={styles.menu}>
-      {menu?.map((item) => (
+      {menu?.map((item, index) => (
         <MenuItemComponent
           key={item.id}
+          index={index}
           data={item}
           onClick={onExpand}
           expandedId={expandedId}

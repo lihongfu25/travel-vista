@@ -130,7 +130,8 @@
         "nameExists": "Tên menu đã tồn tại",
         "linkExists": "Đường dẫn menu tồn tại",
         "parentNotFound": "Không tìm thấy menu cha. Vui lòng kiểm tra lại dữ liệu của bạn",
-        "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn"
+        "notFound": "Không tìm thấy menu. Vui lòng kiểm tra lại dữ liệu của bạn",
+        "maxDepthExceeded": "Độ sâu của menu đã vượt quá giới hạn cho phép. Vui lòng chỉ sử dụng menu 2 cấp"
       },
       "success": {
         "created": "Tạo menu thành công!",

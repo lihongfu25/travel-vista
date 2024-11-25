@@ -94,6 +94,11 @@ export class MenuItemController {
           'menuItem.notification.error.parentNotFound'
         );
       }
+      if (parent.parentId) {
+        throw new NotFoundException(
+          'menuItem.notification.error.maxDepthExceeded'
+        );
+      }
     }
 
     if (
