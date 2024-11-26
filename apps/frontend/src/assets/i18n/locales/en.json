@@ -142,6 +142,9 @@
     },
     "confirm": {
       "delete": "Deleting this menu will also delete all its child menus (if any). Are you sure you want to proceed?"
+    },
+    "tips": {
+      "parent": "Only use 2-level menus to reduce complexity and improve user experience."
     }
   }
 }

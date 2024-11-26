@@ -19,3 +19,4 @@ export * from './lib/password-control/password-control';
 export * from './lib/select-control/select-control';
 export * from './lib/text-control/text-control';
 export * from './lib/banner-slider/banner-slider';
+export * from './lib/constants';

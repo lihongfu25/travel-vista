@@ -418,6 +418,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
                 value: item.id,
               }))}
               disabled={flatData.length === 0 || mode === 'view'}
+              tips={t('menuItem.tips.parent')}
             />
           </DialogContent>
           <DialogActions

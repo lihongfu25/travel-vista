@@ -8,6 +8,10 @@ import FormLabel from '@mui/material/FormLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import FormHelperText from '@mui/material/FormHelperText';
 import { TextControlProps } from '../types';
+import Icon from '../icon/icon';
+import { HelpIcon } from '../constants';
+import './text-control.module.scss';
+import { Tooltip } from '@mui/material';
 
 const StyledInputLabel = styled(InputLabel)`
   .MuiFormLabel-asterisk {
@@ -23,6 +27,7 @@ const StyledFormLabel = styled(FormLabel)`
 export function TextControl(props: TextControlProps) {
   const uniqueId = generateUniqueId(props.name ?? props.label);
   const validates = mergeValidates(props.validates);
+  console.log(props.tips);
   if (props.control && props.name)
     return (
       <Controller
@@ -40,13 +45,31 @@ export function TextControl(props: TextControlProps) {
             disabled={props.disabled}
           >
             {props.fieldset ? (
-              <StyledInputLabel htmlFor={uniqueId}>
-                {props.label}
-              </StyledInputLabel>
+              <div className="d-flex align-items-center">
+                <StyledInputLabel htmlFor={uniqueId}>
+                  {props.label}
+                </StyledInputLabel>
+                {props.tips && (
+                  <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                    <div className="d-flex" style={{ cursor: 'help' }}>
+                      <Icon src={HelpIcon} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
             ) : (
-              <StyledFormLabel className="mb-1" htmlFor={uniqueId}>
-                {props.label}
-              </StyledFormLabel>
+              <div className="d-flex align-items-center mb-1">
+                <StyledFormLabel className="me-2" htmlFor={uniqueId}>
+                  {props.label}
+                </StyledFormLabel>
+                {props.tips && (
+                  <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                    <div className="d-flex" style={{ cursor: 'help' }}>
+                      <Icon src={HelpIcon} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
             )}
             <OutlinedInput
               {...field}
@@ -83,11 +106,31 @@ export function TextControl(props: TextControlProps) {
         disabled={props.disabled}
       >
         {props.fieldset ? (
-          <StyledInputLabel htmlFor={uniqueId}>{props.label}</StyledInputLabel>
+          <div className="d-flex align-items-center">
+            <StyledInputLabel htmlFor={uniqueId}>
+              {props.label}
+            </StyledInputLabel>
+            {props.tips && (
+              <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                <div className="d-flex" style={{ cursor: 'help' }}>
+                  <Icon src={HelpIcon} />
+                </div>
+              </Tooltip>
+            )}
+          </div>
         ) : (
-          <StyledFormLabel className="mb-1" htmlFor={uniqueId}>
-            {props.label}
-          </StyledFormLabel>
+          <div className="d-flex align-items-center mb-1">
+            <StyledFormLabel className="me-2" htmlFor={uniqueId}>
+              {props.label}
+            </StyledFormLabel>
+            {props.tips && (
+              <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                <div className="d-flex" style={{ cursor: 'help' }}>
+                  <Icon src={HelpIcon} />
+                </div>
+              </Tooltip>
+            )}
+          </div>
         )}
         <OutlinedInput
           id={uniqueId}

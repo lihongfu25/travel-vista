@@ -1,5 +1,3 @@
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { InputAdornment } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import FormHelperText from '@mui/material/FormHelperText';
@@ -8,6 +6,8 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import { styled } from '@mui/system';
 import React from 'react';
 import { Controller } from 'react-hook-form';
+import { VisibilityIcon, VisibilityOffIcon } from '../constants';
+import Icon from '../icon/icon';
 import { generateUniqueId, mergeValidates } from '../methods';
 import { TextIconControlProps } from '../types';
 
@@ -31,7 +31,6 @@ export function PasswordIconControl(props: TextIconControlProps) {
 
   const uniqueId = generateUniqueId(props.name ?? props.label);
   const validates = mergeValidates(props.validates);
-  const Icon = props.icon;
   if (props.control && props.name)
     return (
       <Controller
@@ -60,8 +59,11 @@ export function PasswordIconControl(props: TextIconControlProps) {
               label={props.fieldset ? props.label : undefined}
               color={props.color}
               startAdornment={
-                <InputAdornment position="start">
-                  <Icon color={props.errors ? 'error' : props.color} />
+                <InputAdornment
+                  position="start"
+                  sx={{ color: 'inherit', marginRight: 0 }}
+                >
+                  {props.icon}
                 </InputAdornment>
               }
               endAdornment={
@@ -72,16 +74,11 @@ export function PasswordIconControl(props: TextIconControlProps) {
                     onMouseDown={handleMouseDownPassword}
                     edge="end"
                     size={props.size || 'small'}
+                    color={props.errors ? 'error' : props.color}
                   >
-                    {showPassword ? (
-                      <VisibilityOff
-                        color={props.errors ? 'error' : props.color}
-                      />
-                    ) : (
-                      <Visibility
-                        color={props.errors ? 'error' : props.color}
-                      />
-                    )}
+                    <Icon
+                      src={showPassword ? VisibilityOffIcon : VisibilityIcon}
+                    />
                   </IconButton>
                 </InputAdornment>
               }
@@ -119,8 +116,11 @@ export function PasswordIconControl(props: TextIconControlProps) {
           label={props.fieldset ? props.label : undefined}
           color={props.color}
           startAdornment={
-            <InputAdornment position="start">
-              <Icon color={props.errors ? 'error' : props.color} />
+            <InputAdornment
+              position="start"
+              sx={{ color: 'inherit', marginRight: 0 }}
+            >
+              {props.icon}
             </InputAdornment>
           }
           endAdornment={
@@ -131,12 +131,9 @@ export function PasswordIconControl(props: TextIconControlProps) {
                 onMouseDown={handleMouseDownPassword}
                 edge="end"
                 size={props.size || 'small'}
+                color={props.errors ? 'error' : props.color}
               >
-                {showPassword ? (
-                  <VisibilityOff color={props.errors ? 'error' : props.color} />
-                ) : (
-                  <Visibility color={props.errors ? 'error' : props.color} />
-                )}
+                <Icon src={showPassword ? VisibilityOffIcon : VisibilityIcon} />
               </IconButton>
             </InputAdornment>
           }

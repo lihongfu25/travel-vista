@@ -142,6 +142,9 @@
     },
     "confirm": {
       "delete": "Xóa menu này sẽ xóa toàn bộ các menu con (nếu có). Bạn có chắc chắn muốn tiếp tục không?"
+    },
+    "tips": {
+      "parent": "Chỉ nên sử dụng menu 2 cấp để giảm độ phức tạp và cải thiện trải nghiệm người dùng."
     }
   }
 }

@@ -6,6 +6,9 @@ import { Controller } from 'react-hook-form';
 import { mergeValidates } from '../methods';
 import { ColorPickerControlProps } from '../types';
 import styles from './color-picker-control.module.scss';
+import { Tooltip } from '@mui/material';
+import Icon from '../icon/icon';
+import { HelpIcon } from '../constants';
 const StyledInputLabel = styled(InputLabel)`
   .MuiFormLabel-asterisk {
     color: red;
@@ -45,12 +48,21 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
         rules={validates}
         render={({ field }) => (
           <div className={`${styles['color-picker']} ${props.className}`}>
-            <StyledInputLabel
-              className="mb-1"
-              required={Boolean(validates.required)}
-            >
-              {props.label}
-            </StyledInputLabel>
+            <div className="d-flex align-items-center mb-1">
+              <StyledInputLabel
+                className="me-2"
+                required={Boolean(validates.required)}
+              >
+                {props.label}
+              </StyledInputLabel>
+              {props.tips && (
+                <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                  <div className="d-flex" style={{ cursor: 'help' }}>
+                    <Icon src={HelpIcon} />
+                  </div>
+                </Tooltip>
+              )}
+            </div>
             <div className="d-flex align-items-center">
               <button
                 type="button"
@@ -80,12 +92,21 @@ export function ColorPickerControl(props: ColorPickerControlProps) {
   else
     return (
       <div className={`${styles['color-picker']} ${props.className}`}>
-        <StyledInputLabel
-          className="mb-1"
-          required={Boolean(validates.required)}
-        >
-          {props.label}
-        </StyledInputLabel>
+        <div className="d-flex align-items-center mb-1">
+          <StyledInputLabel
+            className="me-2"
+            required={Boolean(validates.required)}
+          >
+            {props.label}
+          </StyledInputLabel>
+          {props.tips && (
+            <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+              <div className="d-flex" style={{ cursor: 'help' }}>
+                <Icon src={HelpIcon} />
+              </div>
+            </Tooltip>
+          )}
+        </div>
         <div className="d-flex align-items-center">
           <button
             type="button"

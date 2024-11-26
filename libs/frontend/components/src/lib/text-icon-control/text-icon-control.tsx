@@ -18,7 +18,6 @@ const StyledOutlinedInput = styled(OutlinedInput)(({ color, theme }) => ({
 export function TextIconControl(props: TextIconControlProps) {
   const uniqueId = generateUniqueId(props.name ?? props.label);
   const validates = mergeValidates(props.validates);
-  const Icon = props.icon;
   if (props.control && props.name)
     return (
       <Controller
@@ -46,8 +45,11 @@ export function TextIconControl(props: TextIconControlProps) {
               label={props.fieldset ? props.label : undefined}
               color={props.color}
               startAdornment={
-                <InputAdornment position="start">
-                  <Icon color={props.errors ? 'error' : props.color} />
+                <InputAdornment
+                  position="start"
+                  sx={{ color: 'inherit', marginRight: 0 }}
+                >
+                  {props.icon}
                 </InputAdornment>
               }
             />
@@ -83,8 +85,11 @@ export function TextIconControl(props: TextIconControlProps) {
           label={props.fieldset ? props.label : undefined}
           color={props.color}
           startAdornment={
-            <InputAdornment position="start">
-              <Icon color={props.errors ? 'error' : props.color} />
+            <InputAdornment
+              position="start"
+              sx={{ color: 'inherit', marginRight: 0 }}
+            >
+              {props.icon}
             </InputAdornment>
           }
         />

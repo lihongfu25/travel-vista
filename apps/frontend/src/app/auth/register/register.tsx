@@ -2,19 +2,27 @@ import { Http, showToast } from '@frontend/common';
 import {
   Button,
   CheckboxControl,
+  Icon,
+  LockIcon,
   PasswordIconControl,
   TextIconControl,
+  UserIcon,
 } from '@frontend/components';
 import { useValidators } from '@frontend/hooks';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import { Box, Typography } from '@mui/material';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import styles from './register.module.scss';
 import { useAuthActon } from '../action';
+import styles from './register.module.scss';
+
+interface RegiserForm {
+  email: string | undefined;
+  password: string | undefined;
+  confirm: string | undefined;
+}
+
 /* eslint-disable-next-line */
 export interface RegisterProps {}
 
@@ -30,7 +38,7 @@ export function Register(props: RegisterProps) {
     handleSubmit,
     formState: { errors },
     setError,
-  } = useForm({
+  } = useForm<RegiserForm>({
     defaultValues: {
       email: '',
       password: '',
@@ -38,7 +46,7 @@ export function Register(props: RegisterProps) {
     },
   });
 
-  const onSubmit = async (formValue: any) => {
+  const onSubmit = async (formValue: RegiserForm) => {
     if (formValue.password !== formValue.confirm) {
       setError('confirm', {
         type: 'confirmPassword',
@@ -52,6 +60,7 @@ export function Register(props: RegisterProps) {
       const { data } = await http.post('auth/register', formValue);
       authActions.loginSuccess(data.data.token);
       showToast(t('notification.login.success'), 'success');
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.status === 409) {
         setError('email', {
@@ -87,7 +96,7 @@ export function Register(props: RegisterProps) {
                   validates={[validators.required, validators.email]}
                   errors={errors.email}
                   size="medium"
-                  icon={PersonOutlineRoundedIcon}
+                  icon={<Icon src={UserIcon} />}
                   color="primary"
                 />
                 <PasswordIconControl
@@ -98,7 +107,7 @@ export function Register(props: RegisterProps) {
                   validates={[validators.required, validators.minLength(6)]}
                   errors={errors.password}
                   size="medium"
-                  icon={LockOutlinedIcon}
+                  icon={<Icon src={LockIcon} />}
                   color="primary"
                 />
                 <PasswordIconControl
@@ -109,7 +118,7 @@ export function Register(props: RegisterProps) {
                   validates={[validators.required, validators.minLength(6)]}
                   errors={errors.confirm}
                   size="medium"
-                  icon={LockOutlinedIcon}
+                  icon={<Icon src={LockIcon} />}
                   color="primary"
                 />
                 <Box className="d-flex align-items-center mb-4">

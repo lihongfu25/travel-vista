@@ -2,14 +2,16 @@ import { Http, showToast } from '@frontend/common';
 import {
   Button,
   CheckboxControl,
+  Icon,
+  LockIcon,
   PasswordIconControl,
   TextIconControl,
+  UserIcon,
 } from '@frontend/components';
+import { environment } from '@frontend/configuration';
 import { useValidators } from '@frontend/hooks';
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import PersonOutlineRoundedIcon from '@mui/icons-material/PersonOutlineRounded';
 import { Box, Divider, Typography } from '@mui/material';
 import { FirebaseApp, initializeApp } from 'firebase/app';
 import {
@@ -21,13 +23,20 @@ import {
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useAuthActon } from '../action';
-
-import { environment } from '@frontend/configuration';
 import { Link } from 'react-router-dom';
+import { useAuthActon } from '../action';
 import styles from './login.module.scss';
+
+interface LoginForm {
+  user: string | undefined;
+  password: string | undefined;
+
+  remember: boolean;
+}
+
 export function Login() {
   const [loading, setLoading] = React.useState(false);
+  /* eslint-disable-next-line */
   const [firebaseApp, setFirebaseApp] = React.useState<FirebaseApp>(
     initializeApp(environment.firebaseConfig)
   );
@@ -40,7 +49,7 @@ export function Login() {
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginForm>({
     defaultValues: {
       user: 'admin@app.com.vn',
       password: 'secret',
@@ -54,14 +63,16 @@ export function Login() {
       setLoginGateways(data.data);
     };
     fetchLoginGateways();
+    /* eslint-disable-next-line */
   }, []);
 
-  const onSubmit = async (formValue: any) => {
+  const onSubmit = async (formValue: LoginForm) => {
     setLoading(true);
     try {
       const { data } = await http.post('auth/login', formValue);
       authActions.loginSuccess(data.data.token);
       showToast(t('notification.login.success'), 'success');
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.status === 403)
         showToast(t('notification.login.error403'), 'error');
@@ -139,7 +150,7 @@ export function Login() {
                   validates={[validators.required, validators.email]}
                   errors={errors.user}
                   size="medium"
-                  icon={PersonOutlineRoundedIcon}
+                  icon={<Icon src={UserIcon} />}
                   color="primary"
                 />
                 <PasswordIconControl
@@ -150,7 +161,7 @@ export function Login() {
                   validates={[validators.required, validators.minLength(6)]}
                   errors={errors.password}
                   size="medium"
-                  icon={LockOutlinedIcon}
+                  icon={<Icon src={LockIcon} />}
                   color="primary"
                 />
                 <Box className="d-flex justify-content-between mb-4">

@@ -11,6 +11,9 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { mergeValidates } from '../methods';
 import { DatetimePickerControlProps } from '../types';
+import { Tooltip } from '@mui/material';
+import Icon from '../icon/icon';
+import { HelpIcon } from '../constants';
 const StyledFormControl = styled(FormControl)`
   .MuiFormLabel-asterisk {
     color: red;
@@ -56,7 +59,18 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
             disabled={props.disabled}
           >
             {!props.fieldset && (
-              <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+              <div className="d-flex align-items-center mb-1">
+                <StyledFormLabel className="me-2">
+                  {props.label}
+                </StyledFormLabel>
+                {props.tips && (
+                  <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                    <div className="d-flex" style={{ cursor: 'help' }}>
+                      <Icon src={HelpIcon} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
             )}
             <PickerComponent
               {...field}
@@ -98,7 +112,16 @@ export function DatetimePickerControl(props: DatetimePickerControlProps) {
         disabled={props.disabled}
       >
         {!props.fieldset && (
-          <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+          <div className="d-flex align-items-center mb-1">
+            <StyledFormLabel className="me-2">{props.label}</StyledFormLabel>
+            {props.tips && (
+              <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                <div className="d-flex" style={{ cursor: 'help' }}>
+                  <Icon src={HelpIcon} />
+                </div>
+              </Tooltip>
+            )}
+          </div>
         )}
         <PickerComponent
           value={moment(value)}

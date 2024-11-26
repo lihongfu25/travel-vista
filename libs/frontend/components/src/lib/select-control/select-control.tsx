@@ -9,6 +9,9 @@ import React from 'react';
 import { Controller } from 'react-hook-form';
 import { SelectControlProps } from '../types';
 import { mergeValidates } from '../methods';
+import { Tooltip } from '@mui/material';
+import { HelpIcon } from '../constants';
+import Icon from '../icon/icon';
 
 const StyledInputLabel = styled(InputLabel)`
   .MuiFormLabel-asterisk {
@@ -42,11 +45,29 @@ export function SelectControl(props: SelectControlProps) {
             disabled={props.disabled}
           >
             {props.fieldset ? (
-              <StyledInputLabel className="mb-1">
-                {props.label}
-              </StyledInputLabel>
+              <div className="d-flex align-items-center mb-1">
+                <StyledInputLabel>{props.label}</StyledInputLabel>
+                {props.tips && (
+                  <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                    <div className="d-flex" style={{ cursor: 'help' }}>
+                      <Icon src={HelpIcon} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
             ) : (
-              <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+              <div className="d-flex align-items-center mb-1">
+                <StyledFormLabel className="me-2">
+                  {props.label}
+                </StyledFormLabel>
+                {props.tips && (
+                  <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                    <div className="d-flex" style={{ cursor: 'help' }}>
+                      <Icon src={HelpIcon} />
+                    </div>
+                  </Tooltip>
+                )}
+              </div>
             )}
             <StyledSelectField
               {...field}
@@ -81,9 +102,27 @@ export function SelectControl(props: SelectControlProps) {
         disabled={props.disabled}
       >
         {props.fieldset ? (
-          <StyledInputLabel className="mb-1">{props.label}</StyledInputLabel>
+          <div className="d-flex align-items-center mb-1">
+            <StyledInputLabel>{props.label}</StyledInputLabel>
+            {props.tips && (
+              <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                <div className="d-flex" style={{ cursor: 'help' }}>
+                  <Icon src={HelpIcon} />
+                </div>
+              </Tooltip>
+            )}
+          </div>
         ) : (
-          <StyledFormLabel className="mb-1">{props.label}</StyledFormLabel>
+          <div className="d-flex align-items-center mb-1">
+            <StyledFormLabel className="me-2">{props.label}</StyledFormLabel>
+            {props.tips && (
+              <Tooltip title={props.tips ?? ''} placement="right-end" arrow>
+                <div className="d-flex" style={{ cursor: 'help' }}>
+                  <Icon src={HelpIcon} />
+                </div>
+              </Tooltip>
+            )}
+          </div>
         )}
         <StyledSelectField
           id={props.id}

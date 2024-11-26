@@ -39,7 +39,6 @@ export function MenuComponent(props: MenuProps) {
   const [pagination, setPagination] = React.useState<any>({});
   const [loading, setLoading] = React.useState<boolean>(true);
   const [loadingAction, setLoadingAction] = React.useState<boolean>(false);
-  const [isChange, setIsChange] = React.useState<boolean>(false);
   const [roles, setRoles] = React.useState<Role[]>([]);
   const [fetchApi, setFetchApi] = React.useState<number>(Math.random());
   const [mode, setMode] = React.useState<'create' | 'update'>('create');
@@ -85,7 +84,7 @@ export function MenuComponent(props: MenuProps) {
     getMenus();
   }, [fetchApi, http]);
 
-  const handleView = (item: any) => {
+  const handleView = (item: Menu) => {
     navigate(`/admin/menu/${item.id}`);
   };
 
@@ -96,7 +95,7 @@ export function MenuComponent(props: MenuProps) {
     setSelectedItem(item);
   };
 
-  const handleDelete = (item: any) => {
+  const handleDelete = (item: Menu) => {
     setSelectedItem(item);
     setOpenConfirmModal(true);
   };
@@ -145,7 +144,7 @@ export function MenuComponent(props: MenuProps) {
     },
   ];
 
-  const createMenu = async (data: any) => {
+  const createMenu = async (data: MenuForm) => {
     setLoadingAction(true);
     try {
       await http.post('menu', data);
@@ -161,8 +160,7 @@ export function MenuComponent(props: MenuProps) {
     }
   };
 
-  const updateMenu = async (data: any) => {
-    console.log(data);
+  const updateMenu = async (data: MenuForm) => {
     setLoadingAction(true);
     try {
       if (!selectedItem) return;
@@ -180,7 +178,7 @@ export function MenuComponent(props: MenuProps) {
     }
   };
 
-  const onSubmitForm = (data: any) => {
+  const onSubmitForm = (data: MenuForm) => {
     mode === 'create' ? createMenu(data) : updateMenu(data);
   };
 
