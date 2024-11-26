@@ -7,6 +7,7 @@ import {
   SimpleSearch,
   Table,
   TableActions,
+  TableLoadingCell,
   TextControl,
 } from '@frontend/components';
 import { useValidators } from '@frontend/hooks';
@@ -73,12 +74,15 @@ export function MenuComponent(props: MenuProps) {
 
   React.useEffect(() => {
     const getMenus = async () => {
+      setLoading(true);
       try {
         const { data } = await http.get('menu');
         setData(data.data);
         setPagination(data.meta.pagination);
       } catch (error: any) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
     getMenus();
@@ -235,7 +239,7 @@ export function MenuComponent(props: MenuProps) {
             </div>
           </div>
         </div>
-        <Table columns={columns} data={data} showLastBorderBottom={false} />
+        <Table columns={columns} data={data} loading={loading} />
         <div
           className={`${styles.menu__pagination} d-flex justify-content-end`}
         >

@@ -1,3 +1,4 @@
+export * from './lib/table/table-loading-cell/table-loading-cell';
 export * from './lib/icon/icon';
 export * from './lib/confirm-modal/confirm-modal';
 export * from './lib/table/table-action-item/table-action-item';
