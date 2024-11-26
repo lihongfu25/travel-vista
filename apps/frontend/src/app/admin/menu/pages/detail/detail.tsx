@@ -452,7 +452,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
       <ConfirmModal
         open={openConfirmDeleteModal}
         title={t('form.heading.delete')}
-        content={t('form.content.delete')}
+        content={t('menuItem.confirm.delete')}
         onConfirm={onConfirmDelete}
         onCancel={onCancelDelete}
       />

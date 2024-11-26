@@ -127,12 +127,15 @@ export class MenuItemService extends BaseService<MenuItem> {
     }
   }
 
-  async deleteMenuItem(menuId: number): Promise<void> {
+  async deleteMenuItem(menuItemId: number): Promise<void> {
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
     await queryRunner.startTransaction();
     try {
+      await queryRunner.manager.delete(MenuMenuItem, { menuItemId });
+      await queryRunner.manager.delete(MenuItem, { parentId: menuItemId });
+      await queryRunner.manager.delete(MenuItem, { id: menuItemId });
       await queryRunner.commitTransaction();
     } catch (error) {
       await queryRunner.rollbackTransaction();

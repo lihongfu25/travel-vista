@@ -170,7 +170,7 @@ export class MenuItemController {
   async destroy(
     @Param('menuItemId') menuItemId: number
   ): Promise<ApiSuccessResponse> {
-    await this.menuItemService.destroy(menuItemId);
+    await this.menuItemService.deleteMenuItem(menuItemId);
     return this.response.success();
   }
 }

@@ -141,7 +141,7 @@
       }
     },
     "confirm": {
-      "delete": "Bạn có chắc chắn muốn xóa menu này không?"
+      "delete": "Xóa menu này sẽ xóa toàn bộ các menu con (nếu có). Bạn có chắc chắn muốn tiếp tục không?"
     }
   }
 }
