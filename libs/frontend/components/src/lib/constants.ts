@@ -1,3 +1,14 @@
+import {
+  AG_GRID_LOCALE_EN,
+  AG_GRID_LOCALE_VN,
+} from '@ag-grid-community/locale';
+/* eslint-disable-next-line */
+export const AgGridLocale: { [key: string]: any } = {
+  en: AG_GRID_LOCALE_EN,
+  vi: AG_GRID_LOCALE_VN,
+};
+
+// Icon
 export const HelpIcon = `<svg
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 24 24"

@@ -3,15 +3,13 @@ import {
   Button,
   ConfirmModal,
   SelectControl,
-  SimplePagination,
   SimpleSearch,
   Table,
   TableActions,
-  TableLoadingCell,
   TextControl,
 } from '@frontend/components';
 import { useValidators } from '@frontend/hooks';
-import { Menu, Role } from '@frontend/model';
+import { Menu, PaginationResponse, Role } from '@frontend/model';
 import AddRoundedIcon from '@mui/icons-material/AddRounded';
 import {
   Dialog,
@@ -24,7 +22,7 @@ import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import styles from './menu.module.scss';
 
 interface MenuForm {
@@ -37,7 +35,7 @@ export interface MenuProps {}
 
 export function MenuComponent(props: MenuProps) {
   const [data, setData] = React.useState<Menu[]>([]);
-  const [pagination, setPagination] = React.useState<any>({});
+  const [pagination, setPagination] = React.useState<PaginationResponse>();
   const [loading, setLoading] = React.useState<boolean>(true);
   const [loadingAction, setLoadingAction] = React.useState<boolean>(false);
   const [roles, setRoles] = React.useState<Role[]>([]);
@@ -45,8 +43,10 @@ export function MenuComponent(props: MenuProps) {
   const [mode, setMode] = React.useState<'create' | 'update'>('create');
   const [openModal, setOpenModal] = React.useState<boolean>(false);
   const [selectedItem, setSelectedItem] = React.useState<Menu | null>(null);
+  const [searchParams] = useSearchParams();
   const [openConfirmModal, setOpenConfirmModal] =
     React.useState<boolean>(false);
+
   const { t } = useTranslation();
   const validators = useValidators();
   const http = React.useMemo(() => new Http(), []);
@@ -70,7 +70,7 @@ export function MenuComponent(props: MenuProps) {
       setRoles(res.data.data);
     };
     getRoles();
-  }, []);
+  }, [http]);
 
   React.useEffect(() => {
     const getMenus = async () => {
@@ -79,14 +79,16 @@ export function MenuComponent(props: MenuProps) {
         const { data } = await http.get('menu');
         setData(data.data);
         setPagination(data.meta.pagination);
+        /* eslint-disable-next-line */
       } catch (error: any) {
         console.log(error);
       } finally {
         setLoading(false);
       }
     };
+    console.log(searchParams.get('page'));
     getMenus();
-  }, [fetchApi, http]);
+  }, [fetchApi, http, searchParams]);
 
   const handleView = (item: Menu) => {
     navigate(`/admin/menu/${item.id}`);
@@ -127,6 +129,7 @@ export function MenuComponent(props: MenuProps) {
     {
       field: 'action',
       headerName: 'Actions',
+      /* eslint-disable-next-line */
       cellRenderer: ({ data }: any) => {
         return (
           <TableActions
@@ -155,6 +158,7 @@ export function MenuComponent(props: MenuProps) {
       showToast(t('menuPage.notification.success.created'), 'success');
       setFetchApi(Math.random());
       handleCloseModal();
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -172,6 +176,7 @@ export function MenuComponent(props: MenuProps) {
       showToast(t('menuPage.notification.success.updated'), 'success');
       setFetchApi(Math.random());
       handleCloseModal();
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -199,6 +204,7 @@ export function MenuComponent(props: MenuProps) {
       showToast(t('menuPage.notification.success.deleted'), 'success');
       setOpenConfirmModal(false);
       setFetchApi(Math.random());
+      /* eslint-disable-next-line */
     } catch (error: any) {
       if (error?.response?.data?.message) {
         showToast(t(error?.response?.data?.message), 'error');
@@ -239,12 +245,12 @@ export function MenuComponent(props: MenuProps) {
             </div>
           </div>
         </div>
-        <Table columns={columns} data={data} loading={loading} />
-        <div
-          className={`${styles.menu__pagination} d-flex justify-content-end`}
-        >
-          <SimplePagination pagination={pagination} color="primary" />
-        </div>
+        <Table
+          columns={columns}
+          data={data}
+          loading={loading}
+          pagination={pagination}
+        />
       </div>
       <Dialog
         open={openModal}

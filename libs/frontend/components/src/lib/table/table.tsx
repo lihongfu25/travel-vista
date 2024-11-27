@@ -6,8 +6,9 @@ import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
 import TableLoadingCell from './table-loading-cell/table-loading-cell';
 import Icon from '../icon/icon';
-import { NoDataIcon } from '../constants';
+import { AgGridLocale, NoDataIcon } from '../constants';
 import { useTranslation } from 'react-i18next';
+import { PaginationResponse } from '@frontend/model';
 
 /* eslint-disable-next-line */
 export interface TableProps {
@@ -22,6 +23,9 @@ export interface TableProps {
   rowHeight?: number;
   selectionMode?: 'single' | 'multiple';
   showLastBorderBottom?: boolean;
+  showPagination?: boolean;
+
+  pagination?: PaginationResponse;
   onSelectionChanged?: (params: any) => void;
 }
 
@@ -37,26 +41,35 @@ export function Table({
   onSelectionChanged,
   selectionMode,
   showLastBorderBottom = false,
+  showPagination = true,
+  pagination,
 }: TableProps) {
   /* eslint-disable-next-line */
   const [autoHeight, setAutoHeight] = React.useState<number>(200);
 
   const { t } = useTranslation();
 
+  const language = React.useMemo(() => {
+    return localStorage.getItem('lang') || 'en';
+  }, []);
+
   React.useEffect(() => {
-    if (loading) {
-      setAutoHeight(rowHeight * loadingRow + headerHeight + 3);
-      return;
-    }
+    const baseHeight =
+      rowHeight * (loading ? loadingRow : data.length) + headerHeight + 3;
+    const calculatedHeight = heightFix || (data.length ? baseHeight : 200);
 
     setAutoHeight(
-      heightFix
-        ? heightFix
-        : data.length
-        ? rowHeight * data.length + headerHeight + 3
-        : 200
+      showPagination ? calculatedHeight + headerHeight : calculatedHeight
     );
-  }, [data, heightFix, headerHeight, rowHeight, loading, loadingRow]);
+  }, [
+    data.length,
+    heightFix,
+    headerHeight,
+    rowHeight,
+    loading,
+    loadingRow,
+    showPagination,
+  ]);
 
   const tableRef = React.useRef<AgGridReact>(null);
 
@@ -98,10 +111,19 @@ export function Table({
           .ag-cell-focus, .ag-cell {
             border: none !important;
           }
+
+          .ag-paging-panel {
+            height: ${headerHeight}px !important;
+            display: flex;
+            align-items: center;
+          }
         `}
       </style>
       <AgGridReact
         ref={tableRef}
+        localeText={AgGridLocale[language]}
+        pagination={showPagination}
+        paginationPageSize={pagination?.itemsPerPage}
         rowData={loading ? Array(loadingRow).fill({}) : data}
         columnDefs={columnDefs}
         defaultColDef={defaultColumnDefinition ?? defaultColumnDefinitionMemo}
