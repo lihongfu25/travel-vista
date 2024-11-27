@@ -39,6 +39,12 @@
       "email": "Email"
     }
   },
+  "table": {
+    "nodata": {
+      "title": "No data available",
+      "description": "Please modify the search conditions and try again"
+    }
+  },
   "form": {
     "validators": {
       "minlength": "The minimum length for this field is {{length}} characters",

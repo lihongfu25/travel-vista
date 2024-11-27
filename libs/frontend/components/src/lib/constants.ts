@@ -126,7 +126,7 @@ export const NoDataIcon = `<svg
         viewBox="0 0 24 24"
         width="68"
         height="68"
-        color="#000000"
+        color="inherit"
         fill="none"
       >
         <path

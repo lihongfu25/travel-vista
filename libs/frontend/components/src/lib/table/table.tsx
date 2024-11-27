@@ -7,6 +7,7 @@ import React from 'react';
 import TableLoadingCell from './table-loading-cell/table-loading-cell';
 import Icon from '../icon/icon';
 import { NoDataIcon } from '../constants';
+import { useTranslation } from 'react-i18next';
 
 /* eslint-disable-next-line */
 export interface TableProps {
@@ -39,6 +40,8 @@ export function Table({
 }: TableProps) {
   /* eslint-disable-next-line */
   const [autoHeight, setAutoHeight] = React.useState<number>(200);
+
+  const { t } = useTranslation();
 
   React.useEffect(() => {
     if (loading) {
@@ -120,10 +123,26 @@ export function Table({
               alignItems: 'center',
               flexDirection: 'column',
               justifyContent: 'center',
+              color: '#334155',
             }}
           >
             <Icon src={NoDataIcon} />
-            <p className="fw-semibold">No data available!</p>
+            <p
+              style={{
+                fontWeight: 600,
+                marginBottom: '4px',
+              }}
+            >
+              {t('table.nodata.title')}
+            </p>
+            <p
+              style={{
+                fontSize: '12px',
+                color: '#64748B',
+              }}
+            >
+              {t('table.nodata.description')}
+            </p>
           </div>
         )}
       />

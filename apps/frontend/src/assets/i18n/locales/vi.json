@@ -65,6 +65,12 @@
       "haveChange": "Bạn có thay đổi chưa được lưu. Thay đổi chưa được lưu sẽ bị mất nếu bạn tiếp tục."
     }
   },
+  "table": {
+    "nodata": {
+      "title": "Không tìm thấy dữ liệu",
+      "description": "Vui lòng thay đổi điều kiện tìm kiếm và thử lại"
+    }
+  },
   "language": {
     "vi": "Tiếng Việt",
     "en": "Tiếng Anh",
