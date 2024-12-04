@@ -1,0 +1,35 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.container {
+  display: flex;
+  align-items: flex-end;
+  font-size: 16px;
+  &:not(.empty) {
+    margin-bottom: 1.5rem;
+  }
+}
+
+.breadcrumb {
+  display: inline-flex;
+  color: #000000;
+  text-decoration: none;
+
+  &:not(.current):hover {
+    color: var(--color-1);
+    cursor: pointer;
+  }
+
+  &.current {
+    color: var(--color-1);
+    cursor: default;
+  }
+}
+
+.divider {
+  margin: 0 8px;
+}
