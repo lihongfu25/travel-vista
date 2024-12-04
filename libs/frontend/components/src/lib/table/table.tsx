@@ -59,7 +59,9 @@ export function Table({
     const calculatedHeight = heightFix || (data.length ? baseHeight : 200);
 
     setAutoHeight(
-      showPagination ? calculatedHeight + headerHeight : calculatedHeight
+      !loading && showPagination
+        ? calculatedHeight + headerHeight
+        : calculatedHeight
     );
   }, [
     data.length,
@@ -122,7 +124,7 @@ export function Table({
       <AgGridReact
         ref={tableRef}
         localeText={AgGridLocale[language]}
-        pagination={showPagination}
+        pagination={!loading && showPagination}
         paginationPageSize={pagination?.itemsPerPage}
         rowData={loading ? Array(loadingRow).fill({}) : data}
         columnDefs={columnDefs}
