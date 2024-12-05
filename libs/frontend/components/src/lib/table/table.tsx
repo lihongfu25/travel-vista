@@ -1,14 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { PaginationResponse } from '@frontend/model';
 import { ColDef, RowClassParams } from 'ag-grid-community';
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-quartz.css';
 import { AgGridReact } from 'ag-grid-react';
 import React from 'react';
+import { AgGridLocale } from '../constants';
+import NoData from '../no-data/no-data';
 import TableLoadingCell from './table-loading-cell/table-loading-cell';
-import Icon from '../icon/icon';
-import { AgGridLocale, NoDataIcon } from '../constants';
-import { useTranslation } from 'react-i18next';
-import { PaginationResponse } from '@frontend/model';
 
 /* eslint-disable-next-line */
 export interface TableProps {
@@ -46,8 +45,6 @@ export function Table({
 }: TableProps) {
   /* eslint-disable-next-line */
   const [autoHeight, setAutoHeight] = React.useState<number>(200);
-
-  const { t } = useTranslation();
 
   const language = React.useMemo(() => {
     return localStorage.getItem('lang') || 'en';
@@ -124,7 +121,7 @@ export function Table({
       <AgGridReact
         ref={tableRef}
         localeText={AgGridLocale[language]}
-        pagination={!loading && showPagination}
+        pagination={!loading && data.length > 0 && showPagination}
         paginationPageSize={pagination?.itemsPerPage}
         rowData={loading ? Array(loadingRow).fill({}) : data}
         columnDefs={columnDefs}
@@ -141,33 +138,10 @@ export function Table({
         }
         onSelectionChanged={onSelectionChangedCallback}
         noRowsOverlayComponent={() => (
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              flexDirection: 'column',
-              justifyContent: 'center',
-              color: '#334155',
-            }}
-          >
-            <Icon src={NoDataIcon} />
-            <p
-              style={{
-                fontWeight: 600,
-                marginBottom: '4px',
-              }}
-            >
-              {t('table.nodata.title')}
-            </p>
-            <p
-              style={{
-                fontSize: '12px',
-                color: '#64748B',
-              }}
-            >
-              {t('table.nodata.description')}
-            </p>
-          </div>
+          <NoData
+            title="table.nodata.title"
+            description="table.nodata.description"
+          />
         )}
       />
     </div>

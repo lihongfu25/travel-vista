@@ -1,0 +1,70 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.link {
+  text-decoration: none;
+  color: #000000de;
+
+  .container {
+    display: flex;
+    gap: 12px;
+    padding: 12px 48px 12px 12px;
+    border-radius: 8px;
+    height: 100%;
+    background-color: rgba($color: #000000, $alpha: 0.035);
+    position: relative;
+
+    .icon {
+      width: 40px;
+      display: flex;
+      align-items: center;
+      color: #000000ee;
+    }
+
+    .info {
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      justify-content: start;
+
+      .name {
+        color: #000000de;
+      }
+
+      .description {
+        font-size: 12px;
+        color: rgba($color: #000000, $alpha: 0.45);
+      }
+    }
+
+    .actions {
+      position: absolute;
+      top: 50%;
+      right: 12px;
+      transform: translateY(-50%);
+      display: none;
+      padding: 4px;
+      border-radius: 50%;
+      cursor: pointer;
+
+      &.active {
+        display: flex;
+      }
+    }
+
+    &:hover {
+      .actions {
+        display: flex;
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+}
+
+.menuItem__label {
+  margin-left: 12px;
+}

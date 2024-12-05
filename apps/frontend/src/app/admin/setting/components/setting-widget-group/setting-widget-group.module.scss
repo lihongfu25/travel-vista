@@ -1,0 +1,64 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px;
+  min-height: 60px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+
+  &__title {
+    font-weight: 500;
+  }
+
+  &__actions {
+    display: none;
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 50%;
+    &.active {
+      display: flex;
+    }
+  }
+
+  &:hover {
+    .header__actions {
+      display: flex;
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+}
+
+.body {
+  padding: 16px;
+
+  &.noData {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:not(.noData) {
+    display: grid;
+    gap: 16px;
+    grid-template-columns: 25% 25% 25% 25%;
+  }
+}
+
+.menuItem__label {
+  margin-left: 12px;
+}

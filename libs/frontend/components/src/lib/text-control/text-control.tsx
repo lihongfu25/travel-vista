@@ -27,7 +27,6 @@ const StyledFormLabel = styled(FormLabel)`
 export function TextControl(props: TextControlProps) {
   const uniqueId = generateUniqueId(props.name ?? props.label);
   const validates = mergeValidates(props.validates);
-  console.log(props.tips);
   if (props.control && props.name)
     return (
       <Controller

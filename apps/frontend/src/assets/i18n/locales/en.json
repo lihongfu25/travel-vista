@@ -10,7 +10,8 @@
     "upload": "Upload",
     "search": "Search",
     "detail": "Detail",
-    "agree": "Agree"
+    "agree": "Agree",
+    "noData": "No data found"
   },
   "auth": {
     "login": {
@@ -91,12 +92,17 @@
       "success": "You have successfully logged in!"
     },
     "error": "An error occurred, please try again later",
-    "logout": "You have logged out of the system!"
+    "logout": "You have logged out of the system!",
+    "errorCommon": {
+      "error403": "You don't have permission to perform this action. Please contact the administrator to get support"
+    }
   },
   "breadcrumb": {
     "dashboard": "Dashboard",
     "menu": "Menu",
-    "setting": "Setting"
+    "setting": "Setting",
+    "profile": "Profile",
+    "detail": "Detail"
   },
   "menuPage": {
     "label": {
@@ -151,6 +157,55 @@
     },
     "tips": {
       "parent": "Only use 2-level menus to reduce complexity and improve user experience."
+    }
+  },
+  "settingWidgetGroup": {
+    "label": {
+      "noData": {
+        "title": "No widget found",
+        "description": "Please contact the administrator to get support"
+      },
+      "name": "Widget group name",
+      "sort": "Sort"
+    },
+    "notification": {
+      "error": {
+        "nameExists": "This widget group already exists. Please enter another widget group name",
+        "notFound": "Widget group not found. Please check your data again"
+      }
+    },
+    "button": {
+      "add": "Add new widget group",
+      "update": "Edit widget group",
+      "delete": "Delete widget group"
+    },
+    "confirm": {
+      "delete": "Deleting a widget group will also delete all widgets in this group (if any). Are you sure you want to continue?"
+    }
+  },
+  "settingWidget": {
+    "label": {
+      "name": "Widget name",
+      "description": "Description",
+      "link": "Link",
+      "icon": "Icon",
+      "sort": "Sort"
+    },
+    "notification": {
+      "error": {
+        "nameExists": "Widget name already exists",
+        "notFound": "Widget not found. Please check your data again"
+      },
+      "success": {
+        "created": "Widget created successfully!",
+        "updated": "Widget updated successfully!",
+        "deleted": "Widget deleted successfully!"
+      }
+    },
+    "button": {
+      "add": "Add new widget",
+      "update": "Edit widget",
+      "delete": "Delete widget"
     }
   }
 }

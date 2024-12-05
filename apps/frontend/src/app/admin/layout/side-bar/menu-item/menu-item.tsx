@@ -16,7 +16,7 @@ export interface MenuItemProps {
 
 export function MenuItem({ index, data, expandedId, onClick }: MenuItemProps) {
   /* eslint-disable-next-line */
-  const { isCollapsed } = useSelector((state: any) => state.layout);
+  const { isCollapsed } = useSelector((state: any) => state.adminLayout);
   return data.children && data.children.length > 0 ? (
     <AccordionMenuItem
       index={index}

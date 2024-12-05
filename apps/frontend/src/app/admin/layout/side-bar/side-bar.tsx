@@ -7,7 +7,7 @@ import Menu from './menu/menu';
 export interface SideBarProps {}
 
 export function SideBar(props: SideBarProps) {
-  const { isCollapsed } = useSelector((state: any) => state.layout);
+  const { isCollapsed } = useSelector((state: any) => state.adminLayout);
 
   return (
     <div

@@ -41,7 +41,7 @@ export function AccordionMenuItem({
   const [anchorEl, setAnchorEl] = React.useState<HTMLDivElement | null>(null);
 
   /* eslint-disable-next-line */
-  const { isCollapsed } = useSelector((state: any) => state.layout);
+  const { isCollapsed } = useSelector((state: any) => state.adminLayout);
 
   const handleClick = (event: React.MouseEvent<HTMLDivElement>) => {
     setAnchorEl(event.currentTarget);

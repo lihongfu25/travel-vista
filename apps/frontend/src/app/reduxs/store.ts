@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import userReducer from './user/user';
-import layoutReducer from './admin-layout/admin-layout';
+import adminLayoutReducer from './admin-layout/admin-layout';
 import storageSession from 'redux-persist/lib/storage/session';
 import { persistStore, persistReducer } from 'redux-persist';
 import { environment } from '@frontend/configuration';
@@ -15,7 +15,7 @@ const userPersistedReducer = persistReducer(persistConfig, userReducer);
 const store = configureStore({
   reducer: {
     user: userPersistedReducer,
-    layout: layoutReducer,
+    adminLayout: adminLayoutReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({

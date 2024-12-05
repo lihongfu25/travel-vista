@@ -16,6 +16,7 @@ import {
   ApiResponseService,
   ApiSuccessResponse,
   Auth,
+  DEFAULT_LIMIT_PER_PAGE,
   FindManyQueryParam,
 } from '@server/common';
 import { Brackets, Not, SelectQueryBuilder } from 'typeorm';
@@ -40,7 +41,7 @@ export class MenuController {
     @Query() param: FindManyQueryParam
   ): Promise<ApiCollectionResponse<Menu>> {
     const page = param.page ?? 1;
-    const limit = param.limit ?? 20;
+    const limit = param.limit ?? DEFAULT_LIMIT_PER_PAGE;
     const query: SelectQueryBuilder<Menu> = this.menuService.repository
       .createQueryBuilder('menu')
       .leftJoinAndSelect('menu.role', 'role')

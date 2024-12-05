@@ -2,6 +2,7 @@ import { Http, showToast } from '@frontend/common';
 import {
   Button,
   ConfirmModal,
+  IBreadcrumb,
   SelectControl,
   SimpleSearch,
   Table,
@@ -22,7 +23,9 @@ import { isEmpty } from 'lodash-es';
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { setBreadcrumb } from '../../../../reduxs/admin-layout/admin-layout';
 import styles from './menu.module.scss';
 
 interface MenuForm {
@@ -51,6 +54,7 @@ export function MenuComponent(props: MenuProps) {
   const validators = useValidators();
   const http = React.useMemo(() => new Http(), []);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const {
     control,
@@ -63,6 +67,21 @@ export function MenuComponent(props: MenuProps) {
       roleId: null,
     },
   });
+
+  React.useEffect(() => {
+    const breadcrumbs: Array<IBreadcrumb> = [
+      {
+        label: t('breadcrumb.dashboard'),
+        link: '/admin',
+        isOrigin: true,
+      },
+      {
+        label: t('breadcrumb.menu'),
+        link: '#',
+      },
+    ];
+    dispatch(setBreadcrumb(breadcrumbs));
+  }, [t, dispatch]);
 
   React.useEffect(() => {
     const getRoles = async () => {
@@ -86,7 +105,6 @@ export function MenuComponent(props: MenuProps) {
         setLoading(false);
       }
     };
-    console.log(searchParams.get('page'));
     getMenus();
   }, [fetchApi, http, searchParams]);
 

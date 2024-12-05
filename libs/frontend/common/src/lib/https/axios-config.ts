@@ -33,10 +33,10 @@ axiosInstance.interceptors.response.use(
           sessionStorage.removeItem(`persist:${environment.authPersistKey}`);
           window.location.href = '/auth/login';
           break;
-        case 403:
-          sessionStorage.removeItem(`persist:${environment.authPersistKey}`);
-          window.location.href = '/auth/register';
-          break;
+        // case 403:
+        //   sessionStorage.removeItem(`persist:${environment.authPersistKey}`);
+        //   window.location.href = '/auth/register';
+        //   break;
         default:
           console.error(`Error ${response.status}: ${response.statusText}`);
       }

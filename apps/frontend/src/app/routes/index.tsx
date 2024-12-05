@@ -3,7 +3,15 @@ import { AdminLayout, DashboardComponent, MenuComponent } from '../admin';
 import { Login, Register } from '../auth';
 import { AdminGuard, Guard, UnauthenticatedGuard } from '../routing-guard';
 
-const _routes = [
+interface IRoute {
+  path: string;
+  element?: any;
+  index?: boolean;
+  children: IRoute[];
+  guard?: any;
+}
+
+const routes: Array<any> = [
   {
     path: '/',
     children: [
@@ -49,24 +57,5 @@ const _routes = [
     ],
   },
 ];
-
-/* eslint-disable-next-line */
-const transformRoutes = (routes: any) => {
-  /* eslint-disable-next-line */
-  return routes.map((routeConfig: any) => {
-    const {
-      path,
-      children,
-      guard: RouteGuard,
-      element: RouteElement,
-      index,
-      ...props
-    } = routeConfig;
-  });
-};
-
-const routes = transformRoutes(_routes);
-
-console.log(routes);
 
 export default routes;

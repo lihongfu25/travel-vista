@@ -1,12 +1,16 @@
 import { showToast } from '@frontend/common';
+import {
+  Icon,
+  LogOutIcon,
+  NotificationIcon,
+  UserIcon,
+} from '@frontend/components';
 import KeyboardArrowDownRoundedIcon from '@mui/icons-material/KeyboardArrowDownRounded';
-import Logout from '@mui/icons-material/Logout';
 import MenuRoundedIcon from '@mui/icons-material/MenuRounded';
 import {
   Avatar,
   Drawer,
   IconButton,
-  ListItemIcon,
   Button as MuiButton,
   Menu as MuiMenu,
   MenuItem as MuiMenuItem,
@@ -19,7 +23,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useAuthActon } from '../../../auth/action';
 import { setCollapsed } from '../../../reduxs/admin-layout/admin-layout';
 import styles from './header.module.scss';
-import { Icon } from '@frontend/components';
 /* eslint-disable-next-line */
 import i18n from '@i18n';
 /* eslint-disable-next-line */
@@ -81,35 +84,6 @@ const ExpandIcon = `<svg
     />
   </svg>`;
 
-const NotificationIcon = `<svg
-    xmlns="http://www.w3.org/2000/svg"
-    viewBox="0 0 24 24"
-    width="24"
-    height="24"
-    color="#000000"
-    fill="none"
-  >
-    <path
-      d="M5.15837 11.491C5.08489 12.887 5.16936 14.373 3.92213 15.3084C3.34164 15.7438 3 16.427 3 17.1527C3 18.1508 3.7818 19 4.8 19H19.2C20.2182 19 21 18.1508 21 17.1527C21 16.427 20.6584 15.7438 20.0779 15.3084C18.8306 14.373 18.9151 12.887 18.8416 11.491C18.6501 7.85223 15.6438 5 12 5C8.35617 5 5.34988 7.85222 5.15837 11.491Z"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-    <path
-      d="M10.5 3.125C10.5 3.95343 11.1716 5 12 5C12.8284 5 13.5 3.95343 13.5 3.125C13.5 2.29657 12.8284 2 12 2C11.1716 2 10.5 2.29657 10.5 3.125Z"
-      stroke="currentColor"
-      stroke-width="1.5"
-    />
-    <path
-      d="M15 19C15 20.6569 13.6569 22 12 22C10.3431 22 9 20.6569 9 19"
-      stroke="currentColor"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    />
-  </svg>`;
-
 const StyledIconButton = styled(IconButton)`
   & {
     padding: 4px;
@@ -141,7 +115,7 @@ const StyledNotificationMenu = styled(MuiMenu)({});
 
 export function Header(props: HeaderProps) {
   /* eslint-disable-next-line */
-  const { isCollapsed } = useSelector((state: any) => state.layout);
+  const { isCollapsed } = useSelector((state: any) => state.adminLayout);
   /* eslint-disable-next-line */
   const user = useSelector((state: any) => state.user);
   const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
@@ -224,7 +198,10 @@ export function Header(props: HeaderProps) {
             onClick={handleCollapseSideBar}
             className={`${styles['header__left__collapse']}`}
           >
-            <Icon src={isCollapsed ? ExpandIcon : CollapseIcon} />
+            <Icon
+              src={isCollapsed ? ExpandIcon : CollapseIcon}
+              color="#000000de"
+            />
           </StyledIconButton>
           <StyledIconButton
             onClick={handleDrawer(true)}
@@ -261,7 +238,7 @@ export function Header(props: HeaderProps) {
               marginRight: '1rem',
             }}
           >
-            <Icon src={NotificationIcon} />
+            <Icon src={NotificationIcon} color="#000000de" />
           </IconButton>
           <IconButton
             id="select-user-button"
@@ -340,14 +317,12 @@ export function Header(props: HeaderProps) {
           },
         }}
       >
-        <StyledUserMenuItem onClick={handleCloseUserMenu}>
-          <Avatar /> {t('menu.profile')}
+        <StyledUserMenuItem sx={{ gap: '12px' }} onClick={handleCloseUserMenu}>
+          <Icon src={UserIcon} />
+          {t('menu.profile')}
         </StyledUserMenuItem>
-        {/* <Divider /> */}
-        <StyledUserMenuItem onClick={logout}>
-          <ListItemIcon>
-            <Logout fontSize="small" />
-          </ListItemIcon>
+        <StyledUserMenuItem sx={{ gap: '12px' }} onClick={logout}>
+          <Icon src={LogOutIcon} />
           {t('menu.logout')}
         </StyledUserMenuItem>
       </StyledUserMenu>

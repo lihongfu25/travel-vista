@@ -10,7 +10,8 @@
     "upload": "Tải lên",
     "search": "Tìm kiếm",
     "detail": "Chi tiết",
-    "agree": "Đồng ý"
+    "agree": "Đồng ý",
+    "noData": "Không tìm thấy dữ liệu"
   },
   "auth": {
     "login": {
@@ -91,12 +92,17 @@
       "success": "Bạn đã đăng nhập thành công!"
     },
     "error": "Đã có lỗi xảy ra, vui lòng thử lại sau",
-    "logout": "Bạn đã đăng xuất khỏi hệ thống!"
+    "logout": "Bạn đã đăng xuất khỏi hệ thống!",
+    "errorCommon": {
+      "error403": "Bạn không có quyền thực hiện thao tác này, vui lòng liên hệ quản trị viên để được hỗ trợ"
+    }
   },
   "breadcrumb": {
-    "dashboard": "Bảng điều khiển",
-    "menu": "Menu",
-    "setting": "Cài đặt"
+    "dashboard": "Trang chủ",
+    "menu": "Danh mục",
+    "setting": "Cài đặt",
+    "profile": "Tài khoản",
+    "detail": "Chi tiết"
   },
   "menuPage": {
     "label": {
@@ -151,6 +157,55 @@
     },
     "tips": {
       "parent": "Chỉ nên sử dụng menu 2 cấp để giảm độ phức tạp và cải thiện trải nghiệm người dùng."
+    }
+  },
+  "settingWidgetGroup": {
+    "label": {
+      "noData": {
+        "title": "Không tìm thấy tiện ích",
+        "description": "Vui lòng liên hệ quản trị viên để được hỗ trợ thêm tiện ích"
+      },
+      "name": "Tên nhóm tiện ích",
+      "sort": "Thứ tự sắp xếp"
+    },
+    "notification": {
+      "error": {
+        "nameExists": "Nhóm tiện ích đã tồn tại. Vui lòng nhập tên nhóm tiện ích khác",
+        "notFound": "Không tìm thấy nhóm tiện ích. Vui lòng kiểm tra lại dữ liệu của bạn"
+      }
+    },
+    "button": {
+      "add": "Thêm mới nhóm tiện ích",
+      "update": "Chỉnh sửa nhóm tiện ích",
+      "delete": "Xóa nhóm tiện ích"
+    },
+    "confirm": {
+      "delete": "Xóa nhóm tiện ích sẽ đồng thời xóa toàn bộ các tiện ích thuộc nhóm này (nếu có). Bạn có chắc chắn muốn tiếp tục không?"
+    }
+  },
+  "settingWidget": {
+    "label": {
+      "name": "Tên tiện ích",
+      "description": "Mô tả",
+      "link": "Link",
+      "icon": "Icon",
+      "sort": "Thứ tự sắp xếp"
+    },
+    "notification": {
+      "error": {
+        "nameExists": "Tiện ích đã tồn tại",
+        "notFound": "Không tìm thấy tiện ích. Vui lòng kiểm tra lại dữ liệu của bạn"
+      },
+      "success": {
+        "created": "Thêm tiện ích thành công!",
+        "updated": "Cập nhật tiện ích thành công!",
+        "deleted": "Xóa tiện ích thành công!"
+      }
+    },
+    "button": {
+      "add": "Thêm mới tiện ích",
+      "update": "Chỉnh sửa tiện ích",
+      "delete": "Xóa tiện ích"
     }
   }
 }

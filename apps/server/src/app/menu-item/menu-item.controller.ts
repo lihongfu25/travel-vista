@@ -48,14 +48,14 @@ export class MenuItemController {
     if (!Array.isArray(roleIds) || roleIds.length === 0) {
       throw new BadRequestException('User does not have any role');
     }
-    const roleIdsTranform = roleIds.map((role) => `"${role}"`);
+    const roleIdsTransform = roleIds.map((role) => `"${role}"`);
     const query: SelectQueryBuilder<MenuItem> = this.menuItemService.repository
       .createQueryBuilder('menuItem')
       .leftJoin('menuItem.menus', 'menu')
       .leftJoinAndSelect('menuItem.children', 'children')
       .orderBy('menuItem.sort', 'ASC');
     if (roleIds) {
-      query.andWhere(`menu.roleId IN (${roleIdsTranform.join(',')})`);
+      query.andWhere(`menu.roleId IN (${roleIdsTransform.join(',')})`);
     }
     const result = await query.getMany();
     return this.response.collection(result, MenuItemTransformer);

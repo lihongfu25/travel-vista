@@ -25,7 +25,7 @@ export function BreadcrumbComponent({ breadcrumbs }: BreadcrumbProps) {
         <>
           {breadcrumb.isOrigin ? (
             <Link to={breadcrumb.link} className={styles.breadcrumb}>
-              <Icon src={HomeIcon} width={24} height={24} />
+              <Icon src={HomeIcon} size={24} />
             </Link>
           ) : index === breadcrumbs.length - 1 ? (
             <div
@@ -45,7 +45,7 @@ export function BreadcrumbComponent({ breadcrumbs }: BreadcrumbProps) {
           )}
           {index === breadcrumbs.length - 1 ? null : (
             <div className={styles.divider}>
-              <Icon src={ArrowLeftIcon} width={16} height={16} />
+              <Icon src={ArrowLeftIcon} size={16} />
             </div>
           )}
         </>

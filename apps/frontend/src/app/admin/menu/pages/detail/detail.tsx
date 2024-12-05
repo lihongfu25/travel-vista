@@ -2,6 +2,7 @@ import { Http, showToast } from '@frontend/common';
 import {
   Button,
   ConfirmModal,
+  IBreadcrumb,
   SelectControl,
   TextControl,
 } from '@frontend/components';
@@ -22,6 +23,8 @@ import 'react-nestable/dist/styles/index.css';
 import { useParams } from 'react-router-dom';
 import { MenuItemComponent } from '../../components/menu-item/menu-item';
 import styles from './detail.module.scss';
+import { useDispatch } from 'react-redux';
+import { setBreadcrumb } from '../../../../reduxs/admin-layout/admin-layout';
 
 interface MenuItemForm {
   label: string | null;
@@ -60,6 +63,7 @@ export function MenuDetailComponent(props: MenuDetailProps) {
   const { t } = useTranslation();
   const validators = useValidators();
   const http = React.useMemo(() => new Http(), []);
+  const dispatch = useDispatch();
 
   const {
     control,
@@ -74,6 +78,25 @@ export function MenuDetailComponent(props: MenuDetailProps) {
       parentId: null,
     },
   });
+
+  React.useEffect(() => {
+    const breadcrumbs: Array<IBreadcrumb> = [
+      {
+        label: t('breadcrumb.dashboard'),
+        link: '/admin',
+        isOrigin: true,
+      },
+      {
+        label: t('breadcrumb.menu'),
+        link: '/admin/menu',
+      },
+      {
+        label: t('breadcrumb.detail'),
+        link: '#',
+      },
+    ];
+    dispatch(setBreadcrumb(breadcrumbs));
+  }, [t, dispatch]);
 
   const nestMenuItems = (flatData: MenuItem[]): MenuItem[] => {
     const itemMap = new Map<number, MenuItem>();

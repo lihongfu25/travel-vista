@@ -1,0 +1,36 @@
+/*
+ * Replace this with your own classes
+ *
+ * e.g.
+ * .container {
+ * }
+*/
+.container {
+  display: grid;
+  gap: 16px;
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__create {
+      cursor: pointer;
+      border-radius: 50%;
+
+      animation: move ease 2s infinite;
+    }
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(2px);
+  }
+  100% {
+    transform: translateY(-2px);
+  }
+}

@@ -5,3 +5,5 @@ export * from './lib/setting.model';
 export * from './lib/menu.model';
 export * from './lib/menu-item.model';
 export * from './lib/table-action-item.model';
+export * from './lib/setting-widget-group.model';
+export * from './lib/setting-widget.model';

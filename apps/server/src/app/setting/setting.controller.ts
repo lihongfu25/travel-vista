@@ -15,16 +15,14 @@ import {
   ApiResponseService,
   ApiSuccessResponse,
   Auth,
+  DEFAULT_LIMIT_PER_PAGE,
 } from '@server/common';
 import { SettingService } from './setting.service';
 import { ApiTags } from '@nestjs/swagger';
 import { FindManySettingQueyryParam, SettingDto } from './types';
 import { Setting } from './setting.entity';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
-import {
-  SettingMinimalTransformer,
-  SettingTransformer,
-} from './setting.transformer';
+import { SettingTransformer } from './setting.transformer';
 import { SettingCategory } from './enums';
 
 @Controller('setting')
@@ -44,8 +42,8 @@ export class SettingController {
     | ApiCollectionResponse<Setting>
     | ApiPaginateResponse<Setting>
   > {
-    const limit = params.limit;
-    const page = params.page;
+    const limit = params.limit ?? DEFAULT_LIMIT_PER_PAGE;
+    const page = params.page ?? 1;
 
     const query: SelectQueryBuilder<Setting> =
       this.settingService.repository.createQueryBuilder('setting');
