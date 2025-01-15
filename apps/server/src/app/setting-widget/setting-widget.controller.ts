@@ -10,6 +10,7 @@ import {
   Put,
   Query,
 } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
 import {
   ApiCollectionResponse,
   ApiItemResponse,
@@ -25,7 +26,6 @@ import { SettingWidget } from './setting-widget.entity';
 import { SettingWidgetService } from './setting-widget.service';
 import { SettingWidgetTransformer } from './setting-widget.transformer';
 import { FindManySettingWidgetQueryParam, SettingWidgetDto } from './types';
-import { ApiTags } from '@nestjs/swagger';
 
 @Controller('setting-widget')
 @ApiTags('Setting Widget')
@@ -99,25 +99,21 @@ export class SettingWidgetController {
       );
     }
 
-    if (
-      await this.settingWidgetService.existSettingWidget(
-        'name',
-        dto.name,
-        dto.settingWidgetGroupId
-      )
-    ) {
+    if (await this.settingWidgetService.existSettingWidget('name', dto.name)) {
       throw new ConflictException(
         'settingWidget.notification.error.nameExists'
       );
     }
 
+    if (await this.settingWidgetService.existSettingWidget('link', dto.link)) {
+      throw new ConflictException(
+        'settingWidget.notification.error.linkExists'
+      );
+    }
+
     if (
       dto.sort &&
-      (await this.settingWidgetService.existSettingWidget(
-        'sort',
-        dto.sort,
-        dto.settingWidgetGroupId
-      ))
+      (await this.settingWidgetService.existSettingWidget('sort', dto.sort))
     ) {
       await this.settingWidgetService.createSWGAndUpdateSort(dto);
     } else {

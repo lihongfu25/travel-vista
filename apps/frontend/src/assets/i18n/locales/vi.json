@@ -187,13 +187,17 @@
     "label": {
       "name": "Tên tiện ích",
       "description": "Mô tả",
+      "type": "Loại tiện ích",
       "link": "Link",
       "icon": "Icon",
-      "sort": "Thứ tự sắp xếp"
+      "sort": "Thứ tự sắp xếp",
+      "group": "Nhóm thông tin",
+      "module": "Tính năng"
     },
     "notification": {
       "error": {
         "nameExists": "Tiện ích đã tồn tại",
+        "linkExists": "Đường dẫn tiện ích đã tồn tại",
         "notFound": "Không tìm thấy tiện ích. Vui lòng kiểm tra lại dữ liệu của bạn"
       },
       "success": {

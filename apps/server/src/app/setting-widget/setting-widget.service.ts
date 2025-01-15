@@ -31,10 +31,9 @@ export class SettingWidgetService extends BaseService<SettingWidget> {
   async existSettingWidget(
     key: string,
     value,
-    settingWidgetGroupId: string
   ): Promise<boolean> {
     const count = await this.repository.count({
-      where: { settingWidgetGroupId, [key]: value },
+      where: { [key]: value },
     });
     return count > 0;
   }

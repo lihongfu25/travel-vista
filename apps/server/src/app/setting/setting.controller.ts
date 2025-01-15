@@ -19,7 +19,7 @@ import {
 } from '@server/common';
 import { SettingService } from './setting.service';
 import { ApiTags } from '@nestjs/swagger';
-import { FindManySettingQueyryParam, SettingDto } from './types';
+import { FindManySettingQueyryParam, OptionSelect, SettingDto } from './types';
 import { Setting } from './setting.entity';
 import { Brackets, SelectQueryBuilder } from 'typeorm';
 import { SettingTransformer } from './setting.transformer';
@@ -86,6 +86,13 @@ export class SettingController {
       .filter((i) => i.value === 'true')
       .map((i) => i.key);
     return this.response.item(result, Array<string>);
+  }
+
+  @Get('control-type')
+  @Auth()
+  async controlType(): Promise<ApiCollectionResponse<OptionSelect>> {
+    const result = this.settingService.getControlTypes();
+    return this.response.collection(result, OptionSelect);
   }
 
   @Post()

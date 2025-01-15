@@ -22,12 +22,12 @@ import {
 } from '@server/common';
 import { Not, SelectQueryBuilder } from 'typeorm';
 import { MenuCommonService } from '../common/menu-common/menu-common.service';
+import { MenuMenuItemService } from '../menu-menu-item/menu-menu-item.service';
 import { User } from '../user/user.entity';
 import { MenuItem } from './menu-item.entity';
 import { MenuItemService } from './menu-item.service';
 import { MenuItemTransformer } from './menu-item.transformer';
 import { FindMenuQueryParam, MenuItemDto, SortMenuItemDto } from './types';
-import { MenuMenuItemService } from '../menu-menu-item/menu-menu-item.service';
 
 @Controller('menu-item')
 @ApiTags('Menu Item')
@@ -44,19 +44,18 @@ export class MenuItemController {
   async getMenuItemByRole(
     @AuthenticatedUser() user: User
   ): Promise<ApiCollectionResponse<MenuItem>> {
-    const roleIds = await this.menuItemService.getUserRoles(user.id);
-    if (!Array.isArray(roleIds) || roleIds.length === 0) {
+    const role = await this.menuItemService.getLowestRole(user.roles);
+    if (!role) {
       throw new BadRequestException('User does not have any role');
     }
-    const roleIdsTransform = roleIds.map((role) => `"${role}"`);
+
     const query: SelectQueryBuilder<MenuItem> = this.menuItemService.repository
       .createQueryBuilder('menuItem')
       .leftJoin('menuItem.menus', 'menu')
       .leftJoinAndSelect('menuItem.children', 'children')
+      .where(`menu.roleId LIKE "${role.id}"`)
       .orderBy('menuItem.sort', 'ASC');
-    if (roleIds) {
-      query.andWhere(`menu.roleId IN (${roleIdsTransform.join(',')})`);
-    }
+
     const result = await query.getMany();
     return this.response.collection(result, MenuItemTransformer);
   }

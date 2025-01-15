@@ -1,3 +1,4 @@
+import { Http, showToast } from '@frontend/common';
 import {
   AddFileIcon,
   Button,
@@ -6,12 +7,16 @@ import {
   EditIcon,
   Icon,
   NoData,
+  SelectControl,
   TextControl,
   VerticalMoreIcon,
 } from '@frontend/components';
-import styles from './setting-widget-group.module.scss';
-import { SettingWidgetGroup as SettingWidgetGroupModel } from '@frontend/model';
-import SettingWidget from '../setting-widget/setting-widget';
+import { useValidators } from '@frontend/hooks';
+import {
+  SettingWidgetGroup as SettingWidgetGroupModel,
+  settingWidgetType,
+  SettingWidgetTypeOption,
+} from '@frontend/model';
 import {
   Dialog,
   DialogActions,
@@ -20,14 +25,14 @@ import {
   Menu,
   MenuItem,
 } from '@mui/material';
-import React from 'react';
-import { useTranslation } from 'react-i18next';
-import { useValidators } from '@frontend/hooks';
-import { Http, showToast } from '@frontend/common';
-import { useForm } from 'react-hook-form';
 import { styled } from '@mui/system';
 import { isEmpty } from 'lodash';
+import React from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { SettingWidgetGroupForm } from '../../pages/home/home';
+import SettingWidget from '../setting-widget/setting-widget';
+import styles from './setting-widget-group.module.scss';
 
 const StyledMenuItem = styled(MenuItem)({
   minWidth: '200px',
@@ -35,11 +40,12 @@ const StyledMenuItem = styled(MenuItem)({
 
 interface SettingWidgetForm {
   settingWidgetGroupId: string;
-  name: string | null;
-  description: string | null;
-  link: string | null;
-  icon: string | null;
-  sort: number | null;
+  name: string | undefined;
+  description: string | undefined;
+  type: string | undefined;
+  link: string | undefined;
+  icon: string | undefined;
+  sort: string | number | undefined;
 }
 
 export interface SettingWidgetGroupProps {
@@ -55,6 +61,8 @@ export function SettingWidgetGroup({
   const [openCreateModal, setOpenCreateModal] = React.useState<boolean>(false);
   const [openEditModal, setOpenEditModal] = React.useState<boolean>(false);
   const [loadingAction, setLoadingAction] = React.useState<boolean>(false);
+  const [settingWidgetTypeOptions, setSelectWidgetTypeOptions] =
+    React.useState<Array<SettingWidgetTypeOption>>(settingWidgetType);
   const [openConfirmDeleteModal, setOpenConfirmDeleteModal] =
     React.useState<boolean>(false);
 
@@ -65,15 +73,17 @@ export function SettingWidgetGroup({
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm<SettingWidgetForm>({
     defaultValues: {
       settingWidgetGroupId: data.id,
-      name: null,
-      description: null,
-      link: null,
-      icon: null,
-      sort: null,
+      name: '',
+      description: '',
+      type: '',
+      link: '',
+      icon: '',
+      sort: '',
     },
   });
 
@@ -99,6 +109,9 @@ export function SettingWidgetGroup({
   };
 
   // create setting widget
+
+  const type = watch('type');
+
   const handleOpenCreateSettingWidgetModal = () => {
     handleCloseMenu();
     setOpenCreateModal(true);
@@ -132,6 +145,11 @@ export function SettingWidgetGroup({
 
     create();
   };
+
+  // handle change create widget value
+  React.useEffect(() => {
+    console.log(type);
+  }, [type]);
 
   // edit setting widget group
   const handleOpenEditWidgetGroupModal = () => {
@@ -328,6 +346,20 @@ export function SettingWidgetGroup({
               label={t('settingWidget.label.description')}
               multiline
               rows={3}
+            />
+            <SelectControl
+              name="type"
+              size="medium"
+              color="primary"
+              control={control}
+              errors={errors.type}
+              label={t('settingWidget.label.type')}
+              // options={settingWidgetTypeOptions.map(({ value, label }) => ({
+              //   value,
+              //   label,
+              // }))}
+              tips={t('settingWidget.label.type')}
+              validates={[validators.required]}
             />
             <TextControl
               name="link"

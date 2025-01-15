@@ -187,13 +187,17 @@
     "label": {
       "name": "Widget name",
       "description": "Description",
+      "type": "Widget type",
       "link": "Link",
       "icon": "Icon",
-      "sort": "Sort"
+      "sort": "Sort",
+      "group": "Group information",
+      "module": "Module"
     },
     "notification": {
       "error": {
         "nameExists": "Widget name already exists",
+        "linkExists": "Widget link already exists",
         "notFound": "Widget not found. Please check your data again"
       },
       "success": {

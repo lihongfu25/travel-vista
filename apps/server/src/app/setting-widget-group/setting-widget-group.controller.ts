@@ -83,7 +83,7 @@ export class SettingWidgetGroupController {
   }
 
   @Post('')
-  @Auth('superadmin')
+  @Auth('superadmin', 'admin')
   async create(
     @Body() dto: SettingWidgetGroupDto
   ): Promise<ApiSuccessResponse> {

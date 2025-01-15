@@ -2,10 +2,10 @@ import { Injectable } from '@nestjs/common';
 import { MenuItem } from './menu-item.entity';
 import { BaseService } from '@server/common';
 import { DataSource, EntityTarget, In, QueryRunner, Repository } from 'typeorm';
-import { User } from '../user/user.entity';
 import { MenuMenuItem } from '../menu-menu-item/menu-menu-item.entity';
 import { SortMenuItemDto } from './types';
-import { isArray } from 'lodash';
+import { isArray, orderBy } from 'lodash';
+import { Role } from '../role/role.entity';
 
 @Injectable()
 export class MenuItemService extends BaseService<MenuItem> {
@@ -16,13 +16,10 @@ export class MenuItemService extends BaseService<MenuItem> {
     super();
   }
 
-  async getUserRoles(userId: string): Promise<string[]> {
-    const user = await this.dataSource.getRepository(User).findOne({
-      where: { id: userId },
-      relations: { roles: true },
-    });
-
-    return user.roles.map((role) => role.id);
+  async getLowestRole(roles: Array<Role>): Promise<Role | null> {
+    if (!Array.isArray(roles) || roles.length === 0) return null;
+    const sortedRoles = orderBy(roles, ['level'], ['asc']);
+    return sortedRoles[0];
   }
 
   async getLatestSortIndex(menuId: number): Promise<number> {

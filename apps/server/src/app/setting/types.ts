@@ -2,6 +2,11 @@ import { ApiProperty } from '@nestjs/swagger';
 import { FindManyQueryParam } from '@server/common';
 import { IsOptional, IsString } from 'class-validator';
 
+export abstract class OptionSelect {
+  label: string;
+  value: string | number | boolean;
+}
+
 export class FindManySettingQueyryParam extends FindManyQueryParam {
   @ApiProperty({ required: false })
   @IsOptional()
